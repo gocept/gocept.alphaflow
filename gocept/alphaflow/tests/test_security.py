@@ -11,18 +11,18 @@ from Products.PluginIndexes.common.PluggableIndex import \
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
-import Products.AlphaFlow.utils
-from Products.AlphaFlow.interfaces import \
+import gocept.alphaflow.utils
+from gocept.alphaflow.interfaces import \
     IProcessVersion, IInstance, ILifeCycleController
-from Products.AlphaFlow.instance import Instance
-from Products.AlphaFlow.process import ProcessVersion
-from Products.AlphaFlow import utils
-from Products.AlphaFlow.exception import ConfigurationError
-from Products.AlphaFlow.eventchannel import EventChannelIndex
+from gocept.alphaflow.instance import Instance
+from gocept.alphaflow.process import ProcessVersion
+from gocept.alphaflow import utils
+from gocept.alphaflow.exception import ConfigurationError
+from gocept.alphaflow.eventchannel import EventChannelIndex
 
-from Products.AlphaFlow.utils import getRolesOfPermission
+from gocept.alphaflow.utils import getRolesOfPermission
 
 
 class ContentMock:
@@ -221,7 +221,7 @@ class SecurityTest(AlphaFlowTestCase):
         doc = portal.doc
 
         listMembersWithLocalRoles = (
-            Products.AlphaFlow.utils.listMembersWithLocalRoles)
+            gocept.alphaflow.utils.listMembersWithLocalRoles)
 
         # When asking for no roles we receive no results
         self.assertEquals(set(), listMembersWithLocalRoles(doc, []))

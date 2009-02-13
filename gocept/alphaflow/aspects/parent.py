@@ -14,11 +14,11 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow import config
-from Products.AlphaFlow.aspect import AspectDefinition, Aspect
-from Products.AlphaFlow.interfaces import IAspectDefinitionClass
-from Products.AlphaFlow.aspects.interfaces import \
+import gocept.alphaflow.interfaces
+from gocept.alphaflow import config
+from gocept.alphaflow.aspect import AspectDefinition, Aspect
+from gocept.alphaflow.interfaces import IAspectDefinitionClass
+from gocept.alphaflow.aspects.interfaces import \
     IParentAspectDefinition, IParentAspect
 
 
@@ -39,7 +39,7 @@ class ParentAspectDefinition(AspectDefinition):
     def graphGetPossibleChildren(self):
         # XXX make activity lookup an adapter
         activity = self.getParentNode().getParentNode()
-        assert Products.AlphaFlow.interfaces.IActivity.providedBy(activity)
+        assert gocept.alphaflow.interfaces.IActivity.providedBy(activity)
         if activity.getId() != self.parentOf:
             children = [{'id': self.parentOf,
                          'exit': 'parent',

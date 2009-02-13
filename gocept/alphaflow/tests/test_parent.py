@@ -5,13 +5,13 @@
 import unittest
 import os.path
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.aspects.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.aspects.interfaces import \
         IParentAspect, IParentAspectDefinition
-from Products.AlphaFlow.aspects.parent import \
+from gocept.alphaflow.aspects.parent import \
         ParentAspect, ParentAspectDefinition
-from Products.AlphaFlow.interfaces import ILifeCycleController
-import Products.AlphaFlow.graphing
+from gocept.alphaflow.interfaces import ILifeCycleController
+import gocept.alphaflow.graphing
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'output')
 
@@ -32,7 +32,7 @@ class ParentTest(AlphaFlowTestCase):
             [{'exit': 'parent', 'id': 'self_reference',
               'label': 'parent of', 'qualifier': 'parent'}],
             self.test_process['normal'].graphGetPossibleChildren())
-        graphing = Products.AlphaFlow.graphing.WorkflowGraph(self.test_process)
+        graphing = gocept.alphaflow.graphing.WorkflowGraph(self.test_process)
 
         expected_dot = file(
             os.path.join(OUTPUT_DIR, 'parent_graph.dot')).read()

@@ -5,23 +5,23 @@
 
 import zope.interface
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
      IActivityContainer, IActivity, IActivityClass, IAspectDefinitionClass, \
      ICheckpointDefinition
-from Products.AlphaFlow.xmlimport.attribute import \
+from gocept.alphaflow.xmlimport.attribute import \
     WorkflowAttribute, WorkflowAttributeList, ConfiguresAttribute, \
     AssigneesAttribute
-from Products.AlphaFlow.xmlimport.child import \
+from gocept.alphaflow.xmlimport.child import \
      CheckpointFromNode, ExitFromNode, MultipleExitsFromNodes
-from Products.AlphaFlow.xmlimport.interfaces import IDOMImporter
-import Products.AlphaFlow.activities.notify
-from  Products.AlphaFlow.activities.interfaces import IGateActivity
-from Products.AlphaFlow.aspects.interfaces import IPermissionAspectDefinition
-from Products.AlphaFlow.xmlimport.utils import \
+from gocept.alphaflow.xmlimport.interfaces import IDOMImporter
+import gocept.alphaflow.activities.notify
+from  gocept.alphaflow.activities.interfaces import IGateActivity
+from gocept.alphaflow.aspects.interfaces import IPermissionAspectDefinition
+from gocept.alphaflow.xmlimport.utils import \
      configure_attributes, import_child_elements, add_child_elements
-from Products.AlphaFlow import config
-import Products.AlphaFlow.checkpoint
-from Products.AlphaFlow.exception import ConfigurationError
+from gocept.alphaflow import config
+import gocept.alphaflow.checkpoint
+from gocept.alphaflow.exception import ConfigurationError
 
 class DOMImporterBase(object):
     """Base class for adapters that provide child node importers for
@@ -52,7 +52,7 @@ class Checkpoint(DOMImporterBase):
         )
 
     def factory(self):
-        return Products.AlphaFlow.checkpoint.CheckpointDefinition()
+        return gocept.alphaflow.checkpoint.CheckpointDefinition()
 
     def __call__(self, node, checkpoint=None):
         if not checkpoint:
@@ -69,7 +69,7 @@ class Exit(Checkpoint):
                           "TALES expression returning True or False."),)
 
     def factory(self):
-        return Products.AlphaFlow.interfaces.IExitDefinition(self.parent)
+        return gocept.alphaflow.interfaces.IExitDefinition(self.parent)
 
 
 class Aspect(DOMImporterBase):
@@ -251,7 +251,7 @@ class ExpressionAspect(Aspect):
     attributes = Aspect.attributes + expression_attributes
 
 
-from Products.AlphaFlow.activities.gates import \
+from gocept.alphaflow.activities.gates import \
     MULTI_MERGE, DISCRIMINATE, DELAYED_DISCRIMINATE, SYNCHRONIZING_MERGE
 
 class Gate(BaseAutomaticActivity):
@@ -305,7 +305,7 @@ class Recipient(DOMImporterBase):
                    )
 
     def __call__(self, node, recipient=None):
-        notify = Products.AlphaFlow.activities.notify
+        notify = gocept.alphaflow.activities.notify
         recipient_type = node.getAttribute("type")
         if recipient_type == "owner":
             recipient = notify.RecipientOwner()
@@ -356,7 +356,7 @@ class PermissionSetting(DOMImporterBase):
                                     datatype=bool),
                   )
 
-    _factory = Products.AlphaFlow.aspects.permission.PermissionSetting
+    _factory = gocept.alphaflow.aspects.permission.PermissionSetting
 
     def __call__(self, node, setting=None):
         # XXX feed the factory with dummy values, should be refactored
@@ -377,7 +377,7 @@ class PermissionAddSetting(PermissionSetting):
                                     encoding="ascii", datatype=tuple),
                   )
 
-    _factory = Products.AlphaFlow.aspects.permission.PermissionAddSetting
+    _factory = gocept.alphaflow.aspects.permission.PermissionAddSetting
 
 
 class PermissionRemoveSetting(PermissionSetting):
@@ -393,7 +393,7 @@ class PermissionRemoveSetting(PermissionSetting):
                   )
 
     _factory = \
-             Products.AlphaFlow.aspects.permission.PermissionRemoveSetting
+             gocept.alphaflow.aspects.permission.PermissionRemoveSetting
 
 
 class PermissionAspect(Aspect):

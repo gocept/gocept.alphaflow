@@ -6,15 +6,15 @@ import unittest
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
     IEMailWorkItem, IEMailActivity, IEMailRecipientMode, INTaskWorkItem, \
     ILifeCycleController
-from Products.AlphaFlow.activities.notify import \
+from gocept.alphaflow.activities.notify import \
         EMailWorkItem, EMailActivity, RecipientOwner, RecipientNextAssignees, \
         RecipientCurrentAssignees, RecipientActualRole
-from Products.AlphaFlow.aspects.interfaces import IEMailAspect
-from Products.AlphaFlow import config
+from gocept.alphaflow.aspects.interfaces import IEMailAspect
+from gocept.alphaflow import config
 
 
 class EmailTest(AlphaFlowTestCase):

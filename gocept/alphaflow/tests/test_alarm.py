@@ -8,11 +8,11 @@ from DateTime import DateTime
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
      IAlarmWorkItem, IAlarmActivity
-from Products.AlphaFlow.activities.alarm import AlarmWorkItem, AlarmActivity
-from Products.AlphaFlow.interfaces import ILifeCycleController
+from gocept.alphaflow.activities.alarm import AlarmWorkItem, AlarmActivity
+from gocept.alphaflow.interfaces import ILifeCycleController
 
 
 class AlarmTest(AlphaFlowTestCase):

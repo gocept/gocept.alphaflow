@@ -7,8 +7,8 @@
 import zope.interface
 import zope.schema
 
-import Products.AlphaFlow.sources
-import Products.AlphaFlow.aspects.permission
+import gocept.alphaflow.sources
+import gocept.alphaflow.aspects.permission
 
 
 class ISimpleRecipientSchema(zope.interface.Interface):
@@ -18,28 +18,28 @@ class ISimpleRecipientSchema(zope.interface.Interface):
 
     owner = zope.schema.Choice(
         title=u"Email owner",
-        source=Products.AlphaFlow.sources.BooleanSource())
+        source=gocept.alphaflow.sources.BooleanSource())
 
     next = zope.schema.Choice(
         title=u"Email assignees of the next activities",
-        source=Products.AlphaFlow.sources.BooleanSource())
+        source=gocept.alphaflow.sources.BooleanSource())
 
     current = zope.schema.Choice(
         title=u"Email assignees of the current activity",
-        source=Products.AlphaFlow.sources.BooleanSource())
+        source=gocept.alphaflow.sources.BooleanSource())
 
     last = zope.schema.Choice(
         title=u"Email assignees of the last activities",
-        source=Products.AlphaFlow.sources.BooleanSource())
+        source=gocept.alphaflow.sources.BooleanSource())
 
     roles = zope.schema.Tuple(
       title=u"Email all users with roles",
       value_type=zope.schema.Choice(
-        source=Products.AlphaFlow.sources.RoleSource()))
+        source=gocept.alphaflow.sources.RoleSource()))
 
 
-class IPermissionSettingEdit(Products.AlphaFlow.aspects.interfaces.IPermissionSetting):
+class IPermissionSettingEdit(gocept.alphaflow.aspects.interfaces.IPermissionSetting):
 
     type = zope.schema.Choice(
         title=u"Type", 
-        source=Products.AlphaFlow.aspects.permission.PermissionSettingSource())
+        source=gocept.alphaflow.aspects.permission.PermissionSettingSource())

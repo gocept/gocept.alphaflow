@@ -4,10 +4,10 @@
 """Descriptors for importing checkpoints and activity exits."""
 
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.exception
-import Products.AlphaFlow.checkpoint
-import Products.AlphaFlow.xmlimport.utils
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.exception
+import gocept.alphaflow.checkpoint
+import gocept.alphaflow.xmlimport.utils
 
 
 class CheckpointFromNode(object):
@@ -16,7 +16,7 @@ class CheckpointFromNode(object):
     node_name = None
 
     def factory(self, activity):
-        return Products.AlphaFlow.checkpoint.CheckpointDefinition()
+        return gocept.alphaflow.checkpoint.CheckpointDefinition()
 
     def __init__(self, node_name, id=None):
         self.node_name = node_name
@@ -24,11 +24,11 @@ class CheckpointFromNode(object):
 
     def apply(self, node, activity):
         checkpoint = getattr(activity, self.id, None)
-        children = Products.AlphaFlow.xmlimport.utils.import_child_elements(
+        children = gocept.alphaflow.xmlimport.utils.import_child_elements(
             node, activity, (self.node_name,), default=checkpoint)
 
         if len(children) > 1:
-            raise Products.AlphaFlow.exception.ConfigurationError(
+            raise gocept.alphaflow.exception.ConfigurationError(
                 "Only one child element %s allowed for element %s." %
                 (self.node_name, node.nodeName))
 
@@ -45,16 +45,16 @@ class CheckpointFromNode(object):
 class ExitFromNode(CheckpointFromNode):
 
     def factory(self, activity):
-        return Products.AlphaFlow.interfaces.IExitDefinition(activity)
+        return gocept.alphaflow.interfaces.IExitDefinition(activity)
 
 
 class MultipleExitsFromNodes(ExitFromNode):
 
     def apply(self, node, activity):
-        for child in Products.AlphaFlow.xmlimport.utils.import_child_elements(
+        for child in gocept.alphaflow.xmlimport.utils.import_child_elements(
             node, activity, (self.node_name,)):
             if not child.id:
-                raise Products.AlphaFlow.exception.ConfigurationError(
+                raise gocept.alphaflow.exception.ConfigurationError(
                     "Element %s must have an ID." % self.node_name)
 
             activity._setObject(child.getId(), child)

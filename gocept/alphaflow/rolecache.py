@@ -7,7 +7,7 @@ from BTrees.OOBTree import OOBTree
 
 import zope.interface
 
-from Products.AlphaFlow.interfaces import IRoleCache
+from gocept.alphaflow.interfaces import IRoleCache
 
 
 class RoleCache:

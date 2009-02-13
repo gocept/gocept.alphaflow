@@ -7,7 +7,7 @@
 import zope.interface
 import zope.schema
 
-import Products.AlphaFlow.editor.templates
+import gocept.alphaflow.editor.templates
 
 
 class ParallelReviewSchema(zope.interface.Interface):
@@ -21,7 +21,7 @@ class ParallelReviewSchema(zope.interface.Interface):
         default=3)
 
 
-class ParallelReview(Products.AlphaFlow.editor.templates.TemplateForm):
+class ParallelReview(gocept.alphaflow.editor.templates.TemplateForm):
 
     form_fields = zope.formlib.form.FormFields(ParallelReviewSchema)
 
@@ -37,21 +37,21 @@ class ParallelReview(Products.AlphaFlow.editor.templates.TemplateForm):
         title = data['title']
         # Gates
         yes_gate = self._add_activity(
-            Products.AlphaFlow.activities.gates.GateActivity,
+            gocept.alphaflow.activities.gates.GateActivity,
             "%s (Result is yes)" % title)
         yes_gate.mode = 'synchronizing-merge'
         no_gate = self._add_activity(
-            Products.AlphaFlow.activities.gates.GateActivity,
+            gocept.alphaflow.activities.gates.GateActivity,
             "%s (Result is no)" % title)
         no_gate.mode = 'discriminate'
         # Route
-        route = self._add_activity(Products.AlphaFlow.activities.routing.RouteActivity,
+        route = self._add_activity(gocept.alphaflow.activities.routing.RouteActivity,
                                    title)
         route.gates = (yes_gate.getId(), no_gate.getId())
 
         for i in range(data['reviews']):
             review = self._add_activity(
-                Products.AlphaFlow.activities.decision.DecisionActivity,
+                gocept.alphaflow.activities.decision.DecisionActivity,
                 "%s (Decision %i)" % (title, i+1))
             review['accept'].activities = (yes_gate.getId(),)
             review['reject'].activities = (no_gate.getId(),)

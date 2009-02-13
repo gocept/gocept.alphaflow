@@ -66,7 +66,7 @@ class GateSource(ActivitySource):
         values = super(GateSource, self).getValues(context)
         process = context.acquireProcess()
         return [activity for activity in values if
-            Products.AlphaFlow.activities.interfaces.IGateActivity.
+            gocept.alphaflow.activities.interfaces.IGateActivity.
                 providedBy(process[activity])]
 
 

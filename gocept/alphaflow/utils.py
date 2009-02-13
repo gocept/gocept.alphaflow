@@ -27,9 +27,9 @@ from AccessControl.Permission import Permission
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow import config
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow.TrustedExpression import getEngine
+from gocept.alphaflow import config
+import gocept.alphaflow.interfaces
+from gocept.alphaflow.TrustedExpression import getEngine
 
 _www = os.path.join(os.path.dirname(__file__), 'www')
 _dtmldir = os.path.join( package_home( globals() ), 'dtml' )
@@ -320,7 +320,7 @@ def killWorkItemRecursively(wi, reason, ignore=[]):
             continue
         stack.extend(wi.getGeneratedWorkItems())
         if wi.state in ['active', 'failed']:
-            Products.AlphaFlow.interfaces.ILifeCycleController(wi).terminate(
+            gocept.alphaflow.interfaces.ILifeCycleController(wi).terminate(
                 reason + " (recursive termination)")
 
 

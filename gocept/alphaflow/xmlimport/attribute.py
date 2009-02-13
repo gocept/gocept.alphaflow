@@ -5,10 +5,10 @@
 
 import zope.interface
 
-from Products.AlphaFlow import utils
-from Products.AlphaFlow.exception import ConfigurationError
-from Products.AlphaFlow.xmlimport.interfaces import IWorkflowAttribute
-from Products.AlphaFlow.xmlimport.utils import \
+from gocept.alphaflow import utils
+from gocept.alphaflow.exception import ConfigurationError
+from gocept.alphaflow.xmlimport.interfaces import IWorkflowAttribute
+from gocept.alphaflow.xmlimport.utils import \
     configure_attributes, import_child_elements
 
 UNSET = object()

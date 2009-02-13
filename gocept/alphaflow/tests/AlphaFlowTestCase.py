@@ -13,7 +13,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Testing import ZopeTestCase
 
 # Import dummy content to enable registration for tests
-import Products.AlphaFlow.tests.content
+import gocept.alphaflow.tests.content
 
 import zope.interface.verify
 
@@ -27,13 +27,13 @@ ZopeTestCase.installProduct("Five")
 
 PloneTestCase.setupPloneSite(products=('AlphaFlow',))
 
-from Products.AlphaFlow.interfaces import IWorkflowImporter
-from Products.AlphaFlow.process import Process
+from gocept.alphaflow.interfaces import IWorkflowImporter
+from gocept.alphaflow.process import Process
 
-from Products.AlphaFlow.utils import mailhostTestingModePatch
+from gocept.alphaflow.utils import mailhostTestingModePatch
 mailhostTestingModePatch()
 
-from Products.AlphaFlow import config
+from gocept.alphaflow import config
 config.ENABLE_ZODB_COMMITS = False
 
 
@@ -90,7 +90,7 @@ class AlphaFlowTestCase(PloneTestCase.FunctionalTestCase):
         # patch DummyContent
         def nextStep(self):
             return True
-        from Products.AlphaFlow.tests.content import DummyContent
+        from gocept.alphaflow.tests.content import DummyContent
         DummyContent.nextStep = nextStep
 
         wftool = getToolByName(portal, 'workflow_manager')

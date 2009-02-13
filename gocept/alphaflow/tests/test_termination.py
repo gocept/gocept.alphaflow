@@ -8,11 +8,11 @@ from AccessControl import SpecialUsers
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.interfaces import ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.interfaces import ILifeCycleController
+from gocept.alphaflow.activities.interfaces import \
      INTaskWorkItem, ITerminationActivity, ITerminationWorkItem
-from Products.AlphaFlow.activities.termination import \
+from gocept.alphaflow.activities.termination import \
      TerminationActivity, TerminationWorkItem
 
 

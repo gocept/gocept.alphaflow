@@ -6,10 +6,10 @@ import unittest
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
      IDecisionWorkItem, ISimpleDecisionActivity, ILifeCycleController
-from Products.AlphaFlow.activities.simpledecision import SimpleDecisionWorkItem, SimpleDecisionActivity
+from gocept.alphaflow.activities.simpledecision import SimpleDecisionWorkItem, SimpleDecisionActivity
 
 
 class SimpleDecisionTest(AlphaFlowTestCase):

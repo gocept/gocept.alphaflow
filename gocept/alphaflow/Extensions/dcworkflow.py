@@ -14,7 +14,7 @@ _registered_workflows = []
 def register(id, factory):
     """register workflow
 
-    >>> from Products.AlphaFlow.Extensions import dcworkflow
+    >>> from gocept.alphaflow.Extensions import dcworkflow
     >>> def fac():
     ...     return dcworkflow.create('wf')
     >>> dcworkflow.register('wf', fac)
@@ -33,7 +33,7 @@ def register(id, factory):
 def install(portal, workflow_id):
     """install workflow with given id
 
-    >>> from Products.AlphaFlow.Extensions import dcworkflow
+    >>> from gocept.alphaflow.Extensions import dcworkflow
     >>> def fac():
     ...     return dcworkflow.create('wf')
     >>> dcworkflow.register('wf', fac)
@@ -63,7 +63,7 @@ def installAllWorkflows(portal):
  
     Register some workflows, and check they are not installed yet.
 
-    >>> from Products.AlphaFlow.Extensions import dcworkflow
+    >>> from gocept.alphaflow.Extensions import dcworkflow
     >>> from Products.CMFCore.utils import getToolByName
     >>> dcworkflow._clean_registry()
     >>> def faca():
@@ -94,7 +94,7 @@ def installAllWorkflows(portal):
 def create(workflow_id):
     """create a workflow
 
-    >>> from Products.AlphaFlow.Extensions import dcworkflow
+    >>> from gocept.alphaflow.Extensions import dcworkflow
     >>> wf = dcworkflow.create('simple')
     >>> wf.getId()
     'simple'
@@ -111,7 +111,7 @@ def setupCore(wf, title, states, transitions):
 
     setupCore just adds the states you specify:
 
-    >>> from Products.AlphaFlow.Extensions import dcworkflow
+    >>> from gocept.alphaflow.Extensions import dcworkflow
     >>> wf = dcworkflow.create('a')
     >>> dcworkflow.setupCore(wf, 'mytitle', ['state1', 'state2', 'state3'],
     ...           transitions=['s1_s2', 's1_s3'])

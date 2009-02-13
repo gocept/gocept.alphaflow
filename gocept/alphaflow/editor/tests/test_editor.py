@@ -6,11 +6,11 @@ import unittest
 
 import zope.publisher.browser
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.editor.editor import\
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.editor.editor import\
         Editor, ActivityPanel, EditActivity
-from Products.AlphaFlow.process import Process, ProcessVersion
-import Products.AlphaFlow.config
+from gocept.alphaflow.process import Process, ProcessVersion
+import gocept.alphaflow.config
 
 
 class EditorViewTest(AlphaFlowTestCase):
@@ -44,7 +44,7 @@ class EditorViewTest(AlphaFlowTestCase):
         self.assertEquals(False, editorview.canRenderWorkflow())
 
         # now connect those and we should be able to display a graph
-        act1[Products.AlphaFlow.config.CHECKPOINT_START].activities += (
+        act1[gocept.alphaflow.config.CHECKPOINT_START].activities += (
             act2.id, )
         self.assertEquals(True, editorview.canRenderWorkflow())
 

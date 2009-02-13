@@ -16,16 +16,16 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
 from Products.Archetypes import public as atapi
 
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow import config, utils
-from Products.AlphaFlow.utils import \
+import gocept.alphaflow.interfaces
+from gocept.alphaflow import config, utils
+from gocept.alphaflow.utils import \
         DynamicLocalRoleSupport, LocalRoleFakeBase, modifyRolesForPermission, \
         ContentObjectRetrieverBase
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
     IWorkItem, IWorkItemFactory, IAlphaFlowed, IAutomaticWorkItem, \
     IActivity, IAssignableActivity, IAssignableWorkItem, IFieldGroup, \
     IWorkItemClass, ILifeCycleController, ILifeCycleEvent
-from Products.AlphaFlow.lifecycle import LifeCycleObjectBase, CannotComplete
+from gocept.alphaflow.lifecycle import LifeCycleObjectBase, CannotComplete
 
 
 class WorkItemFactory(object):
@@ -653,13 +653,13 @@ class Group:
 
 class GenericLogEntry(object):
 
-    zope.interface.implements(Products.AlphaFlow.interfaces.IWorkItemLogEntry)
-    zope.component.adapts(Products.AlphaFlow.interfaces.IWorkItem)
+    zope.interface.implements(gocept.alphaflow.interfaces.IWorkItemLogEntry)
+    zope.component.adapts(gocept.alphaflow.interfaces.IWorkItem)
 
     def __init__(self, context):
         self.context = context
         self.controller = \
-            Products.AlphaFlow.interfaces.ILifeCycleController(context)
+            gocept.alphaflow.interfaces.ILifeCycleController(context)
 
     @property
     def state(self):
@@ -687,8 +687,8 @@ class GenericLogEntry(object):
     def results(self):
         """Titles of the checkpoints that were passed, except start and end."""
         checkpoints = [x for x in self.context.checkpoints_passed 
-                       if x not in [Products.AlphaFlow.config.CHECKPOINT_START,
-                                    Products.AlphaFlow.config.CHECKPOINT_COMPLETE]]
+                       if x not in [gocept.alphaflow.config.CHECKPOINT_START,
+                                    gocept.alphaflow.config.CHECKPOINT_COMPLETE]]
         try:
             activity = self.context.getActivity()
         except AttributeError:

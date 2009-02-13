@@ -9,14 +9,14 @@ import zope.interface
 
 import Products.CMFCore.utils
 
-import Products.AlphaFlow.interfaces
+import gocept.alphaflow.interfaces
 
 
 class Statistics(object):
     """Statistics as an adapter for processes."""
 
-    zope.interface.implements(Products.AlphaFlow.interfaces.IProcessStatistics)
-    zope.component.adapts(Products.AlphaFlow.interfaces.IProcessVersion)
+    zope.interface.implements(gocept.alphaflow.interfaces.IProcessStatistics)
+    zope.component.adapts(gocept.alphaflow.interfaces.IProcessVersion)
 
     def __init__(self, context):
         self.context = context
@@ -29,8 +29,8 @@ class Statistics(object):
         paths = list(self.paths(begin, end))
         duration = 0
         for a, b in paths:
-            a_start = Products.AlphaFlow.interfaces.ILifeCycleController(a).begin
-            b_end = Products.AlphaFlow.interfaces.ILifeCycleController(a).end
+            a_start = gocept.alphaflow.interfaces.ILifeCycleController(a).begin
+            b_end = gocept.alphaflow.interfaces.ILifeCycleController(a).end
             if a_start is None or b_end is None:
                 continue
             # Compute the duration in seconds
@@ -67,7 +67,7 @@ class Statistics(object):
         seen = set()
         instance = workitem.getParentNode()
         candidate = workitem
-        while Products.AlphaFlow.interfaces.IWorkItem.providedBy(candidate):
+        while gocept.alphaflow.interfaces.IWorkItem.providedBy(candidate):
             if candidate.getActivity().getId() == activity:
                 return candidate
             candidate = instance[candidate.generated_by]

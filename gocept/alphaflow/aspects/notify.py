@@ -11,19 +11,19 @@ import zope.interface
 
 import Products.Archetypes.public
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.config
-import Products.AlphaFlow.aspect
-from Products.AlphaFlow.aspects.interfaces import \
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.config
+import gocept.alphaflow.aspect
+from gocept.alphaflow.aspects.interfaces import \
      IEMailAspectDefinition, IEMailAspect
-import Products.AlphaFlow.activities.notify
+import gocept.alphaflow.activities.notify
 
 
-class EMailAspectDefinition(Products.AlphaFlow.aspect.AspectDefinition):
+class EMailAspectDefinition(gocept.alphaflow.aspect.AspectDefinition):
 
     zope.interface.implements(IEMailAspectDefinition)
     zope.interface.classProvides(
-        Products.AlphaFlow.interfaces.IAspectDefinitionClass)
+        gocept.alphaflow.interfaces.IAspectDefinitionClass)
 
     meta_type = "AlphaFlow EMail AspectDefinition"
     aspect_type = "email"
@@ -39,7 +39,7 @@ class EMailAspectDefinition(Products.AlphaFlow.aspect.AspectDefinition):
 Globals.InitializeClass(EMailAspectDefinition)
 
 
-class EMailAspect(Products.AlphaFlow.aspect.Aspect):
+class EMailAspect(gocept.alphaflow.aspect.Aspect):
 
     zope.interface.implements(IEMailAspect)
 
@@ -51,10 +51,10 @@ class EMailAspect(Products.AlphaFlow.aspect.Aspect):
     def __call__(self):
         """Send email."""
         work_items = [self.getWorkItem()]
-        Products.AlphaFlow.activities.notify._send_email(
+        gocept.alphaflow.activities.notify._send_email(
             self, self.getDefinition(), work_items)
 
 
 Globals.InitializeClass(EMailAspect)
 Products.Archetypes.public.registerType(
-    EMailAspect, Products.AlphaFlow.config.PROJECTNAME)
+    EMailAspect, gocept.alphaflow.config.PROJECTNAME)

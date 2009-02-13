@@ -6,8 +6,8 @@
 
 import Products.Five
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.config
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.config
 
 
 class Overview(Products.Five.BrowserView):
@@ -17,7 +17,7 @@ class Overview(Products.Five.BrowserView):
         self.context = context
         self.request = request
         self.controller = \
-            Products.AlphaFlow.interfaces.ILifeCycleController(context)
+            gocept.alphaflow.interfaces.ILifeCycleController(context)
 
     def event_log(self):
         return self.controller.event_log

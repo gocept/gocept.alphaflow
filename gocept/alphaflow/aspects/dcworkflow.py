@@ -11,10 +11,10 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.aspect import AspectDefinition, Aspect
-from Products.AlphaFlow.interfaces import IAspectDefinitionClass
-from Products.AlphaFlow.aspects.interfaces import IDCWorkflowAspectDefinition
+from gocept.alphaflow import config
+from gocept.alphaflow.aspect import AspectDefinition, Aspect
+from gocept.alphaflow.interfaces import IAspectDefinitionClass
+from gocept.alphaflow.aspects.interfaces import IDCWorkflowAspectDefinition
 
 
 class WorkflowHistoryFake(dict):

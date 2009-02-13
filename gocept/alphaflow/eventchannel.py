@@ -13,7 +13,7 @@ from Products.PluginIndexes.KeywordIndex.KeywordIndex import KeywordIndex
     
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow import config
+from gocept.alphaflow import config
 
 _marker = object()
 

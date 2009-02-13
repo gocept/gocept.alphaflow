@@ -6,8 +6,8 @@
 
 import zope.interface
 
-import Products.AlphaFlow.editor.interfaces
-import Products.AlphaFlow.activities.notify
+import gocept.alphaflow.editor.interfaces
+import gocept.alphaflow.activities.notify
 
 import Acquisition
 
@@ -45,23 +45,23 @@ def create_wrapped_recipient_schema(context):
 
 class SimpleRecipientSchema(Acquisition.Implicit):
 
-    zope.interface.implements(Products.AlphaFlow.editor.interfaces.ISimpleRecipientSchema)
+    zope.interface.implements(gocept.alphaflow.editor.interfaces.ISimpleRecipientSchema)
 
     def __init__(self, context):
         self.context = context
 
-    owner = mode_property(Products.AlphaFlow.activities.notify.RecipientOwner)
+    owner = mode_property(gocept.alphaflow.activities.notify.RecipientOwner)
     next = mode_property(
-        Products.AlphaFlow.activities.notify.RecipientNextAssignees)
+        gocept.alphaflow.activities.notify.RecipientNextAssignees)
     current = mode_property(
-        Products.AlphaFlow.activities.notify.RecipientCurrentAssignees)
+        gocept.alphaflow.activities.notify.RecipientCurrentAssignees)
     last = mode_property(
-        Products.AlphaFlow.activities.notify.RecipientPreviousAssignees)
+        gocept.alphaflow.activities.notify.RecipientPreviousAssignees)
 
     def _get_roles(self):
         for x in self.context.recipient_modes:
             if isinstance(x,
-                          Products.AlphaFlow.activities.notify.RecipientActualRole):
+                          gocept.alphaflow.activities.notify.RecipientActualRole):
               return tuple(x.roles)
         return ()
     def _set_roles(self, value):
@@ -73,12 +73,12 @@ class SimpleRecipientSchema(Acquisition.Implicit):
         self.context.recipient_modes = tuple(
             mode for mode in self.context.recipient_modes 
             if not isinstance(
-                mode, Products.AlphaFlow.activities.notify.RecipientActualRole))
+                mode, gocept.alphaflow.activities.notify.RecipientActualRole))
         # If we don't have roles, we can stop now
         if not value:
             return
         # Add a new recipient mode and set the `roles` attribute
-        mode = Products.AlphaFlow.activities.notify.RecipientActualRole()
+        mode = gocept.alphaflow.activities.notify.RecipientActualRole()
         mode.roles = value
         self.context.recipient_modes += (mode,)
     roles = property(fget=_get_roles, fset=_set_roles)
@@ -87,7 +87,7 @@ class SimpleRecipientSchema(Acquisition.Implicit):
 class PermissionSettingEdit(Acquisition.Implicit):
 
     zope.interface.implements(
-        Products.AlphaFlow.editor.interfaces.IPermissionSettingEdit)
+        gocept.alphaflow.editor.interfaces.IPermissionSettingEdit)
 
     def __init__(self, context):
         self.context = context

@@ -4,8 +4,8 @@
 # $Id$
 """Process instance views"""
 
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow.interfaces import ILifeCycleController
+import gocept.alphaflow.interfaces
+from gocept.alphaflow.interfaces import ILifeCycleController
 
 
 class ZMIOverview(object):
@@ -32,7 +32,7 @@ class WorkflowLog(object):
             self.log_entries = []
             return
         work_items = instances[0].getWorkItems(None)
-        self.log_entries = [Products.AlphaFlow.interfaces.IWorkItemLogEntry(wi)
+        self.log_entries = [gocept.alphaflow.interfaces.IWorkItemLogEntry(wi)
                             for wi in work_items]
         # Filter away all entries that were terminated
         self.log_entries = [x for x in self.log_entries

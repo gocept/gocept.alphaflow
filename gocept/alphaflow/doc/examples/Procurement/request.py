@@ -8,8 +8,8 @@ import zope.interface
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes import public as atapi
 from Products.ATContentTypes.content.base import ATCTContent as BaseContent
-from Products.AlphaFlow import public as afapi
-from Products.AlphaFlow.interfaces import IAlphaFlowed
+from gocept.alphaflow import public as afapi
+from gocept.alphaflow.interfaces import IAlphaFlowed
 
 from Products.Procurement import utils, config
 

@@ -4,8 +4,8 @@
 
 import unittest
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.process import Process, ProcessVersion
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.process import Process, ProcessVersion
 
 
 class ParallelReviewTest(AlphaFlowTestCase):

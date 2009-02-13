@@ -7,7 +7,7 @@ import zope.formlib.form
 
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
-import Products.AlphaFlow.utils
+import gocept.alphaflow.utils
 
 
 class TemplateForm(Acquisition.Explicit, zope.formlib.form.AddForm):
@@ -28,7 +28,7 @@ class TemplateForm(Acquisition.Explicit, zope.formlib.form.AddForm):
 
     def _add_activity(self, class_, title):
         # XXX This is a repeating pattern and should be refactored.
-        uid = Products.AlphaFlow.utils.generateUniqueId(class_.__name__)
+        uid = gocept.alphaflow.utils.generateUniqueId(class_.__name__)
         activity = class_()
         activity.title = title
         activity.id = uid

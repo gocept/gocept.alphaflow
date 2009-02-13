@@ -8,10 +8,10 @@ import zope.component
 
 import AccessControl
 import Products.CMFCore.utils
-import Products.AlphaFlow.browser.base
+import gocept.alphaflow.browser.base
 
 
-class Tools(Products.AlphaFlow.browser.base.AlphaFlowView):
+class Tools(gocept.alphaflow.browser.base.AlphaFlowView):
 
     def cleanup(self):
         self.context.cleanUpInstances()

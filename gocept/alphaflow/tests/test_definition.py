@@ -23,33 +23,33 @@ from Products.Archetypes.tests.common import *
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.Referenceable import Referenceable
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
-from Products.AlphaFlow.tests.content import DummyContent
+from gocept.alphaflow.tests.content import DummyContent
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
     IProcessVersion, IInstance, IActivity, IActivityClass, \
     IWorkItem, IAutomaticWorkItem, IAction, IAssignableActivity, \
     IAutomaticActivity, ILifeCycleController, IWorkflowImporter
-from Products.AlphaFlow.aspects.interfaces import IPermissionSetting
-from Products.AlphaFlow.xmlimport.interfaces import IWorkflowAttribute
-from Products.AlphaFlow.xmlimport.attribute import WorkflowAttribute
-from Products.AlphaFlow.instance import Instance
-from Products.AlphaFlow.lifecycle import \
+from gocept.alphaflow.aspects.interfaces import IPermissionSetting
+from gocept.alphaflow.xmlimport.interfaces import IWorkflowAttribute
+from gocept.alphaflow.xmlimport.attribute import WorkflowAttribute
+from gocept.alphaflow.instance import Instance
+from gocept.alphaflow.lifecycle import \
      LifeCycleControllerFactory
-from Products.AlphaFlow.process import Process, ProcessVersion
-from Products.AlphaFlow.activity import \
+from gocept.alphaflow.process import Process, ProcessVersion
+from gocept.alphaflow.activity import \
       BaseAssignableActivity, BaseActivity, BaseAutomaticActivity
-from Products.AlphaFlow.workitem import \
+from gocept.alphaflow.workitem import \
     BaseWorkItem, BaseAutomaticWorkItem
-from Products.AlphaFlow.action import Action
-from Products.AlphaFlow.aspects.permission import PermissionSetting
-from Products.AlphaFlow.activities.decision import DecisionWorkItem
-from Products.AlphaFlow.utils import flexSplit
-from Products.AlphaFlow.checkpoint import ExitDefinition
-import Products.AlphaFlow.aspects.expression
+from gocept.alphaflow.action import Action
+from gocept.alphaflow.aspects.permission import PermissionSetting
+from gocept.alphaflow.activities.decision import DecisionWorkItem
+from gocept.alphaflow.utils import flexSplit
+from gocept.alphaflow.checkpoint import ExitDefinition
+import gocept.alphaflow.aspects.expression
 
-from Products.AlphaFlow.exception import UnknownActivityError
+from gocept.alphaflow.exception import UnknownActivityError
 
 
 _ids_used = {}
@@ -602,7 +602,7 @@ class ProcessDefinitionTest(AlphaFlowTestCase):
         task_start_expression = task_start.objectValues()[0]
         self.assert_(isinstance(
             task_start_expression,
-            Products.AlphaFlow.aspects.expression.ExpressionAspect))
+            gocept.alphaflow.aspects.expression.ExpressionAspect))
 
     def test_invalid_imports(self):
         importer = zope.component.getUtility(IWorkflowImporter, "xml")
@@ -691,14 +691,14 @@ class ProcessDefinitionTest(AlphaFlowTestCase):
         self.assertEqual('become_fallout', fallout_workitems[0].activity_id)
 
     def test_dcworkflow_source(self):
-        binder = Products.AlphaFlow.sources.DCWorkflowStatusSource()
+        binder = gocept.alphaflow.sources.DCWorkflowStatusSource()
         source = binder(self.portal)
         self.assertEquals(sorted(['archived', 'visible', 'pending', 'private',
                                   'published']),
                           list(source))
 
     def test_groups_source(self):
-        binder = Products.AlphaFlow.sources.GroupSource()
+        binder = gocept.alphaflow.sources.GroupSource()
         source = binder(self.portal)
         self.assertEquals(['Administrators', 'Reviewers'], list(source))
         self.assertEquals(
@@ -709,7 +709,7 @@ class ProcessDefinitionTest(AlphaFlowTestCase):
         # The groups' data is given in UTF-8. The source has to convert this.
         group = self.portal.portal_groups.getGroupById('Administrators')
         group.setProperties(title='T\xc3\xa4st')
-        binder = Products.AlphaFlow.sources.GroupSource()
+        binder = gocept.alphaflow.sources.GroupSource()
         source = binder(self.portal)
         self.assertEquals(['Reviewers', 'Administrators'], list(source))
         self.assertEquals(
@@ -717,7 +717,7 @@ class ProcessDefinitionTest(AlphaFlowTestCase):
             [binder.factory.getTitle(self.portal, g) for g in source])
 
     def test_permission_source(self):
-        binder = Products.AlphaFlow.sources.PermissionSource()
+        binder = gocept.alphaflow.sources.PermissionSource()
         source = binder(self.portal)
         result = list(source)
         self.failUnless('View' in result)

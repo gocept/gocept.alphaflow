@@ -24,20 +24,20 @@ from Products.CMFCore.utils import getToolByName, UniqueObject
 from Products.PlacelessTranslationService import utranslate
 from Products.Archetypes.config import UID_CATALOG
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.config
-import Products.AlphaFlow.utils
-import Products.AlphaFlow.rolecache
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.config
+import gocept.alphaflow.utils
+import gocept.alphaflow.rolecache
 
 
 ping_lock = Lock()
 
 
-class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
+class ProcessManager(gocept.alphaflow.rolecache.RoleCache, UniqueObject,
                      ActionProviderBase, OFS.Folder.Folder):
     """A process management object."""
 
-    zope.interface.implements(Products.AlphaFlow.interfaces.IProcessManager)
+    zope.interface.implements(gocept.alphaflow.interfaces.IProcessManager)
 
     id = 'workflow_manager'
     meta_type = "AlphaFlow Process Manager"
@@ -87,18 +87,18 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         # We need to handle the security for this methods ourselves. The user
         # has to have INIT_PROCESS on the content object.
         user = AccessControl.getSecurityManager().getUser()
-        if not user.has_permission(Products.AlphaFlow.config.INIT_PROCESS, obj):
+        if not user.has_permission(gocept.alphaflow.config.INIT_PROCESS, obj):
             raise zExceptions.Unauthorized(
-                "initProcess", obj, Products.AlphaFlow.config.INIT_PROCESS)
+                "initProcess", obj, gocept.alphaflow.config.INIT_PROCESS)
 
-        id = Products.AlphaFlow.utils.generateUniqueId(definition.getId())
+        id = gocept.alphaflow.utils.generateUniqueId(definition.getId())
         instance = zope.component.getMultiAdapter(
             (definition, obj, id),
-            Products.AlphaFlow.interfaces.ILifeCycleObject)
+            gocept.alphaflow.interfaces.ILifeCycleObject)
         self.instances._setObject(id, instance)
         return self.instances[id]
 
-    security.declareProtected(Products.AlphaFlow.config.MANAGE_WORKFLOW,
+    security.declareProtected(gocept.alphaflow.config.MANAGE_WORKFLOW,
                               'listProcessDefinitions')
     def listProcessDefinitions(self):
         """Returns all processes defined in the portal."""
@@ -109,7 +109,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
                 continue
             yield obj
 
-    security.declareProtected(Products.AlphaFlow.config.MANAGE_WORKFLOW,
+    security.declareProtected(gocept.alphaflow.config.MANAGE_WORKFLOW,
                               'getStatistics')
     def getStatistics(self):
         """Return a dictionary with various statistical information"""
@@ -130,7 +130,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         result['failed_count'] = failed_count
         return result
 
-    security.declareProtected(Products.AlphaFlow.config.MANAGE_WORKFLOW,
+    security.declareProtected(gocept.alphaflow.config.MANAGE_WORKFLOW,
                               'listInstances')
     def listInstances(self, **search):
         """Return a list of instance objects found by the specified search."""
@@ -144,7 +144,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         instances = [x for x in instances if x is not None]
         return instances
 
-    security.declareProtected(Products.AlphaFlow.config.MANAGE_WORKFLOW,
+    security.declareProtected(gocept.alphaflow.config.MANAGE_WORKFLOW,
                               "replaceInstances")
     def replaceInstances(self, old_version, new_process=None):
         """Terminate instances of old process version and restart with new
@@ -160,14 +160,14 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         for instance in old_instances:
             # First terminate the old process ...
             obj = instance.getContentObject()
-            Products.AlphaFlow.interfaces.ILifeCycleController(
+            gocept.alphaflow.interfaces.ILifeCycleController(
                 instance).terminate(
                     "Replaced with an instance of process %s." %
                     new_process.getId())
             # ... then create a new process.
             obj.assignProcess(new_process)
             new_instance = obj.getInstance()
-            Products.AlphaFlow.interfaces.ILifeCycleController(
+            gocept.alphaflow.interfaces.ILifeCycleController(
                 new_instance).start(
                     "Replaced an instance of process version %s." %
                     old_version.UID())
@@ -190,7 +190,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         wc = getToolByName(self, 'workflow_catalog')
         wc.refreshCatalog(clear=1)
 
-    security.declareProtected(Products.AlphaFlow.config.WORK_WITH_PROCESS,
+    security.declareProtected(gocept.alphaflow.config.WORK_WITH_PROCESS,
                               "queryWorkItems")
     def queryWorkItems(self, user):
         """Return list of work items for the given user."""
@@ -219,7 +219,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         user = AccessControl.getSecurityManager().getUser()
         return self.queryWorkItems(user)
 
-    security.declareProtected(Products.AlphaFlow.config.MANAGE_WORKFLOW,
+    security.declareProtected(gocept.alphaflow.config.MANAGE_WORKFLOW,
                               'pingCronItems')
     def pingCronItems(self):
         """Send a trigger to all time-dependent objects."""
@@ -232,7 +232,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
             return ("AlphaFlow is already processing another ping. "
                     "This ping was ignored.")
         try:
-            zope.event.notify(Products.AlphaFlow.interfaces.CronPing(self))
+            zope.event.notify(gocept.alphaflow.interfaces.CronPing(self))
         finally:
             ping_lock.release()
 
@@ -253,11 +253,11 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
                 continue
             # Restart it
             controller = \
-                Products.AlphaFlow.interfaces.ILifeCycleController(workitem)
+                gocept.alphaflow.interfaces.ILifeCycleController(workitem)
             controller.reset("Reset by restart helper.")
             controller.start("Start by restart helper.")
             restarted += 1
-            if Products.AlphaFlow.config.ENABLE_ZODB_COMMITS:
+            if gocept.alphaflow.config.ENABLE_ZODB_COMMITS:
                 transaction.commit()
         return restarted
 
@@ -269,7 +269,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
         ignored = 0
         for candidate in candidates:
             controller = \
-                Products.AlphaFlow.interfaces.ILifeCycleController(candidate)
+                gocept.alphaflow.interfaces.ILifeCycleController(candidate)
             if controller.state != 'failed':
                 # XXX For some reason I sometimes received instances multiple
                 # times from the catalog. 
@@ -322,7 +322,7 @@ class ProcessManager(Products.AlphaFlow.rolecache.RoleCache, UniqueObject,
                 c1.alf_clearInstances()
 
         def _check(o, path):
-            if Products.AlphaFlow.interfaces.IAlphaFlowed.providedBy(o):
+            if gocept.alphaflow.interfaces.IAlphaFlowed.providedBy(o):
                 _check_double_refs(o, path)
                 _clean_object(o, path)
 
@@ -362,7 +362,7 @@ class GlobalProcessContainer(OFS.Folder.Folder):
 Globals.InitializeClass(GlobalProcessContainer)
 
 
-@zope.component.adapter(Products.AlphaFlow.interfaces.IProcess,
+@zope.component.adapter(gocept.alphaflow.interfaces.IProcess,
                         zope.app.container.interfaces.IObjectAddedEvent)
 def added_process_to_portal(process, event):
     pm = getToolByName(process, "workflow_manager")
@@ -375,7 +375,7 @@ def added_process_to_portal(process, event):
     pm.portal_process_refs.insert(process.UID())
 
 
-@zope.component.adapter(Products.AlphaFlow.interfaces.IProcess,
+@zope.component.adapter(gocept.alphaflow.interfaces.IProcess,
                         zope.app.container.interfaces.IObjectRemovedEvent)
 def removed_process_from_portal(process, event):
     if isinstance(event.object, ProcessManager):

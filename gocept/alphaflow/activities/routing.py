@@ -9,14 +9,14 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-import Products.AlphaFlow.workitem
-from Products.AlphaFlow.workitem import BaseWorkItem
-from Products.AlphaFlow.activity import BaseActivity
-from Products.AlphaFlow import config
-from Products.AlphaFlow.utils import killWorkItemRecursively
-from Products.AlphaFlow.interfaces import \
+import gocept.alphaflow.workitem
+from gocept.alphaflow.workitem import BaseWorkItem
+from gocept.alphaflow.activity import BaseActivity
+from gocept.alphaflow import config
+from gocept.alphaflow.utils import killWorkItemRecursively
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     IRouteActivity, IRouteWorkItem
 
 
@@ -150,7 +150,7 @@ InitializeClass(RouteWorkItem)
 registerType(RouteWorkItem, config.PROJECTNAME)
 
 
-class RouteLogEntry(Products.AlphaFlow.workitem.GenericLogEntry):
+class RouteLogEntry(gocept.alphaflow.workitem.GenericLogEntry):
     """Routes use a different reference date than other work items."""
 
     zope.component.adapts(RouteWorkItem)

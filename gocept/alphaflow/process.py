@@ -13,9 +13,9 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 import Products.Archetypes.Referenceable
 
-from Products.AlphaFlow.interfaces import IProcess, IProcessVersion, \
+from gocept.alphaflow.interfaces import IProcess, IProcessVersion, \
      IActivityClass, IActivity, ILifeCycleController
-from Products.AlphaFlow import utils, config
+from gocept.alphaflow import utils, config
 
 
 def manage_addProcess(self, id, REQUEST=None):
@@ -78,7 +78,7 @@ class Process(Products.Archetypes.Referenceable.Referenceable, Folder):
             if isinstance(base, str):
                 editable_version = self.manage_clone(self[base],
                                                      self.editable_id)
-            elif Products.AlphaFlow.interfaces.IProcessVersion.providedBy(
+            elif gocept.alphaflow.interfaces.IProcessVersion.providedBy(
                     base):
                 base.id = self.editable_id
                 self._setObject(self.editable_id, base)

@@ -4,7 +4,7 @@
 
 import unittest
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
 
 class RenderingTest(AlphaFlowTestCase):

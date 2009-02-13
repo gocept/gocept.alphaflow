@@ -10,14 +10,14 @@ from Products.Archetypes.public import registerType
 
 from Products.Archetypes import public as atapi
 
-from Products.AlphaFlow.interfaces import IActivityClass, IWorkItemClass
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.interfaces import IActivityClass, IWorkItemClass
+from gocept.alphaflow.activities.interfaces import \
     INTaskActivity, INTaskWorkItem, ILifeCycleController
-from Products.AlphaFlow.workitem import \
+from gocept.alphaflow.workitem import \
      BaseAssignableWorkItem, workflow_action
-from Products.AlphaFlow.activity import BaseAssignableActivity
-from Products.AlphaFlow import config, utils
-from Products.AlphaFlow.action import Action
+from gocept.alphaflow.activity import BaseAssignableActivity
+from gocept.alphaflow import config, utils
+from gocept.alphaflow.action import Action
 
 
 class NTaskActivity(BaseAssignableActivity):

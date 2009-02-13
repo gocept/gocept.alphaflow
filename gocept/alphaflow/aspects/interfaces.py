@@ -7,8 +7,8 @@
 
 import zope.interface
 
-from Products.AlphaFlow.interfaces import IAspectDefinition, IAspect
-import Products.AlphaFlow.sources
+from gocept.alphaflow.interfaces import IAspectDefinition, IAspect
+import gocept.alphaflow.sources
 
 
 class IExpressionAspectDefinition(IAspectDefinition):
@@ -49,7 +49,7 @@ class IEMailAspectDefinition(IAspectDefinition):
 
     template = zope.schema.Choice(
         title=u"Message",
-        source=Products.AlphaFlow.sources.EmailTemplateSource())
+        source=gocept.alphaflow.sources.EmailTemplateSource())
 
 
 class IEMailAspect(IAspect):
@@ -63,7 +63,7 @@ class IParentAspectDefinition(IAspectDefinition):
         title=u"Start parent of ...",
         description=u"This aspect will start the activity that is"
                     u"is the parent of the activity you select here.",
-        source=Products.AlphaFlow.sources.ActivitySource())
+        source=gocept.alphaflow.sources.ActivitySource())
 
 
 class IParentAspect(IAspect):
@@ -79,18 +79,18 @@ class IPermissionSetting(zope.interface.Interface):
     permission = zope.schema.Choice(
         title=u"Permission",
         description=u"The permission that should be changed.",
-        source=Products.AlphaFlow.sources.PermissionSource())
+        source=gocept.alphaflow.sources.PermissionSource())
 
     roles = zope.schema.Tuple(
         required=False,
         title=u"Roles",
         description=u"Apply the change to these roles.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.RoleSource()))
+            source=gocept.alphaflow.sources.RoleSource()))
 
     acquire = zope.schema.Choice(
         title=u"Inherit allowed roles from the portal",
-        source=Products.AlphaFlow.sources.BooleanSource(),
+        source=gocept.alphaflow.sources.BooleanSource(),
         required=False)
 
 
@@ -113,7 +113,7 @@ class IDCWorkflowAspectDefinition(IAspectDefinition):
 
     status = zope.schema.Choice(
         title=u"Workflow status",
-        source=Products.AlphaFlow.sources.DCWorkflowStatusSource())
+        source=gocept.alphaflow.sources.DCWorkflowStatusSource())
 
 
 class IDCWorkflowAspect(IAspect):

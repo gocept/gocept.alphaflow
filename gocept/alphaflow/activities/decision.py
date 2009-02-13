@@ -10,15 +10,15 @@ from Products.Archetypes.public import registerType
 
 from Products.Archetypes import public as atapi
 
-import Products.AlphaFlow.workitem
-from Products.AlphaFlow.interfaces import \
+import gocept.alphaflow.workitem
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     IDecisionActivity, IDecisionWorkItem, ILifeCycleController
-from Products.AlphaFlow.workitem import BaseAssignableWorkItem
-from Products.AlphaFlow.activity import BaseAssignableActivity
-from Products.AlphaFlow import config
-from Products.AlphaFlow.action import Action
+from gocept.alphaflow.workitem import BaseAssignableWorkItem
+from gocept.alphaflow.activity import BaseAssignableActivity
+from gocept.alphaflow import config
+from gocept.alphaflow.action import Action
 
 
 class DecisionActivity(BaseAssignableActivity):
@@ -171,7 +171,7 @@ InitializeClass(DecisionWorkItem)
 registerType(DecisionWorkItem, config.PROJECTNAME)
 
 
-class DecisionLogEntry(Products.AlphaFlow.workitem.GenericLogEntry):
+class DecisionLogEntry(gocept.alphaflow.workitem.GenericLogEntry):
     """Decisions show which users gave input for a decision."""
 
     zope.component.adapts(DecisionWorkItem)

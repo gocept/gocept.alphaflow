@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-from Products.AlphaFlow.utils import urlAppendToQueryString
+from gocept.alphaflow.utils import urlAppendToQueryString
 
 request = context.REQUEST
 response = request.RESPONSE

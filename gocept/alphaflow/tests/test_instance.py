@@ -7,18 +7,18 @@
 import unittest
 
 import DateTime
-import Products.AlphaFlow.tests.AlphaFlowTestCase
-import Products.AlphaFlow.browser.instance
+import gocept.alphaflow.tests.AlphaFlowTestCase
+import gocept.alphaflow.browser.instance
 
 
 class LifeCycleTests(
-    Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase):
+    gocept.alphaflow.tests.AlphaFlowTestCase.AlphaFlowTestCase):
 
     def test_second_fail_is_noop(self):
         doc = self._init_object('workflows/instancetest.alf')
         instance = doc.getInstance()
 
-        controller = Products.AlphaFlow.interfaces.ILifeCycleController(instance)
+        controller = gocept.alphaflow.interfaces.ILifeCycleController(instance)
         self.assertEquals([], controller.event_log)
         self.assertEquals('new', controller.state)
 

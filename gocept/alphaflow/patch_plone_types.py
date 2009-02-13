@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-from Products.AlphaFlow.config import PATCH_PLONE_TYPES
+from gocept.alphaflow.config import PATCH_PLONE_TYPES
 
 import zope.interface
 
@@ -14,8 +14,8 @@ def patch_plone_types():
         return
     from Products.ATContentTypes.content import document, event,\
                     file, image, link, newsitem, folder, topic
-    from Products.AlphaFlow.workflowedobject import AlphaFlowed
-    from Products.AlphaFlow.interfaces import IAlphaFlowed
+    from gocept.alphaflow.workflowedobject import AlphaFlowed
+    from gocept.alphaflow.interfaces import IAlphaFlowed
 
     class ATDocument(AlphaFlowed, document.ATDocument):
         zope.interface.implements(IAlphaFlowed)

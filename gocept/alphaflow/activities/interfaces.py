@@ -7,9 +7,9 @@
 import zope.interface
 import zope.schema
 
-from Products.AlphaFlow.interfaces import *
-import Products.AlphaFlow.sources
-import Products.AlphaFlow.config
+from gocept.alphaflow.interfaces import *
+import gocept.alphaflow.sources
+import gocept.alphaflow.config
 
 
 ##############
@@ -47,7 +47,7 @@ class IRouteActivity(IActivity, IActivityContainer):
         description=u"Select the activities that should be started as an "
                     u"individual route when this route is started.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.ActivitySource()))
+            source=gocept.alphaflow.sources.ActivitySource()))
 
     gates = zope.schema.Tuple(
         title=u"Gates",
@@ -55,7 +55,7 @@ class IRouteActivity(IActivity, IActivityContainer):
         description=u"Select the gates that should be started as"
                     u"synchronisation points for this route.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.GateSource()))
+            source=gocept.alphaflow.sources.GateSource()))
 
 
 class IRouteWorkItem(IWorkItem):
@@ -78,7 +78,7 @@ class IConfigurationActivity(IAssignableActivity):
         description=u"Select the activities that should be configured "
                     u"in this workflow step.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.ActivitySource()),
+            source=gocept.alphaflow.sources.ActivitySource()),
         required=False, # None is a marker for "all".
                         # XXX This is ugly. The field really is required.
         )
@@ -168,7 +168,7 @@ class IEMailActivity(IAutomaticActivity):
 
     template = zope.schema.Choice(
         title=u"Message",
-        source=Products.AlphaFlow.sources.EmailTemplateSource())
+        source=gocept.alphaflow.sources.EmailTemplateSource())
 
 
 class IEMailWorkItem(IAutomaticWorkItem):
@@ -222,10 +222,10 @@ class IGateActivity(IAutomaticActivity):
     mode = zope.schema.Choice(
         title=u"Mode",
         description=u"Mode in which the gate works.",
-        values=[Products.AlphaFlow.config.MULTI_MERGE,
-                    Products.AlphaFlow.config.DISCRIMINATE,
-                    Products.AlphaFlow.config.DELAYED_DISCRIMINATE,
-                    Products.AlphaFlow.config.SYNCHRONIZING_MERGE])
+        values=[gocept.alphaflow.config.MULTI_MERGE,
+                    gocept.alphaflow.config.DISCRIMINATE,
+                    gocept.alphaflow.config.DELAYED_DISCRIMINATE,
+                    gocept.alphaflow.config.SYNCHRONIZING_MERGE])
 
 
 class IGateWorkItem(IWorkItem):

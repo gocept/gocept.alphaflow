@@ -8,9 +8,9 @@ import zope.component
 
 import Products.Five
 
-import Products.AlphaFlow.config
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.process
+import gocept.alphaflow.config
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.process
 
 
 class Editor(Products.Five.BrowserView):
@@ -21,7 +21,7 @@ class Editor(Products.Five.BrowserView):
         """
         ids = self.context.listActivityIds()
         for id in ids:
-            if self.context[id][Products.AlphaFlow.config.CHECKPOINT_START
+            if self.context[id][gocept.alphaflow.config.CHECKPOINT_START
                                 ].activities:
                 return True
 
@@ -37,7 +37,7 @@ class VersionedEditor(Products.Five.BrowserView):
             if current:
                 base = current.getId()
             else:
-                 base = Products.AlphaFlow.process.ProcessVersion()
+                 base = gocept.alphaflow.process.ProcessVersion()
             editable = self.context.editable(base)
         self.request.response.redirect(
             editable.absolute_url() + "/editor.html")
@@ -75,9 +75,9 @@ class EditActivity(Products.Five.BrowserView):
 
     def add(self, activity):
         """Add a new activity to the process."""
-        uid = Products.AlphaFlow.utils.generateUniqueId(activity)
+        uid = gocept.alphaflow.utils.generateUniqueId(activity)
         factory = zope.component.getUtility(
-            Products.AlphaFlow.interfaces.IActivityClass, name=activity)
+            gocept.alphaflow.interfaces.IActivityClass, name=activity)
         activity = factory()
         # XXX Why isn't the request decoded already?
         # (Probably because this is Zope 2)
@@ -96,8 +96,8 @@ class EditActivity(Products.Five.BrowserView):
 class EditExit(Products.Five.BrowserView):
 
     def add(self):
-        exit = Products.AlphaFlow.interfaces.IExitDefinition(self.context)
-        exit.id = Products.AlphaFlow.utils.generateUniqueId('exit')
+        exit = gocept.alphaflow.interfaces.IExitDefinition(self.context)
+        exit.id = gocept.alphaflow.utils.generateUniqueId('exit')
         self.context._setObject(exit.id, exit)
         exit = self.context[exit.id]
         return zope.component.getMultiAdapter((exit, self.request),
@@ -114,9 +114,9 @@ class EditAspect(Products.Five.BrowserView):
 
     def add(self, aspect_type):
         factory = zope.component.getUtility(
-            Products.AlphaFlow.interfaces.IAspectDefinitionClass, name=aspect_type)
+            gocept.alphaflow.interfaces.IAspectDefinitionClass, name=aspect_type)
         aspect = factory()
-        aspect.id = Products.AlphaFlow.utils.generateUniqueId(aspect_type)
+        aspect.id = gocept.alphaflow.utils.generateUniqueId(aspect_type)
         self.context[aspect.id] = aspect
         aspect = self.context[aspect.id]
         return zope.component.getMultiAdapter((aspect, self.request),
@@ -132,7 +132,7 @@ class EditAspect(Products.Five.BrowserView):
 class EditPermissionSetting(Products.Five.BrowserView):
 
     def add(self):
-        setting = Products.AlphaFlow.aspects.permission.PermissionSetting(
+        setting = gocept.alphaflow.aspects.permission.PermissionSetting(
             "View", (), False)
         i = 0
         while str(i) in self.context.objectIds():
@@ -164,7 +164,7 @@ class WorkflowRelativeURL(object):
     def __call__(self):
       path = []
       obj = self.context.aq_inner
-      while not Products.AlphaFlow.interfaces.IProcessVersion.providedBy(obj):
+      while not gocept.alphaflow.interfaces.IProcessVersion.providedBy(obj):
           path.insert(0, obj.getId())
           obj = obj.aq_inner.getParentNode()
       return '/'.join(path)

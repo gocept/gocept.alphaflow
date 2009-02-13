@@ -10,7 +10,7 @@ import zope.schema
 
 import zope.app.event.interfaces
 
-import Products.AlphaFlow.sources
+import gocept.alphaflow.sources
 
 ############
 # management
@@ -241,7 +241,7 @@ class IProcessVersion(IActivityContainer):
         description=u"Select the activities that should be started when this "
                     u"workflow is started.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.ActivitySource()))
+            source=gocept.alphaflow.sources.ActivitySource()))
 
     object_name = zope.schema.TextLine(
         title=u"Context object variable",
@@ -389,7 +389,7 @@ class ICheckpointDefinition(zope.interface.Interface):
         description=u"Select the activities that should be started when this "
                     u"checkpoint is passed.",
         value_type=zope.schema.Choice(
-            source=Products.AlphaFlow.sources.ActivitySource()))
+            source=gocept.alphaflow.sources.ActivitySource()))
     activities.order = 20
 
     validation_errors = zope.interface.Attribute(
@@ -749,14 +749,14 @@ class IAssignableActivity(IActivity):
       title=u"Assigned roles",
       value_type=zope.schema.Choice(
         title=u"Assigned roles",
-        source=Products.AlphaFlow.sources.RoleSource()))
+        source=gocept.alphaflow.sources.RoleSource()))
 
     groups = zope.schema.Tuple(
       required=False,
       title=u"Assigned groups",
       value_type=zope.schema.Choice(
         title=u"Assigned groups",
-        source=Products.AlphaFlow.sources.GroupSource()))
+        source=gocept.alphaflow.sources.GroupSource()))
 
     def getPossibleAssignees():
         """Return a list of users that may be assigned this activity.

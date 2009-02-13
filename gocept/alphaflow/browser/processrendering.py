@@ -4,14 +4,14 @@
 
 import Products.Five
 
-import Products.AlphaFlow.interfaces
+import gocept.alphaflow.interfaces
 
 
 class ProcessGraph(Products.Five.BrowserView):
 
     @property
     def graphing(self):
-        g = Products.AlphaFlow.interfaces.IWorkflowGraph(self.context)
+        g = gocept.alphaflow.interfaces.IWorkflowGraph(self.context)
         g.zoom = self.request.get('zoom') or g.zoom
         g.highlight = self.request.get('highlight')
         session = getattr(self.request, 'SESSION', {})

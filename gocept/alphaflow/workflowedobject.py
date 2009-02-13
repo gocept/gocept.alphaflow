@@ -10,8 +10,8 @@ from AccessControl import getSecurityManager, ClassSecurityInfo
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression, createExprContext
 
-from Products.AlphaFlow.interfaces import IAlphaFlowed, ILifeCycleController
-from Products.AlphaFlow import config, utils
+from gocept.alphaflow.interfaces import IAlphaFlowed, ILifeCycleController
+from gocept.alphaflow import config, utils
 
 
 class AlphaFlowedLocalRoleFake(utils.LocalRoleFakeBase):

@@ -4,7 +4,7 @@
 """Action class"""
 
 import zope.interface
-from Products.AlphaFlow.interfaces import IAction
+from gocept.alphaflow.interfaces import IAction
 
 
 class Action(object):

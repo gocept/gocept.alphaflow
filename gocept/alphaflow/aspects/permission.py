@@ -12,13 +12,13 @@ from Products.Archetypes.public import registerType
 
 import zc.sourcefactory.basic
 
-from Products.AlphaFlow.interfaces import IAspectDefinitionClass
-from Products.AlphaFlow.aspect import AspectDefinition, Aspect
-from Products.AlphaFlow.aspects.interfaces import \
+from gocept.alphaflow.interfaces import IAspectDefinitionClass
+from gocept.alphaflow.aspect import AspectDefinition, Aspect
+from gocept.alphaflow.aspects.interfaces import \
     IPermissionAspectDefinition, IPermissionAspect, IPermissionSetting
-from Products.AlphaFlow.utils import \
+from gocept.alphaflow.utils import \
     modifyRolesForPermission, addPermissionsToRoles, removePermissionsFromRoles
-from Products.AlphaFlow import config, utils
+from gocept.alphaflow import config, utils
 
 
 class PermissionSetting(SimpleItem):

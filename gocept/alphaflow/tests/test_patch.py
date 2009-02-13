@@ -5,10 +5,10 @@
 import unittest
 import transaction
 
-from Products.AlphaFlow.interfaces import IAlphaFlowed
-from Products.AlphaFlow import config
+from gocept.alphaflow.interfaces import IAlphaFlowed
+from gocept.alphaflow import config
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
 from Products.ATContentTypes.content.document import ATDocument
 from Products.ATContentTypes.content.event import ATEvent

@@ -4,10 +4,10 @@
 
 import unittest
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
-from Products.AlphaFlow.interfaces import IWorkflowGraph
-from Products.AlphaFlow.graphing import WorkflowGraph
+from gocept.alphaflow.interfaces import IWorkflowGraph
+from gocept.alphaflow.graphing import WorkflowGraph
 
 
 class WorkflowGraphTest(AlphaFlowTestCase):

@@ -11,7 +11,7 @@ from Products.CMFCore import DirectoryView
 from Products.Archetypes.public import process_types, listTypes
 from App.ImageFile import ImageFile
 
-from Products.AlphaFlow import config
+from gocept.alphaflow import config
 
 
 def registerPermission(permission, default_roles):
@@ -19,8 +19,8 @@ def registerPermission(permission, default_roles):
 
 
 def initialize_content(context):
-    from Products.AlphaFlow import instance
-    import Products.AlphaFlow.activities
+    from gocept.alphaflow import instance
+    import gocept.alphaflow.activities
     content_types, constructors, ftis = process_types(
         listTypes(config.PROJECTNAME),
         config.PROJECTNAME)
@@ -34,7 +34,7 @@ def initialize_content(context):
 
 
 def initialize_index(context):
-    from Products.AlphaFlow import eventchannel
+    from gocept.alphaflow import eventchannel
     context.registerClass(
         eventchannel.EventChannelIndex,
         permission='Add Pluggable Index',
@@ -52,7 +52,7 @@ def initialize_index(context):
 
 
 def initialize_tools(context):
-    from Products.AlphaFlow import processmanager, process
+    from gocept.alphaflow import processmanager, process
     tool = cmfcoreutils.ToolInit('workflow_manager',
                                  tools=(processmanager.ProcessManager,
                                         ),
@@ -66,7 +66,7 @@ def initialize_tools(context):
 
 
 def initialize(context):
-    from Products.AlphaFlow import patch_plone_types
+    from gocept.alphaflow import patch_plone_types
 
     DirectoryView.registerDirectory(config.SKINS_DIR, config.GLOBALS)
     initialize_tools(context)
@@ -88,7 +88,7 @@ def ProcessManagerFilter(objectManager):
 
 ModuleSecurityInfo("Products.Archetypes.config").declarePublic(
   "UID_CATALOG")
-ModuleSecurityInfo("Products.AlphaFlow.utils").declarePublic(
+ModuleSecurityInfo("gocept.alphaflow.utils").declarePublic(
     "urlAppendToQueryString")
-ModuleSecurityInfo("Products.AlphaFlow.interfaces").declarePublic(
+ModuleSecurityInfo("gocept.alphaflow.interfaces").declarePublic(
     "ILifeCycleController")
