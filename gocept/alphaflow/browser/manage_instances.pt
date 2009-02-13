@@ -1,0 +1,40 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+<style type='text/css'>
+  <!--
+    @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+
+<h3>Workflow instances</h3>
+
+<p class="form-text">
+  Show: 
+  <a tal:attributes="href string:${request/URL}?show=1&amp;state=initiated">Initiated</a> |
+  <a tal:attributes="href string:${request/URL}?show=1&amp;state=active">Active</a> |
+  <a tal:attributes="href string:${request/URL}?show=1&amp;state=failed">Failed</a> |
+  <a tal:attributes="href string:${request/URL}?show=1&amp;state=complete">Complete</a> |
+  <a tal:attributes="href string:${request/URL}?show=1&amp;state=terminated">Terminated</a> |
+  <a tal:attributes="href string:${request/URL}?show=1">All</a>
+</p>
+
+<table tal:condition="request/show|nothing">
+  <tr class="list-header">
+    <th>&nbsp;</th>
+    <th>Object</th>
+    <th>Process</th>
+    <th>Status</th>
+    <th>Work items</th>
+  </tr>
+  <tr tal:repeat="instance python:here.listInstances(**request.form)"
+      tal:attributes="class python:repeat['instance'].odd() and 'row-normal' or 'row-hilite'">
+    <td class="form-text"><a tal:attributes="href string:${instance/absolute_url}/manage_overview">Details</a></td>
+    <td class="form-text"><metal:block use-macro="here/manage_linkmacros/macros/instance_to_object" /></td>
+    <td class="form-text"><metal:process use-macro="here/manage_linkmacros/macros/instance_to_process" /></td>
+    <td class="form-text"><span tal:attributes='class instance/state' tal:content='instance/state'/></td>
+    <td class="form-text" tal:content="python:', '.join([ x.activity_id for x in instance.getWorkItems() ])" />
+  </tr>
+</table>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
+

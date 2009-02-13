@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Note: This process definition is supposed to fail. -->
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+  <workflow title=""  
+    id="testworkflow"
+    startActivity="assign_task"
+    description=""
+    onlyAllowRoles="Manager,Reviewer,Member">
+
+    <configuration id="assign_task">
+      <continue activities="public" />
+      <assignees kind="actual" roles="Member" />
+    </configuration>
+
+</workflow>

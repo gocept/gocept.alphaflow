@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- not valid -->
+<workflow id="testworkflow"
+          title="routing_example"
+          startActivity="review"
+          onlyAllowRoles="Manager Reviewer">
+
+  <route id="review"
+         title="Decisions by Marketing, Medical and Legal Departments">
+
+    <decision id="review_legal" 
+              title="Check legal issues"
+              decision_notice="Please check any legal issues that might occur."
+              decision_modus="all_yes">
+      <reject activities="reject" />
+      <accept activities="accept" />
+        <assignees kind="actual" expression="python:['author']"/>
+    </decision>
+
+    <decision id="review_mkt" 
+              title="Check Marketing"
+              decision_notice="Check if this marketing works."
+              decision_modus="all_yes">
+      <reject activities="reject" />
+      <accept activities="accept" />
+        <assignees kind="actual" expression="python:['author']"/>
+    </decision>
+
+    <decision id="review_medical"
+              title="Check medical issues"
+              decision_notice="Please check for medical issues."
+              decision_modus="all_yes">
+      <start>
+        <dcworkflow status="visible" />
+      </start>
+      <reject activities="reject" />
+      <accept activities="accept" />
+        <assignees kind="actual" expression="python:['author']"/>
+    </decision>
+
+    <gate id="reject" 
+          title="Reject review"
+          mode="discriminate">
+      <continue>
+        <dcworkflow status="private" />
+      </continue>
+    </gate>
+
+    <gate id="accept"
+          title="Accept review"
+          mode="synchronizing-merge">
+      <continue>
+        <dcworkflow status="published" />
+      </continue>
+    </gate>
+
+  </route>
+
+</workflow>

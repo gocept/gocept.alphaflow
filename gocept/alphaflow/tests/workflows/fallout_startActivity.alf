@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+
+<workflow
+  id="testworkflow"
+  startActivity="deci_1"
+  onlyAllowRoles="Manager Reviewer Member">
+
+  <decision id="deci_1"
+    decision_notice="first yes counts"
+    decision_modus="first_yes">
+    <accept activities="deci_n" />
+    <reject>
+      <dcworkflow status="private" title="Private"/>
+    </reject>
+    <start activities="become_fallout" />
+    <assignees kind="actual" roles="Reviewer" />
+  </decision>
+
+  <decision id="deci_n"
+    decision_notice="all yes counting"
+    decision_modus="all_yes">
+    <accept>
+      <dcworkflow status="published" title="Published"/>
+    </accept>
+    <reject>
+      <dcworkflow status="private" title="Private"/>
+    </reject>
+    <assignees kind="actual" roles="Editor Reviewer" />
+  </decision>
+
+  <expression id="become_fallout"
+              expression="python: asdf" /> <!-- NameError -->
+
+</workflow>

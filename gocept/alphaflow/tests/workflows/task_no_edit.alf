@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"  
+    startActivity="edit"
+    description="Blubb"
+    id="testworkflow"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <ntask id="edit"
+          title="Dokument bearbeiten" sort="1"
+          nonEditableFields="task">
+    <complete>
+      <dcworkflow status="published"/>
+    </complete>
+
+        <assignees kind="actual" expression="object/Creator" />
+    </ntask>
+
+</workflow>

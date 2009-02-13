@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="alphaflow">
+
+<metal:block metal:fill-slot="main">
+
+   <h1 i18n:translate="header_select_workflow">Select a workflow</h1>
+
+   <p i18n:translate="select_workflow_desc">Select a workflow how this object should be handled.</p>
+
+    <dl>
+        <tal:block repeat="process here/getSuitableProcesses">
+          <dt>
+            <a href="#" 
+              tal:attributes="
+                href string:${here/absolute_url}/af_assign_process?process_uid=${process/UID}"
+              tal:content="process/title_or_id">
+                Standard-Workflow
+            </a> 
+            <a href="img"
+               tal:attributes="href string:${here/absolute_url}/graph"
+               target="_blank">
+              <img src="workflow_icon.gif" alt="Workflow"
+                   title="Show workflow graphics..."
+                   i18n:attributes="alt; title;"
+                   />
+            </a>
+          </dt>
+          <dd tal:content="process/description">
+            Bla bla bla
+          </dd>
+        </tal:block>
+    </dl>
+
+</metal:block>
+</html>
+
+
+

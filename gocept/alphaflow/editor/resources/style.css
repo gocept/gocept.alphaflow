@@ -1,0 +1,199 @@
+body {
+  margin:0;
+  padding: 0;
+  font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+  font-size-adjust: none;
+  font-size: 69%;
+  line-height:1.5em;
+}
+
+* {
+  font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+}
+
+
+img { border:none; }
+
+h1 {
+  font-size: 150%;
+  margin:0.75em 1em 1em 1em;
+}
+
+h2 {
+  font-size:140%;
+  background-image: url("++resource++images/headerbg2.png");
+  background-repeat: repeat-x;
+  padding:0.2em 0.5em;
+  margin:0;
+}
+
+h3 {
+  padding:0.2em 0.5em;
+  margin-bottom:0em;
+}
+
+#header {
+  padding: 0pt;
+  background-image: url("++resource++images/headerbg.png");
+  background-repeat: repeat-x;
+  left:0pt;
+  right:0pt;
+  top:0pt;
+  height:3.9em;
+  position:absolute;
+  width:100%;
+}
+
+#toolbar {
+  position:absolute;
+  right:0.5em;
+  top:0.5em;
+}
+
+#toolbar select {
+  margin-bottom: 1em;
+  margin-right:0.5em;
+}
+
+#container {
+  padding-top:0.5em;
+}
+
+#sidepane {
+  padding: 0;
+  position:absolute;
+  left:1em;
+  width:35em;
+  bottom:1em;
+  top:5em;
+  overflow-y: auto;
+}
+
+#graph {
+  right:1em;
+  left:37em;
+  top:5em;
+  bottom:1em;
+  position:absolute;
+  border:1px solid #DDD;
+  padding: 0;
+  overflow:hidden;
+}
+
+#graph img {
+  cursor:move;
+}
+
+.box {
+  background-image: url("++resource++images/bodybg.png");
+  background-repeat: repeat-x;
+}
+
+.box2 {
+  background-image: url("++resource++images/bodybg2.png");
+  background-repeat: repeat-x;
+}
+
+.errorbox {
+  background-image: url("++resource++images/errorbg.png");
+  background-repeat: repeat-x;
+}
+
+#activityOverview h3 {
+  font-size:120%;
+  padding:0.2em 0.5em;
+}
+
+p, dl { padding:0.5em; }
+
+dl { 
+  margin-top:0em;
+}
+
+/* Form styling */
+
+.field {
+  padding-bottom:0.5em;
+  padding-left:0.5em;
+}
+
+.form-status {
+  padding:0.5em 1em;
+}
+
+.summary {
+  font-weight:bold;
+}
+
+.field .error {
+  font-weight:bold;
+  color:red;
+  padding-bottom:0.5em;
+}
+
+.field .label, .field .micro-label {
+  font-weight:bold;
+  padding-bottom:0.5em;
+  padding-top:1em;
+}
+
+.hint, .micro-label {
+  color:#555;
+  padding-bottom:0.5em;
+}
+
+.field .micro-label {
+  padding-top:0;
+}
+
+#actionsView {
+  padding-left:0.5em;
+  padding-top:1em;
+  padding-bottom:2em;
+}
+
+textarea {
+  font-size:100%;
+}
+
+/* Customization for the display form */
+#activityOverview #actionsView {
+    display:none;
+}
+
+#activityOverview form {
+  line-height:1em;
+}
+
+#activityOverview .label {
+  padding-top:0;
+}
+
+#activityOverview .hint {
+  display:none;
+}
+
+#activityOverview ul {
+    margin:0;
+  }
+
+#container select, #container textarea, #container input[type="text"], .hint {
+  width:30em;
+}
+
+.select-controls {
+  margin:1em 0em;
+}
+
+.select-controls .spacer {
+  margin:0em 4em;
+}
+
+dl dt {
+  font-weight:bold;
+}
+
+dl dd {
+  margin-bottom:0.5em;
+  margin-left:0em;
+}

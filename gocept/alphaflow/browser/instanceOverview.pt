@@ -1,0 +1,111 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+
+<style type='text/css'>
+  <!--
+    @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+<h3>Process instance (<span class="active"
+        tal:attributes="class here/state"
+        tal:content="here/state">active</span>)
+</h3>
+
+<dl tal:define="instance nocall:here">
+  <dt class="form-label">Process</dt>
+  <dd class="form-text">
+    <metal:process use-macro="here/manage_linkmacros/macros/instance_to_process" />
+  </dd>
+
+  <dt class="form-label">Content object</dt>
+  <dd>
+    <metal:obj use-macro="here/manage_linkmacros/macros/instance_to_object" />
+  </dd>
+</dl>
+
+<div class="form-label">Lifecycle control</div>
+
+<form action="manage_action" method="post">
+<table>
+  <tbody>
+    <tr>
+      <td class="form-label">Action:</td>
+      <td>
+        <select name="action">
+          <option value="start">start</option>
+          <option value="restart">restart</option>
+          <option value="terminate">terminate</option>
+          <option value="reset">reset</option>
+          <option disabled="disabled">Failure control</option>
+          <option value="fail">fail</option>
+          <option value="recover">recover</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td class="form-label">Comment:</td>
+      <td><textarea name="comment" class='comment'></textarea></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <input type="submit" class='button' value="Perform action"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</form>
+
+<div class="form-label">Work items</div>
+
+<span tal:define="workitems python:here.getWorkItems(None)">
+  <table class="pagewidth" tal:condition="workitems">
+    <tbody>
+      <tr class="list-header">
+          <th>Work item</th>
+          <th>State</th>
+      </tr>
+      <tr tal:repeat="workitem workitems"
+        tal:attributes="class python:repeat['workitem'].odd() and 'row-hilite' or 'row-normal'">
+          <td class="form-text">
+            <metal:activity use-macro="here/manage_linkmacros/macros/to_workitem" />
+          </td>
+
+          <td class="form-text active"
+              tal:define="state workitem/@@overview/controller/state"
+              tal:attributes="class string:form-text $state"
+              tal:content="state" />
+      </tr>
+    </tbody>
+  </table>
+  <span tal:condition="not:workitems" class="form-text">
+    There are currently no existing workitems.
+  </span>
+</span>
+
+
+<div class="form-label">Event log</div>
+ 
+<table class="pagewidth">
+  <tbody tal:define="logs view/event_log">
+    <tr class="list-header">
+        <th>Time</th>
+        <th>User</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    <tal:repeat repeat="log logs">
+      <tr class="row-hilite">
+          <td class="form-text" tal:content="python:path('context/@@plone').toLocalizedTime(log[0], True)"/>   
+          <td class="form-text" tal:content="python:log[1]"/>
+          <td class="form-text" tal:content="python:log[2]"/>
+          <td class="form-text" tal:content="python:log[3]"/>
+      </tr>
+      <tr class="row-normal">
+        <td class="form-text" colspan="4" tal:content="structure python:log[4]"/>
+      </tr>
+    </tal:repeat>
+  </tbody>
+</table>
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

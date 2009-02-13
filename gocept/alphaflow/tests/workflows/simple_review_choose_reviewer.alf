@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<workflow id="simple_review_choose_reviewer"
+          title="Simple review, select reviewer."
+          onlyAllowRoles="Owner"
+          description="Same as 'simple review' but lets you select one or more specific reviewers."
+          startActivity="make_visible">
+
+    <ntask id="make_visible"
+        title="Prepare public draft">
+
+    <start>
+      <dcworkflow title="Mark as visible"
+                  status="visible" />
+      <permission-change title="Make visible">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Anonymous Manager Reviewer" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Anonymous Manager Reviewer" />
+      </permission-change>
+    </start>
+
+        <exit id="hide"
+            title="Make private"
+            activities="make_private"/>
+        <exit id="submit"
+            title="Submit draft"
+            activities="choose_reviewer" />
+        <exit id="end"
+            title="End workflow"/>
+        <assignees kind="actual" roles="Owner" />
+    </ntask>
+
+    <ntask id="make_private"
+        title="Make content private">
+
+    <start>
+      <dcworkflow title="Mark as private"
+                  status="private" />
+      <permission-change title="Set private permissions">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner" />
+      </permission-change>
+    </start>
+
+        <exit id="show"
+            title="Show"
+            activities="make_visible"/>
+        <exit id="end"
+            title="End workflow"/>        
+        <assignees kind="actual" roles="Owner" />
+    </ntask>
+
+    <configuration id="choose_reviewer"
+        title="Select a reviewer"
+        configures="review_draft">
+      <complete activities="review_draft" />
+        <assignees kind="actual"
+            roles="Owner"/>
+    </configuration>
+
+    <decision id="review_draft"
+        title="Review draft"
+        decision_modus="first_yes"
+        decision_notice="Review draft">
+
+    <start>
+      <dcworkflow title="Mark as pending."
+                  status="pending" />
+      <permission-change title="set permissions for pending state">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Manager Owner Reviewer" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Reviewer" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Reviewer" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Manager Owner Reviewer" />
+      </permission-change>
+    </start>
+
+      <reject activities="make_visible" />
+      <accept activities="publish" />
+        <assignees kind="possible"
+            roles="Reviewer" />
+    </decision>
+
+    <ntask id="publish"
+        title="Retract published content">
+
+    <start>
+      <dcworkflow title="Mark as published."
+                  status="published" />
+      <permission-change title="set permissions for published state">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+      </permission-change>
+    </start>
+
+        <exit id="retract"
+            title="Retract content"
+            activities="make_visible" />
+        <assignees kind="actual" roles="Owner" />
+    </ntask>
+
+</workflow>

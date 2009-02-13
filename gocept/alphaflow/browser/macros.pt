@@ -1,0 +1,109 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  i18n:domain="alphaflow">
+
+  <!-- Display all processes from the local IProcessReadContainer -->
+
+  <tal:repeat repeat="process processes">
+
+    <h2 tal:content="process/title_or_id">Workflow title</h2>
+
+    <a tal:attributes="href string:${here/absolute_url}/@@removeProcess?id=${process/getId}&amp;redirect=${view/absolute_url}">
+      Delete
+    </a>
+
+    <!-- Display process versions -->
+
+    <dl metal:define-macro="single-process">
+
+      <!-- Version: Currently editable -->
+
+      <tal:block define="editable process/editable">
+        <dt>Version <span tal:replace="process/editable_id"/></dt>
+
+        <dd>
+          <p>
+            <a href="view"
+              tal:attributes="href string:${process/absolute_url}/editor.html"
+              onclick="window.open(this.href, 'editor', 'location=0,resizable=1,width=640,height=480'); return false;">
+              Edit</a> 
+            <tal:block condition="nocall:editable">|
+              <a href="#"
+                tal:attributes="href string:${process/absolute_url}/@@update?redirect=${view/absolute_url}">
+                Activate
+              </a>
+            </tal:block>
+          </p>
+
+          <p tal:content="editable/description|nothing"/>
+
+        </dd>
+      </tal:block>
+
+      <!-- Version: Currently active -->
+
+      <tal:block define="current process/current"
+        condition="current">
+        <dt> Version <span tal:replace="python:len(process.old())+1"/> (active) </dt>
+
+        <dd>
+          <p>
+            <a href="view" tal:attributes="href
+              string:${current/absolute_url}/editor.html?mode=readonly"
+              onclick="window.open(this.href, 'editor', 'location=0,resizable=1,width=640,height=480'); return false;">
+              View
+            </a> |
+
+            <a tal:attributes="href
+              string:${current/absolute_url}/@@statistics">Statistics
+            </a> |
+
+            <a tal:attributes="href
+              string:${current/absolute_url}/make_editable?redirect=${view/absolute_url}">Copy to editable
+            </a>
+          </p>
+
+          <p tal:content="current/description"/>
+        </dd>
+      </tal:block>
+
+      <!-- Versions: Old versions -->
+
+      <tal:block repeat="old process/old">
+
+        <dt>Version <span tal:replace="python:repeat['old'].length()-repeat['old'].index"/></dt>
+
+        <dd>
+          <p>
+            <a href="view"
+              tal:attributes="href
+              string:${old/absolute_url}/editor.html?mode=readonly"
+              onclick="window.open(this.href, 'editor', 'location=0,resizable=1,width=640,height=480'); return false;">
+              View
+            </a> |
+
+            <a tal:attributes="href
+              string:${old/absolute_url}/@@statistics">Statistics
+            </a> |
+
+            <a tal:attributes="href
+              string:${old/absolute_url}/make_editable?redirect=${view/absolute_url}">Copy to editable
+            </a>
+
+            <tal:block
+              tal:define="count old/countInstances"
+              tal:condition="count"> |
+              <a tal:attributes="href string:${old/absolute_url}/@@restartInstances?redirect=${view/absolute_url}">
+                Upgrade instances (<span tal:replace="count"/>)
+              </a>
+            </tal:block>
+          </p>
+
+          <p tal:content="old/description"/>
+        </dd>
+      </tal:block>
+
+    </dl>
+
+  </tal:repeat>
+</html>

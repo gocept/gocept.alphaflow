@@ -1,0 +1,106 @@
+\chapter{Installation}
+
+AlphaFlow is not hard to install, but if you need help, check the chapter
+``Getting support'' on how to get someone to help you.
+
+\section{Prerequisites}
+
+AlphaFlow depends on a couple of software products:
+
+\begin{itemize}
+    \item Zope (required: 2.9.6+) -- \url{http://www.zope.org}
+    \item Plone (required: 2.5.2+) -- \url{http://www.plone.org}
+    \item optional: pygraphviz for visual representations in the workflow
+        editor -- \url{http://www.graphviz.org}
+    \item optional: PloneTestCase for running the unit tests
+\end{itemize}
+
+To develop applications with AlphaFlow you should be familiar with:
+
+\begin{itemize}
+    \item the Python programming language
+    \item filesystem-based product development for Zope 2, CMF and Plone using Archetypes
+    \item a basic understanding of workflow in general
+\end{itemize}
+
+\section{Installing}
+
+\begin{enumerate}
+  \item Create a new Zope instance.
+  \item Put Plone into the \file{Products/} directory.
+  \item Unpack the AlphaFlow archive into the \file{Products/}
+    directory.
+  \item Start the Zope server.
+  \item Create a new Plone site.
+  \item Install AlphaFlow and (optional: the Procurement) product via QuickInstaller.
+\end{enumerate}
+
+After successfully installing AlphaFlow you will find three new objects in
+your Plone site: \samp{workflow\_manager}, \samp{workflow\_editor}, and
+\samp{workflow\_catalog}. Additionally, AlphaFlow has added a skin layer that
+customizes Plone's user interface for AlphaFlow.
+
+\subsection{Installing support for time based activities}
+
+If you want to use time based triggers, like the alarm activity,  you have to
+set up an external trigger mechanism, typically a combination of cron and wget.
+An example crontab entry to check for triggers every hour looks like this:
+
+\begin{verbatim}
+0  *  * * *     wget -S -O - http://<zopeserver>:<zopeport>/<plonesite>/workflow_manager/pingCronItems
+\end{verbatim}
+
+You might want to call the trigger more often, based on the time resolution your application needs.
+
+\subsection{AlphaFlow support for the standard content types}
+\label{sec:install-patch}
+
+AlphaFlow can only be used with content types that have special properties
+which make them AlphaFlow-aware. From Plone 2.1 final on, Plone's default
+content types are patched accordingly upon AlphaFlow installation.
+
+To avoid patching the default content types, edit the file
+\file{customconfig.py} in the \file{Products/AlphaFlow} directory to read:
+
+\begin{verbatim}
+# Only for Plone 2.1: Do you want to patch Plone's default content types to
+# use AlphaFlow?
+PATCH_PLONE_TYPES = False
+\end{verbatim}
+
+To use AlphaFlow with Plone prior to version 2.1 final, you need some
+additional Plone product that integrates AlphaFlow into your portal. One such
+product is the demo application included in the AlphaFlow distribution.
+
+\subsection{Installing the demo application}
+
+If you want to use the demo application, you also should also:
+
+\begin{enumerate}
+  \item Copy or link the Procurement product found in AlphaFlow's
+    \file{doc/example/Procurement/} directory into the \file{Products/}
+    directory.
+  \item Restart the Zope server.
+  \item Install the Procurement product via QuickInstaller.
+\end{enumerate}
+
+
+\section{Testing}
+
+AlphaFlow comes with a set of unit tests that you might want to run, to see if your 
+environment works with AlphaFlow. In your Zope instance directory run:
+
+\begin{verbatim}
+bin/zopectl test --dir=Products/AlphaFlow/
+\end{verbatim}
+
+This will start the unit test runner and might take a couple of minutes. It will report you
+if everything was OK, or if an error occured. As AlphaFlow supports different environments
+you might meet several \code{DeprecationWarning} messages. This is ok, as long as the overall output looks like this:
+
+\begin{verbatim}
+----------------------------------------------------------------------
+Ran 91 tests in 36.945s
+
+OK
+\end{verbatim}

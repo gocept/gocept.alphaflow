@@ -1,0 +1,112 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+
+<style type="text/css">
+  <!--
+    @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+<h3>
+  Checkpoint (state: <span tal:define="state here/state"
+                          tal:attributes="class state"
+                          tal:content="state" />)
+</h3>
+
+<dl>
+    <dt class="form-label">Definition</dt>
+    <dd
+      tal:content="python:path('here/@@overview/controller').getDefinition().title_or_id()">XXX</dd>
+</dl>
+
+
+<div class="form-label">Lifecycle control</div>
+
+<form action="manage_action" method="post">
+
+<table>
+  <tbody>
+    <tr>
+      <td class="form-text">Action:</td>
+      <td>
+        <select name="action">
+          <option value="start">start</option>
+          <option value="restart">restart</option>
+          <option value="terminate">terminate</option>
+          <option value="reset">reset</option>
+          <option disabled="disabled">Failure control</option>
+          <option value="fail">fail</option>
+          <option value="recover">recover</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td class="form-text">Comment:</td>
+      <td>
+        <textarea name="comment"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <input type="submit" value="Perform action"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</form>
+
+<div class="form-label">Aspects</div>
+
+<span tal:define="aspects here/objectValues">
+  <table class="pagewidth" tal:condition="aspects">
+    <tbody>
+      <tr class="list-header">
+          <th>Aspect</th>
+          <th>State</th>
+      </tr>
+      <tr tal:repeat="aspect aspects"
+        tal:attributes="class python:repeat['aspect'].odd() and 'row-hilite' or 'row-normal'">
+        <td class="form-text">
+          <a tal:attributes="href
+            string:${aspect/absolute_url}/manage_overview"
+            tal:content="python:aspect.getDefinition().title_or_id()">
+          </a>
+        </td>
+
+        <td class="form-text active"
+          tal:define="state aspect/@@overview/controller/state"
+          tal:attributes="class string:form-text $state"
+          tal:content="state" />
+
+      </tr>
+    </tbody>
+  </table>
+  <span tal:condition="not:aspects" class="form-text">
+    There are currently no existing aspects.
+  </span>
+</span>
+
+<div class="form-label">Event log</div>
+<table class="pagewidth">
+  <tbody tal:define="logs here/@@overview/event_log">
+    <tr class="list-header">
+        <th>Time</th>
+        <th>User</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    <tal:repeat repeat="log logs">
+      <tr class="row-hilite">
+          <td class="form-text" tal:content="python:path('context/@@plone').toLocalizedTime(log[0],True)"/>
+          <td class="form-text" tal:content="python:log[1]"/>
+          <td class="form-text" tal:content="python:log[2]"/>
+          <td class="form-text" tal:content="python:log[3]"/>
+        </tr>
+        <tr class="row-normal">
+          <td class="form-text" colspan="4" tal:content="structure python:log[4]"/>
+        </tr>
+    </tal:repeat>
+  </tbody>
+</table>
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

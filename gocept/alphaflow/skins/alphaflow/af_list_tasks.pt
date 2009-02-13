@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="alphaflow"
+      >
+
+  <tal:block metal:fill-slot="top_slot">
+     <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+  </tal:block>
+
+
+  <body>
+    <div metal:fill-slot="main">
+
+      <h1 i18n:translate="list_tasks_headline">My Tasks</h1>
+
+        <table class="listing"
+            tal:define="tasks here/workflow_manager/getWorkItemsForCurrentUser">
+            <thead>
+                <tr>
+                    <th i18n:translate="">Object</th>
+                    <th i18n:translate="">Activity</th>
+                    <th i18n:translate="">Description</th>
+                    <th i18n:translate="">Assigned by</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+            <tr tal:repeat="task tasks">
+                <td tal:define="content task/getContentObject"><a href=""
+                        tal:attributes="href
+                        string:${content/absolute_url}/workflow_protocol">
+                    <img tal:attributes="src content/getIcon"/><span tal:content="content/title_or_id"/></a>
+                </td>
+                        
+                <td tal:content="python:task.getActivity().title_or_id()"></td>
+                <td tal:content="python:task.getShortInfo()"></td>
+                <td tal:content="python:task.Creator()"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+  </body>
+</html>

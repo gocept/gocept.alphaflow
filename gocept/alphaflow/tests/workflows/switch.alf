@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow
+    id="testworkflow"
+    startActivity="switch_ac_1"
+    onlyAllowRoles="Manager Reviewer Member">
+  
+    <switch id="switch_ac_1"
+            mode="all">
+      <case id="case_1_1"
+            condition="python:True"
+            activities="switch_ac_2" />
+      <case id="case_1_2"
+            condition="python:True"
+            activities="switch_ac_3" />
+    </switch>
+  
+    <switch id="switch_ac_2"
+            mode="all">
+      <case id="case_2_1"
+            condition="object/nextStep"
+            activities="do_this" />
+      <case id="case_2_2"
+            condition="not:object/nextStep"
+            activities="do_that" />
+    </switch>
+    
+    <switch id="switch_ac_3"
+            mode="first">
+      <case id="case_3_1"
+            condition="string:foo"
+            activities="do_this do_that" />
+      <case id="case_3_2"
+            condition="string:foo">
+        <dcworkflow status="published" />
+      </case>
+    </switch>
+
+    <ntask id="do_this">
+      <exit id="complete" title="Complete" >
+        <dcworkflow status="published" />
+      </exit>
+    </ntask>
+
+    <ntask id="do_that">
+      <exit id="complete" title="Complete">
+        <dcworkflow status="published" />
+      </exit>
+    </ntask>
+
+</workflow>

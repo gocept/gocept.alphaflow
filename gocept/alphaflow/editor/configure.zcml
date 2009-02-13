@@ -1,0 +1,401 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="alphaflow">
+
+  <include package="zope.app.form.browser" />
+  <include package="zope.formlib" />
+
+  <browser:page
+    for="*"
+    template="form.pt"
+    name="editor_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="*"
+    template="aspect.pt"
+    name="aspect_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    template="index.pt"
+    class=".editor.Editor"
+    permission="alphaflow.ManageWorkflows"
+    name="editor.html"
+    />
+
+  <browser:page
+     for="Products.AlphaFlow.interfaces.IProcess"
+     class=".editor.VersionedEditor"
+     permission="alphaflow.ManageWorkflows"
+     name="editor.html"
+     />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    class=".editor.EditActivity"
+    attribute="add"
+    name="add_activity"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IActivity"
+    class=".editor.EditActivity"
+    attribute="delete"
+    name="delete"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.ICheckpointDefinition"
+    class=".editor.EditAspect"
+    attribute="add"
+    name="add_aspect"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IAspectDefinition"
+    class=".editor.EditAspect"
+    attribute="delete"
+    name="delete"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IPermissionAspectDefinition"
+    class=".editor.EditPermissionSetting"
+    attribute="add"
+    name="add_setting"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IPermissionSetting"
+    class=".editor.EditPermissionSetting"
+    attribute="delete"
+    name="delete"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    template="activitypanel.pt"
+    class=".editor.ActivityPanel"
+    name="activitypanel"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IActivity"
+    template="activity_details.pt"
+    class=".editor.ActivityPanel"
+    name="activity_details"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <!-- The various activity edit views -->
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IExpressionActivity"
+    class=".form.EditExpressionActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IExpressionActivity"
+    class=".form.ViewExpressionActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IAlarmActivity"
+    class=".form.EditAlarmActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IAlarmActivity"
+    class=".form.ViewAlarmActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IDecisionActivity"
+    class=".form.EditDecisionActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IDecisionActivity"
+    class=".form.ViewDecisionActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IGateActivity"
+    class=".form.EditGateActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IGateActivity"
+    class=".form.ViewGateActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IConfigurationActivity"
+    class=".form.EditConfigurationActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IConfigurationActivity"
+    class=".form.ViewConfigurationActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ISwitchActivity"
+    class=".form.EditSwitchActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ISwitchActivity"
+    class=".form.ViewSwitchActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.INTaskActivity"
+    class=".form.EditNTaskActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.INTaskActivity"
+    class=".form.ViewNTaskActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IRouteActivity"
+    class=".form.EditRouteActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IRouteActivity"
+    class=".form.ViewRouteActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ISimpleDecisionActivity"
+    class=".form.EditSimpleDecisionActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ISimpleDecisionActivity"
+    class=".form.ViewSimpleDecisionActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IEMailActivity"
+    class=".form.EditEMailActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IEMailActivity"
+    class=".form.ViewEMailActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ITerminationActivity"
+    class=".form.EditTerminationActivity"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ITerminationActivity"
+    class=".form.ViewTerminationActivity"
+    name="display_form"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.ICheckpointDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditCheckpoint"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IExitDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditExit"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditWorkflow"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IExpressionAspectDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditExpressionAspect"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IParentAspectDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditParentAspect"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IEMailAspectDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditEMailAspect"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IPermissionAspectDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditPermissionAspect"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IPermissionSetting"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditPermissionSetting"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.aspects.interfaces.IDCWorkflowAspectDefinition"
+    name="edit"
+    permission="alphaflow.ManageWorkflows"
+    class=".form.EditDCWorkflowAspect"
+    />
+
+  <!-- Adding exits -->
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.ISwitchActivity"
+    class=".editor.EditExit"
+    attribute="add"
+    name="add_exit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.INTaskActivity"
+    class=".editor.EditExit"
+    attribute="add"
+    name="add_exit"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.activities.interfaces.IExitDefinition"
+    class=".editor.EditExit"
+    attribute="delete"
+    name="delete"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <!-- Resources -->
+  <browser:resource
+    name="style.css"
+    file="resources/style.css"
+    />
+  <browser:resourceDirectory
+    name="mochikit"
+    directory="resources/mochikit"
+    />
+  <browser:resourceDirectory
+    name="icons"
+    directory="resources/icons"
+    />
+  <browser:resourceDirectory
+    name="images"
+    directory="resources/images"
+    />
+
+  <browser:resource
+    name="editor.js"
+    file="resources/editor.js"
+    />
+
+  <browser:resource
+    name="widgetsupport.js"
+    file="resources/widgetsupport.js"
+    />
+
+  <!-- Adapters -->
+
+  <adapter
+    factory=".adapters.PermissionSettingEdit"
+    provides="Products.AlphaFlow.editor.interfaces.IPermissionSettingEdit"
+    for="Products.AlphaFlow.aspects.interfaces.IPermissionSetting"
+    />
+
+  <adapter
+    factory=".adapters.create_wrapped_recipient_schema"
+    for="Products.AlphaFlow.activities.interfaces.IEMailActivity"
+    provides="Products.AlphaFlow.editor.interfaces.ISimpleRecipientSchema"
+    />
+  <adapter
+    factory=".adapters.create_wrapped_recipient_schema"
+    for="..aspects.interfaces.IEMailAspectDefinition"
+    provides="Products.AlphaFlow.editor.interfaces.ISimpleRecipientSchema"
+    />
+
+  <browser:page
+    for="*"
+    permission="zope2.View"
+    name="workflow_relative_url"
+    class=".editor.WorkflowRelativeURL"
+    />
+
+  <include package=".templates" />
+
+</configure>

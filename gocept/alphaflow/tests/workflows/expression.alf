@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow 
+    id="testworkflow"
+    startActivity="test2"
+    onlyAllowRoles="Manager Member">
+
+    <expression id="test2"
+                expression="python:object.set('asdf_asdf_prop_hjkl', 2)">
+      <continue activities="test3" />
+    </expression>
+
+    <!-- check for TALES contexts -->
+    <expression id="test3"
+                expression="python: workitem != object and activity != portal">
+      <continue activities="end" />
+    </expression>
+
+    <ntask id="end">
+      <exit id="complete" title="Complete" />
+    </ntask>
+
+</workflow>

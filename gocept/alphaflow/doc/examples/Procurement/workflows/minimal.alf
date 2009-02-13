@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<workflow id="procurement"
+          title="Minimal Procurement"
+          description=
+    "A procurement is requested, decided upon and possibly carried out."
+          startActivity="edit">
+
+  <task id="edit"
+        title="Edit a procurement request">
+    <start>
+      <dcworkflow title="Mark as private."
+                  status="private" />
+    </start>
+
+    <complete activities="review" />
+  </task>
+
+    <assignees kind="actual"
+               expression="python:[object.Creator()]" />
+  </task>
+
+  <decision id="review"
+            title="Decide whether the article should be bought."
+            decision_modus="first_yes">
+    <start>
+      <dcworkflow title="Mark as pending"
+                  status="pending" />
+    </start>
+
+    <accept activities="buy" />
+
+    <reject>
+      <dcworkflow title="Mark as rejected."
+              status="rejected" />
+    </reject>
+
+    <assignees kind="actual"
+               roles="Finance" />
+  </decision>
+
+  <task id="buy"
+        title="Buy">
+    <start>
+      <dcworkflow title="Mark as accepted."
+                  status="accepted" />
+    </start>
+
+    <complete>
+      <dcworkflow title="Mark as bought."
+                  status="bought" />
+    </complete>
+
+    <assignees kind="actual"
+               roles="Procurement" />
+  </task>
+
+</workflow>

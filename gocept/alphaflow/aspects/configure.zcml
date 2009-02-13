@@ -1,0 +1,70 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:five="http://namespaces.zope.org/five"
+  i18n_domain="alphaflow">
+
+  <utility
+    component=".expression.ExpressionAspectDefinition"
+    name="expression"
+    provides="..interfaces.IAspectDefinitionClass"
+    />
+
+  <adapter
+    factory=".expression.ExpressionAspect"
+    for=".interfaces.IExpressionAspectDefinition str"
+    provides="..interfaces.ILifeCycleObject"
+    />
+
+  <utility
+    component=".notify.EMailAspectDefinition"
+    name="email"
+    provides="..interfaces.IAspectDefinitionClass"
+    />
+
+  <adapter
+    factory=".notify.EMailAspect"
+    for=".interfaces.IEMailAspectDefinition
+    str"
+    provides="..interfaces.ILifeCycleObject"
+    />
+
+  <utility
+    component=".parent.ParentAspectDefinition"
+    name="parent"
+    provides="..interfaces.IAspectDefinitionClass"
+    />
+
+  <adapter
+    factory=".parent.ParentAspect"
+    for=".interfaces.IParentAspectDefinition
+    str"
+    provides="..interfaces.ILifeCycleObject"
+    />
+
+  <utility
+    component=".permission.PermissionAspectDefinition"
+    name="permission"
+    provides="..interfaces.IAspectDefinitionClass"
+    />
+
+  <adapter
+    factory=".permission.PermissionAspect"
+    for=".interfaces.IPermissionAspectDefinition
+    str"
+    provides="..interfaces.ILifeCycleObject"
+    />
+
+  <utility
+    component=".dcworkflow.DCWorkflowAspectDefinition"
+    name="dcworkflow"
+    provides="..interfaces.IAspectDefinitionClass"
+    />
+
+  <adapter
+    factory=".dcworkflow.DCWorkflowAspect"
+    for=".interfaces.IDCWorkflowAspectDefinition
+    str"
+    provides="..interfaces.ILifeCycleObject"
+    />
+
+</configure>

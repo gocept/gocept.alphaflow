@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+          startActivity="initial step1"
+          description="Blubb"
+          id="testworkflow"
+          onlyAllowRoles="Manager Reviewer Member">
+
+  <switch id="initial" mode="all">
+    <start>
+      <permission-change>
+        <permission name="Modify portal content" roles="Manager" acquire="false"/>
+      </permission-change>
+    </start>
+  </switch>
+
+  <ntask id="step1">
+    <start>
+      <permission-change>
+        <add name="Modify portal content" roles="Owner"/>
+      </permission-change>
+    </start>
+    <exit id="complete" title="Complete" activities="step2" />
+    <assignees kind="actual" expression="python:['author']" />
+  </ntask>
+
+  <ntask id="step2">
+    <start>
+      <permission-change>
+        <add name="Modify portal content" roles="Reviewer"/>
+      </permission-change>
+    </start>
+    <exit id="complete" title="Complete" activities="step3" />
+    <assignees kind="actual" expression="python:['editor3']" />
+  </ntask>
+
+  <ntask id="step3">
+    <start>
+      <permission-change>
+        <remove name="Modify portal content" roles="Owner"/>
+      </permission-change>
+    </start>
+    <exit id="complete" title="Complete" activities="step4" />
+    <assignees kind="actual" expression="python:['editor3']" />
+  </ntask>
+
+  <ntask id="step4">
+    <start>
+      <permission-change>
+        <!-- author is one too many but shouldn't raise a problem -->
+        <remove name="Modify portal content" roles="Reviewer Owner Manager"/>
+      </permission-change>
+    </start>
+    <exit id="complete" title="Complete" activities="step3" />
+    <assignees kind="actual" expression="python:['editor3']" />
+  </ntask>
+
+</workflow>

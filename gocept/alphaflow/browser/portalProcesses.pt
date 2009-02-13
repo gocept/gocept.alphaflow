@@ -1,0 +1,68 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+<style type='text/css'>
+  <!--
+  @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+
+<form action="" method="POST"
+      tal:attributes="action here/absolute_url"
+      tal:define="items view/list_by_path">
+
+  <tal:container repeat="item items">
+    <h3>
+      <span tal:replace="item/title"/>
+    </h3>
+
+    <p>
+      <a tal:attributes="href item/manage_url">Manage processes</a>
+    </p>
+
+    <p tal:condition="not:item/processes">
+      No processes defined.
+    </p>
+
+    <table tal:condition="item/processes">
+        <tr class="list-header">
+            <th>Process</th>
+            <th>Edit</th>
+            <th>Update</th>
+        </tr>
+
+        <tr tal:repeat="process item/processes"
+            tal:attributes="class python:repeat['process'].odd() and 'row-hilite' or 'row-normal'">
+            <td class="form-text"
+                tal:define="current process/current">
+              <a href="#" 
+                 tal:attributes="href string:${current/absolute_url}/manage_workspace" 
+                 tal:condition="current"
+                 tal:content="string:${process/getId} (${process/title_or_id})"></a>
+              <span tal:condition="not:current"
+                    tal:content="string:${process/getId} (${process/title_or_id})" />
+                  <img src="/++resource++alphaflow/exclamation.gif"
+                   title="XML Validation error"
+                   tal:condition="python:current and current.validation_errors" />
+            </td>
+            <td class="form-text">
+              <a href="#"
+                 tal:attributes="href
+                 string:${process/absolute_url}/editor.html">
+                 <img border="0" src="/++resource++alphaflow/edit_process.gif" />
+                 </a>
+            </td>
+            <td class="form-text">
+              <a href="#"
+                 tal:attributes="href string:${process/absolute_url}/@@manage_update?redirect=${view/absolute_url}"
+                 tal:condition="process/editable">
+                Update
+              </a>
+            </td>
+        </tr>
+    </table>
+  </tal:container>
+
+</form>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
+

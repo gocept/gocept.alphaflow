@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow
+  id="testworkflow"
+  onlyAllowRoles=""
+  startActivity="email1">
+
+  <email id="email1" title="Email versenden" sort="1"
+    template="default_email"
+    mailSubject="Asdf">
+    <continue activities="task1" />
+    <recipient type="owner"/>
+    <recipient type="next_assignees"/>
+    <recipient type="actual_role" roles="Member"/>
+  </email>
+
+  <ntask id="task1" title="Task to test next assignee" sort="2">
+    <start>
+      <email template="default_email"
+        mailSubject="Fdsa">
+        <recipient type="owner"/>
+        <recipient type="next_assignees"/>
+        <recipient type="current_assignees"/>
+        <recipient type="actual_role" roles="Member"/>
+      </email>
+    </start>
+    <assignees kind="actual" expression="python:['editor2']"/>
+    <exit id="complete" title="Complete" />
+  </ntask>
+</workflow>

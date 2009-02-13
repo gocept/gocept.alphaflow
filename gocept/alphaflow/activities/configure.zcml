@@ -1,0 +1,157 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="alphaflow">
+
+    <adapter factory=".simpledecision.WorkItemFactory" />
+    <adapter
+       factory=".switch.CaseDefinition"
+       for=".switch.SwitchActivity"
+       provides="..interfaces.IExitDefinition"
+       />
+
+    <!-- All activity classes are registered as named 
+         utilities for IActivityClass to make them queryable.
+    -->
+
+    <utility
+        component=".alarm.AlarmActivity"
+        name="alarm"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".configuration.ConfigurationActivity"
+        name="configuration"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".decision.DecisionActivity"
+        name="decision"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".expression.ExpressionActivity"
+        name="expression"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".gates.GateActivity"
+        name="gate"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".notify.EMailActivity"
+        name="email"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".ntask.NTaskActivity"
+        name="ntask"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".routing.RouteActivity"
+        name="route"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".simpledecision.SimpleDecisionActivity"
+        name="simpledecision"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".switch.SwitchActivity"
+        name="switch"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <utility
+        component=".termination.TerminationActivity"
+        name="termination"
+        provides="..interfaces.IActivityClass"
+        />
+
+    <!-- All work item classes are registered as named
+        utilities for IWorkItemClass to make them queryable.
+    -->
+    <utility
+        component=".alarm.AlarmWorkItem"
+        name="alarm"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".configuration.ConfigurationWorkItem"
+        name="configuration"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".decision.DecisionWorkItem"
+        name="decision"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".expression.ExpressionWorkItem"
+        name="expression"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".gates.GateWorkItem"
+        name="gate"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".notify.EMailWorkItem"
+        name="email"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".ntask.NTaskWorkItem"
+        name="ntask"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".routing.RouteWorkItem"
+        name="route"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".simpledecision.SimpleDecisionWorkItem"
+        name="simpledecision"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".switch.SwitchWorkItem"
+        name="switch"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <utility
+        component=".termination.TerminationWorkItem"
+        name="termination"
+        provides="..interfaces.IWorkItemClass"
+        />
+
+    <subscriber handler=".alarm.receive_cron_ping" />
+
+    <!-- Logging support --> 
+    <adapter factory=".routing.RouteLogEntry" />
+    <adapter factory=".decision.DecisionLogEntry" />
+
+</configure>

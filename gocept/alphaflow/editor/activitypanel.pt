@@ -1,0 +1,40 @@
+<div class="ActivitiesPanel"
+     i18n:domain="alphaflow">
+
+  <div tal:define="validation_errors context/validate">
+
+    <div tal:condition="validation_errors" class="errorbox">
+      <h3 i18n:translate="heading_workflow_has_errors">
+        The workflow has errors ...</h3>
+      <dl>
+        <tal:block tal:repeat="error validation_errors">
+          <tal:block
+            define="obj python:error[0]">
+            <dt>
+              <a
+                tal:attributes="href string:edit://${obj/@@workflow_relative_url}"
+                tal:content="obj/title_or_id">
+                asdf
+              </a>
+            </dt>
+            <dd tal:content="structure python:error[1]"/>
+          </tal:block>
+        </tal:block>
+      </dl>
+    </div>
+
+    <h2 i18n:translate="heading_activities">Activities</h2>
+
+    <table>
+      <tr tal:repeat="activity view/listProcessActivities">
+        <td>
+          <a tal:attributes="href string:activity://${activity/id}" tal:content="activity/title">
+          </a>
+        </td>
+      </tr>
+    </table>
+
+
+
+  </div>
+</div>

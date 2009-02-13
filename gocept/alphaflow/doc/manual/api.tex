@@ -1,0 +1,530 @@
+\chapter{API reference}
+
+  \section{QuickInstaller support}
+    
+    When writing your own products, the AlphaFlow installation code provides
+    a convenience method to automatically import your ALF workflow definitions.
+
+    The method is defined in the module \module{Products.AlphaFlow.Extensions.Install}
+    and can be imported from there.
+
+    \begin{funcdesc}{install_process_definitions}{out, globals}
+      The method looks for a \verb|workflows| directory in your product 
+      and imports all process definitions with the file extension \bfcode{alf}.
+      \var{out} is a file-like object containing the installation protocol. \var{globals}
+      are the globals of your product that point to the product's directory.
+    \end{funcdesc}
+
+  \section{\module{IProcessManager} --- Manages workflow definitions and instances.}
+
+  \declaremodule{standard}{ProcessManager}
+  \modulesynopsis{Workflow definition and process instance management}
+ 
+  \begin{classdesc}{IProcessManager}{}
+
+    \begin{memberdesc}{processes}
+        Folder-like object containing workflow definitions.
+    \end{memberdesc}
+
+    \begin{memberdesc}{instances}
+        Folder-like object containing workflow instances.
+    \end{memberdesc}
+
+    \begin{memberdesc}{schema}
+        Path to RelaxNG schema for ALF validation.
+    \end{memberdesc}
+
+    \begin{funcdesc}{initProcess}{process_id, object}
+        Returns newly created process instances from the definition
+        \var{process_id} and associates it with the given object.
+    \end{funcdesc}
+
+    \begin{funcdesc}{addProcess}{process_id}
+        Creates a new process definition given by \var{process_id}.
+    \end{funcdesc}
+
+    \begin{funcdesc}{deleteProcess}{process_id}
+        Removes the process definition given by \var{process_id}.
+    \end{funcdesc}
+
+    \begin{funcdesc}{getProcess}{process_id, default}
+        Return a process definition given by \var{process_id}. 
+        \var{Default} will be returned if no process with 
+        \var{process_id} can be found. The method raises an 
+        AttributeError, if no \var{default} parameter 
+        is given.
+    \end{funcdesc}
+
+    \begin{funcdesc}{listProcesses}{}
+        Return a sequence of all process definitions.
+    \end{funcdesc}
+
+    \begin{funcdesc}{renderProcess}{process_id, format="gif", kind=None, REQUEST=None}
+        Render a process definition given by \var{process_id} as a 
+        graph. The \var{format} parameter can be one of \var{svg, gif, 
+        None}. The \var{kind} parameter can be of \var{detailed}, 
+        \var{minimal} and \var{None}. 
+    \end{funcdesc}
+
+    \begin{funcdesc}{restrictedListProcesses}{context}
+        Return a sequence of process definitions which may be instantiated in
+        the given context.
+    \end{funcdesc}
+
+    \begin{funcdesc}{getWorkItems}{user}
+        Return all work items that are relevant to the given user.
+    \end{funcdesc}
+
+    \begin{funcdesc}{getWorkItemsForCurrentUser}{}
+        Return all work items that are relevant to the current user.
+    \end{funcdesc}
+
+    \begin{funcdesc}{importWorkflowFromXML}{process_id, xmlfile}
+        Imports a process definition from an xml file. \var{Xmlfile} 
+        must be a file or fileupload instance. The method returns the 
+        imported process definition instance.
+    \end{funcdesc}
+    
+    \begin{funcdesc}{renderInstance}{instance_id, format="gif", kind=None, REQUEST=None}
+        Render a process instance given by \var{instance_id} as a 
+        graph. The \var{format} parameter can be one of \var{svg, gif, 
+        None}. The \var{kind} parameter can be of \var{detailed}, 
+        \var{minimal} and \var{None}. If the value is \var{None}, it 
+        defaults to \var{config.GRAPH_DISPLAY}.
+    \end{funcdesc}
+
+    \begin{funcdesc}{pingCronItems}{}
+        Trigger all due \class{Alarm} work items.
+    \end{funcdesc}
+
+    \begin{funcdesc}{sanityCheck}{}
+        Ensures that everything is in a sane state.
+    \end{funcdesc}
+    
+  \end{classdesc}
+
+  \section{\module{IProcess} --- A process definition.}
+  \declaremodule{standard}{Process}
+  \modulesynopsis{A process definition.}
+
+  \begin{classdesc}{IProcess}{}
+    
+    \begin{funcdesc}{listActivityIds}{}
+      Returns a list of all activity ids used in the process definition.
+    \end{funcdesc}
+
+    \begin{funcdesc}{addActivity}{id, activity_type}
+      Adds a new activity to this process definition or raises a 
+      KeyError if the \var{activity_type} is unknown. The 
+      \var{activity_type} can be one of the listed activities in 
+      \ref{sec:activityref}. The \var{id} parameter ist mandatory.
+    \end{funcdesc}
+
+    \begin{funcdesc}{acquireProcess}{}
+      Returns the process instance from the acquisition chain.
+    \end{funcdesc}
+
+  \end{classdesc}
+
+  \section{\module{IContentObjectRetriever} --- Get the content object in various representations}
+
+    \declaremodule{standard}{IContentObjectRetrieverBase}
+    \modulesynopsis{Get the content object in various representations}
+
+    \begin{classdesc}{IContentObjectRetrieverBase}{}
+
+      \begin{funcdesc}{getContentObject}{}
+        Return the associated content object or None.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getContentObjectUID}{}
+            Return the associated content object's UID.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getUrl}{}
+            Return the URL of the associated content object.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getContentObjectPath}{}
+            Return the path of the associated content object.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getContentObjectUIDBrain}{}
+          Return brain from \var{uid_catalog} for associated content object.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getContentObjectPortalCatalogBrain}{}
+          Return the \var{portal_catalog} brain for the content object.
+      \end{funcdesc}
+
+    \end{classdesc}
+
+  \section{\module{IInstance} --- A workflow instance}
+    \declaremodule{standard}{IInstance}
+    \modulesynopsis{A process instance.}
+
+    \begin{classdesc}{IInstance}{id, object, process_id}
+     
+      \begin{funcdesc}{start}{comment}
+        Start the process instance, which is done automatically after 
+        the instance has been added.
+      \end{funcdesc}
+
+      \begin{funcdesc}{reset}{comment}
+        Terminate all work items and reset the instance. 
+      \end{funcdesc}
+
+      \begin{funcdesc}{terminate}{comment}
+        Terminate all work items and leave the instance as terminated.
+      \end{funcdesc}
+
+      \begin{funcdesc}{restart}
+        Reset the process instance and start it again.
+      \end{funcdesc}
+
+      \begin{funcdesc}{dropin}
+        Go back to the active state when in failed state. In order to 
+        drop back in, there must be no work items in failed state.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getWorkItem}{id}
+        Return the work item with the given \var{id}. This method 
+        raises an AttributeError if the work item doesn't exist. 
+        Furthermore, an Unauthorized exception is raised, if the 
+        current user does not have the \constant{WORK_WITH_PROCESS} 
+        permission on the requested work item.
+      \end{funcdesc}
+
+      \begin{funcdesc}{unrestrictedGetWorkItem}{id}
+        Return the work item with the given \var{id}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getWorkItems}{state="active", activity_id=None}
+        Return a list of all work items in the given \var{state}. If 
+        \var{activity_id} is not None, all work items that belong to 
+        the activity with the given \var{id} are returned. Possible 
+          work item states are described at \ref{workitemstates}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getWorkItemIds}{state="active"}
+        Return a list of the ids of all work items in the given \var{state}.
+        Possible work item states are described at \ref{workitemstates}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{createWorkItems}{activity_ids, source, content_object=None}
+        Create new work items for the activities with the given 
+        \var{activity_ids}. This method raises a KeyError, if no 
+        activity with this id is known. It returns a tuple containing 
+        the ids of the created work items.
+      \end{funcdesc}
+
+      \begin{funcdesc}{changeState}{state, comment}
+        Changes the \var{state} of the work item. This is recorded to the event
+        log by using the given \var{comment}.
+        Possible work item states are described at \ref{workitemstates}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{recordAction}{action, comment}
+        Record an \var{action} and a \var{comment} to the event log.
+      \end{funcdesc}
+
+      \begin{funcdesc}{notifyWorkItemStateChange}{workitem}
+        Notify the process instance that the \var{workitem} has changed 
+        its state.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getProcess}{}
+        Return the process definition this is an instance of.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getInstance}{}
+        Returns \var{self}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{updateWorkitemsAndContentObjects}{}
+        Update everything affected after editing the workflow configuration.
+      \end{funcdesc}
+
+    \end{classdesc}
+
+  \section{\module{IAlphaFlowed} --- A content object managable by AlphaFlow}
+
+    \declaremodule{standard}{IAlphaFlowed}
+    \modulesynopsis{A content object managable by AlphaFlow}
+
+    \begin{classdesc}{IAlphaFlowed}{}
+        
+      \begin{funcdesc}{getSuitableProcesses}{}
+        Return a list of suitable process definitions.
+      \end{funcdesc}
+
+      \begin{funcdesc}{hasInstanceAssigned}{}
+        Return whether a process is already assigned to this object or not.
+      \end{funcdesc}
+
+      \begin{funcdesc}{assignProcess}{process_id}
+        Assign a new instance of the process definition with the given 
+        \var{process_id} to this object.\note{This method does nothing, 
+        if the object already has a process instance assigned.}
+      \end{funcdesc}
+
+      \begin{funcdesc}{getInstance}{}
+        Return the currently assigned process instance. This method 
+        raises a KeyError of no process instance is currently assigned.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getAllInstances}{}
+        Return a list of all assigned process instances, both completed 
+        and running.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getWorkItemsForCurrentUser}{}
+        Returns a list of work items for this object.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getWorkItem}{id}
+        Return a work item with the given \var{id} from the currently 
+        to this content object attached process instance. This method 
+        can raise three different errors:
+        \begin{description}
+          \item[AttributeError] if there is no work item with the given \var{id}
+          \item{ValueError} if no active process instance is attached
+          \item{Unauthorized} if the current user does not have the 
+          \constant{WORK_WITH_PROCESS} permission on the requested work item
+        \end{description}
+      \end{funcdesc}
+
+      \begin{funcdesc}{alf_clearInstances}{}
+        Detach all (current and old) instances.
+      \end{funcdesc}
+      
+    \end{classdesc}
+    
+  \section{\module{IActivity} --- A workflow activity}
+
+    \declaremodule{standard}{IActivity}
+    \modulesynopsis{An entity in a process definition.}
+     
+    \begin{classdesc}{IActivity}{}
+       
+      \begin{funcdesc}{getPossibleChildren}{}
+        Returns a list of all ids of activities that may be 
+        instantiated as successors by instances of this activity.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getConfigurationSchema}{content}
+        Getter method to retrieve the instance configuration schema. This also 
+        allows for different activities to have programmatic influence 
+        over how instance configuration schemas look like.
+      \end{funcdesc}
+
+      \begin{funcdesc}{graphGetPossibleChildren}{}
+        Returns a list of possible successor activities as dictionaries. Used
+        for graph generation.
+      \end{funcdesc}
+
+      \begin{funcdesc}{graphGetStartActivities}{}
+        Returns a list of activity titles which are 
+        \var{startActivities} of this one.
+      \end{funcdesc}
+
+      \begin{funcdesc}{acquireActivity}{}
+        Returns the activity instance from the acquisition chain.
+      \end{funcdesc}
+
+      \begin{funcdesc}{generateWorkItems}{source, content\_object}
+        Instanciates work items for an activity. 
+
+        Returns a list of work items.
+
+        This method works as a factory to create work items for an activity
+        when ``createWorkItems'' is called.
+
+        The \class{BaseActivity} has a basic method that creates a single work
+        item that is identified by the \var{activity_type}. In more complex situations 
+        this method allows to create work items of any type and in any amount
+        while only a single activity is configured.
+
+        An example of a custom \method{generateWorkItems} method can be found
+        in \file{Products/AlphaFlow/activities/simpledecision.py}.
+      \end{funcdesc}
+    \end{classdesc}
+
+
+  \section{\module{IAssignableActivity} --- An assignable workflow activity}
+
+    \declaremodule{standard}{IAssignableActivity}
+    \modulesynopsis{An activity which holds information for user assignment.} %TODO urks
+     
+    \begin{classdesc}{IAssignableActivity}{}
+        \begin{funcdesc}{getPossibleAssignees}{}
+            Returns a list of possible assigned users. \note{This 
+            method works only for roles.}
+        \end{funcdesc}
+    \end{classdesc}
+    
+  \section{\module{IWorkItem} --- A work item}
+    
+    \declaremodule{standard}{IWorkItem}
+    \modulesynopsis{The instance of an activity.}
+
+    \begin{classdesc}{IWorkItem}{id, activity_id, content_object=None}
+
+      \begin{funcdesc}{getGeneratedWorkItems}{}
+          Returns a list of work items this work item has generated.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getActions}{}
+          Returns a list of actions the user may perform on this work 
+          item. This method can be used for the Plone action menu.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getActionById}{id}
+          Return the action with the given id.
+          Raises KeyError if an action with the given id does not exist.
+      \end{funcdesc}
+
+      \begin{funcdesc}{isRelevant}{user}
+          Return whether this work item is relevant for the given user.
+      \end{funcdesc}
+
+      
+      \begin{funcdesc}{listRelevantUsers}{}
+          Return a list of relevant user ids.
+      \end{funcdesc}
+
+      \begin{funcdesc}{isChildOf}{workitem_id, workitem}
+        Returns \var{True} if this work item was generated by the given work item.
+        \note{The method accepts only workitem_id or workitem.}
+      \end{funcdesc}
+      
+      \begin{funcdesc}{changeState}{state, comment, exc_info=None}
+          Changes the state of the work item to: \var{state}. Possible 
+          work item states are described at \ref{workitemstates}.
+      \end{funcdesc}
+
+      \begin{funcdesc}{recordAction}{action, comment}
+          Record an \var{action} and a \var{comment} to the event log.
+      \end{funcdesc}
+      
+      \begin{funcdesc}{getActivity}{}
+          Returns the corresponding activity to this work item.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getActivityTitleOrId}{}
+          Return the \var{title} or \var{id} of the activity this is an 
+          instance of.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getActivityConfiguration}{}
+          Return the configuration for this activity in the context of 
+          this process instance.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getParent}{}
+          Returns the parent work item or None if this is a root windows.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getShortInfo}{}
+          Returns a short information text. %TODO example?
+      \end{funcdesc}
+
+      \begin{funcdesc}{getStatusInfo}{}
+          Returns a short status information text.
+      \end{funcdesc}
+
+      \begin{funcdesc}{onStart}{}
+          Trigger that gets called after the work item is started.
+      \end{funcdesc}
+
+      \begin{funcdesc}{onTerminate}{}
+          Trigger that gets called after the work item is terminated.
+      \end{funcdesc}
+
+      \begin{funcdesc}{onFailure}{}
+          Trigger that gets called after the work item fell out.
+      \end{funcdesc}
+
+      \begin{funcdesc}{beforeCreationItems}{items, parent}
+          Trigger that gets called before new work items get active. 
+          Other work items can veto on the creation of those items and 
+          return a list of ids as a veto. After all work items have 
+          been triggered, the vetoed work items get removed again and 
+          never become active.
+      \end{funcdesc}
+
+      \begin{funcdesc}{getActionVocabulary}{}
+          Returns a list of tuples of IAction objects.
+      \end{funcdesc}
+
+      \begin{funcdesc}{notifyWorkItemStateChange}{workitem}
+          Receives a notification that the work item \var{workitem} has 
+          changed it's state.
+      \end{funcdesc}
+
+      \begin{funcdesc}{notifyAssigneesChange}{}
+          Notifies the work item that the assignees might have change.
+      \end{funcdesc}
+
+    \end{classdesc}
+  
+  \section{\module{IAssignableWorkItem} --- A base assignable work item}
+    
+    \declaremodule{standard}{IAssignableWorkItem}
+    \modulesynopsis{Work items which are assignable to users.}
+
+    \begin{classdesc}{IAssignableWorkItem}{}
+
+        \begin{funcdesc}{getGroupedSchema}{}
+            Returns a sequence of \class{IFieldGroup} instances. The 
+            method aggregates configuration schemas from all activities 
+            which are configured by this work item (incl. it's own 
+            schema) and returns a scheme, which is grouped by activity.
+        \end{funcdesc}
+
+        \begin{funcdesc}{getViewUrl}{}
+            Returns an URL to view the page which lets the user handle 
+            the work item.
+        \end{funcdesc}
+
+        \begin{funcdesc}{listMemberWithRolesOnContentObject}{roles}
+            Returns a list of member ids, who have one of the given \var{roles}.
+        \end{funcdesc}
+
+    \end{classdesc}
+
+  \section{\module{IAutomaticWorkItem} --- An automatic work item}
+    
+    \declaremodule{standard}{IAutomaticWorkItem}
+    \modulesynopsis{Work items for automatic activities.}
+
+    \begin{classdesc}{IAutomaticWorkItem}{}
+        
+        \begin{funcdesc}{run}{}
+            Performs the actual automatic activity.
+        \end{funcdesc}
+    
+    \end{classdesc}
+
+\section{\module{IAction} --- A work item action}
+
+    \begin{classdesc}{IAction}{Interface}
+
+        \begin{memberdesc}{id}
+            Id of the action. Must be unique for each work item.
+        \end{memberdesc}
+
+        \begin{memberdesc}{title}
+            Title of the action. May be unicode.
+        \end{memberdesc}
+
+        \begin{memberdesc}{url}
+            URL to trigger the action.
+        \end{memberdesc}
+
+        \begin{funcdesc}{__call__}{}
+            Execute the action.
+
+            Semantics are the same as in calling the url.
+        \end{funcdesc}
+    \end{classdesc}

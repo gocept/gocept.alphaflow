@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workflow id="testworkflow"
+          title="routing_simpledec"
+          startActivity="review"
+          onlyAllowRoles="Manager Reviewer">
+
+  <route id="review"
+         title="4 Decisions">
+    <start>
+      <dcworkflow status="visible" />
+    </start>
+
+    <decision id="review_decision"
+              decision_notice="review_decision"
+              decision_modus="all_yes">
+      <reject activities="reject" />
+      <accept activities="accept" />
+                <assignees kind="actual" expression="python:['author']"/>
+    </decision>
+
+
+    <simpledecision id="review_simpledecision"
+                    decision_notice="review_simpledecision">
+      <reject activities="reject" />
+      <accept activities="accept" />
+                      <assignees kind="actual" expression="python:['editor1','editor2','editor3']"/>
+    </simpledecision>
+
+                  
+    <gate id="reject" 
+          title="Reject review"
+          mode="delayed-discriminate">
+      <continue>
+        <dcworkflow status="private" />
+      </continue>
+    </gate>
+
+    <gate id="accept"
+          title="Accept review"
+          mode="synchronizing-merge">
+      <continue>
+        <dcworkflow status="published" />
+      </continue>
+    </gate>
+
+  </route>
+
+</workflow>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- not valid -->
+<workflow id="testworkflow"
+  title="multi_review"
+  startActivity="config_wf"
+  onlyAllowRoles="Manager Reviewer">
+
+  <configuration id="config_wf"
+    configures="write_document review_document1 review_document2">
+
+    <complete activities="write_document" />
+
+    <assignees kind="actual" roles="Member" />
+  </configuration>
+
+  <!-- Write the document -->
+  <ntask id="write_document"
+    title="Dokument schreiben"
+    sort="1">
+
+    <start>
+      <!-- Permissions for "private" state -->
+      <dcworkflow status="private" />
+      <permission-change title="Autor-Rechte setzen">
+        <permission name="Access contents information"
+          acquire="false"
+          roles="Manager Owner" />
+        <permission name="Modify portal content"
+          acquire="false"
+          roles="Manager Owner" />
+        <permission name="View"
+          acquire="false"
+          roles="Manager Owner" />
+      </permission-change>
+    </start>
+
+    <exit id="complete" title="Complete" activities="review_document1" />
+
+    <assignees kind="possible"
+      roles="Author" />
+
+  </ntask>
+
+  <!-- Review the document
+
+  ChiefEditor already gets the rights here to be able to communicate with his reviewers
+  if there are any questions, though he gets no work item yet.
+  -->
+
+  <!-- reviewer -->
+  <decision id="review_document1"
+    title="Dokument prüfen"
+    sort="2"
+    decision_notice="Bitte auf inhaltliche Ausgestaltung achten."
+    decision_modus="all_yes">
+
+    <start>
+      <dcworkflow status="pending" />
+      <permission-change title="Review-Rechte setzen">
+        <permission name="Access contents information"
+          acquire="true"
+          roles="Manager Owner Reviewer ChiefEditor" />
+        <permission name="Modify portal content"
+          acquire="false"
+          roles="Manager Reviewer ChiefEditor" />
+        <permission name="View"
+          acquire="false"
+          roles="Manager Owner Reviewer ChiefEditor" />
+      </permission-change>
+    </start>
+
+    <reject activities="write_document" />
+
+    <accept activities="review_document2" />
+
+    <assignees kind="possible"
+      roles="Reviewer" />
+
+  </decision>
+
+  <!-- chief editor -->
+  <decision id="review_document2"
+    title="Dokument prüfen (verantwortlicher Redakteur)"
+    sort="3"
+    decision_notice="Bitte auf formelle Kriterien achten."
+    decision_modus="all_yes">
+
+    <reject activities="write_document" />
+
+    <accept>
+      <!-- Publish the document -->
+      <dcworkflow status="published" />
+      <permission-change title="Öffentliche Rechte setzen">
+        <permission name="Access contents information"
+          acquire="true"
+          roles="Anonymous Manager" />
+        <permission name="Modify portal content"
+          acquire="false"
+          roles="Manager" />
+        <permission name="View"
+          acquire="false"
+          roles="Anonymous Manager" />
+      </permission-change>
+    </accept>
+
+    <assignees kind="possible"
+      roles="ChiefEditor" />
+
+  </decision>
+
+</workflow>

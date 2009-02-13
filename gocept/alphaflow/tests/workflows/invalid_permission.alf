@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workflow
+   startActivity="initial"
+   onlyAllowRoles="Manager Reviewer"
+   title="Test" description="Invalid permissions">
+
+  <switch id="initial" mode="all">
+    <start>
+      <permission-change title="Autor-Rechte setzen">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner ProcessUser"/>
+        <!-- invalid permission-->
+        <permission name="Modipfui portool contains"
+                    acquire="false"
+                    roles="Manager Owner ProcessUser"/>
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner ProcessUser"/>
+      </permission-change>
+    </start>
+  </switch>
+
+</workflow>

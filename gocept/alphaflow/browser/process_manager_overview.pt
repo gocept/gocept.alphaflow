@@ -1,0 +1,31 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+<style type="text/css">
+  <!--
+  @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+
+<p>
+  This tool allows to control all aspects of your AlphaFlow installation
+  including process definitions and process instances.
+</p>
+
+<p>
+  For information about AlphaFlow see <a href="http://www.gocept.com/go/alf">the AlphaFlow homepage</a>.
+</p>
+
+<tal:block tal:define="statistics here/getStatistics">
+  <dl>
+    <dt class="form-label">Instances</dt>
+    <dd class="form-text" tal:content="statistics/all_count">20</dd>
+
+    <dt><a href="manage_instances?show=1&amp;state=active">Active [Show]</a></dt>
+    <dd class="form-text" tal:content="statistics/active_count">5</dd>
+
+    <dt><a href="manage_instances?show=1&amp;state=failed" class="failed">Failed [Show]</a></dt>
+    <dd class="form-text failed " tal:content="statistics/failed_count">3</dd>
+  </dl>
+</tal:block>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

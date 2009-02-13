@@ -1,0 +1,24 @@
+<metal:macros>
+  <metal:macro define-macro="item_by_state">
+    <h2 tal:content="python:item[0]" />
+
+    <dl>
+      <tal:block repeat="request python:item[1]">
+        <dt>
+          <a href=""
+             tal:attributes="href request/absolute_url"
+             tal:content="request/getArticle" />
+        </dt>
+        <dd>
+          <p tal:content="request/getReason" />
+          <p>Requested by:
+            <span tal:replace="request/Creator" />
+          </p>
+          <p>Due:
+            <span tal:replace="request/getDue" />
+          </p>
+        </dd>
+      </tal:block>
+    </dl>
+  </metal:macro>
+</metal:macros>

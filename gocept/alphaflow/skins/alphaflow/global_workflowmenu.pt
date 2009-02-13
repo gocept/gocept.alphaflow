@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
+  <body>
+
+    <metal:block metal:define-macro="workflowMenu"
+      tal:condition="python:here.displayWorkflowMenue(member)">
+
+      <tal:block condition="here/alf_isFailed">
+          <tal:block tal:define="temp python:putils.addPortalMessage('The workflow for this object has encountered a problem and was suspended. Please contact the portal administrator.')" />
+      </tal:block>
+
+    <ul tal:define="
+        lockable python: hasattr(here, 'wl_isLocked');
+        is_locked python: lockable and here.wl_isLocked();
+        has_instance here/hasInstanceAssigned;
+        had_instance python:bool(here.getAllInstances());
+        instance here/getInstance;"
+        metal:define-macro="alphaflow-menu">
+      <!-- Select workflow... -->
+      <tal:block condition="python: not has_instance and user.has_permission('Initialize workflow process', here)">
+        <li><a href="#" tal:attributes="href
+                string:${here/absolute_url}/af_select_workflow"
+                i18n:translate="gwm_select_workflow">Select Workflow</a>
+        </li>
+      </tal:block>
+
+      <!-- locked object -->
+      <tal:block 
+        tal:condition="is_locked">
+        <li>
+          <a href="#" i18n:translate="">Object locked</a>
+        </li>  
+      </tal:block>
+
+      <li tal:condition="has_instance">
+        <dl class="actionMenu" id="alphaflowMenu">
+          <dt class="actionMenuHeader"><a href="#">
+            <span i18n:translate="">Workflow</span></a></dt>
+          <dd class="actionMenuContent" style="width:18em;">
+            <ul>
+              <tal:block 
+                tal:condition="not: is_locked"
+                tal:repeat="wi here/getWorkItemsForCurrentUser">
+                <tal:block
+                    tal:define="act wi/getActivity;
+                                act_title act/title_or_id">
+                    <li class="actionSeparator">
+                            <span tal:content="act_title"/></li>
+                </tal:block>
+                <li tal:repeat="action wi/getActions">
+                  <a href="#"
+                    tal:condition="action/enabled"
+                    tal:attributes="href string:${here/absolute_url}/af_edit_workitem?workitem=${wi/getId}&amp;action=${action/id}"
+                    tal:content="action/title"
+                    i18n:translate=""></a>
+                  <span class="disabled"
+                    tal:condition="not:action/enabled"
+                    tal:content="action/title"
+                    i18n:translate=""></span>
+                </li>
+              </tal:block>
+              <li class="actionSeperator"
+                tal:condition="python: had_instance and user.has_permission('Work with process instance', here)">
+               <hr/> <a href="#" 
+                  tal:attributes="href
+                  string:${here/absolute_url}/workflow_protocol"
+                    i18n:translate="gwm_details">Details ...</a>
+              </li>
+            </ul>
+          </dd>
+        </dl>
+      </li>
+    </ul>
+  </metal:block>
+
+  </body>
+</html>

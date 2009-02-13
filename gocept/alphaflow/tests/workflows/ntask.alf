@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"  
+  id="ntasktestworkflow"
+  startActivity="edit"
+  description="Blubb"
+  onlyAllowRoles="Manager Reviewer Member">
+
+  <ntask id="edit"
+    title="Dokument bearbeiten" sort="1">
+
+    <exit id="make_public" title="Freigeben">
+      <dcworkflow status="published"/>
+    </exit>
+
+    <exit id="make_pending" title="Prufen lassen">
+      <dcworkflow status="pending"/>
+    </exit>
+
+    <exit id="make_private" title="Privat schalten">
+      <dcworkflow status="private"/>
+    </exit>
+
+    <exit id="explode" title="Mach alles kaputt" condition="python:False">
+    </exit>
+
+    <exit id="broken" title="Wirf nen KeyError" condition="python:{}['foo']">
+    </exit>
+
+    <assignees kind="actual" roles="Member" />
+
+  </ntask>
+
+
+</workflow>

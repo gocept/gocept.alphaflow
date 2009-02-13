@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow
+    id="testworkflow"
+    startActivity="do_this do_that">
+
+  <ntask id="do_this"
+        view_url_expr="string:${content/absolute_url}/edit">
+    <exit id="complete" title="Complete">
+      <dcworkflow status="published" title="Published"/>
+    </exit>
+  </ntask>
+
+  <!-- default content/view -->
+  <ntask id="do_that">
+    <exit id="complete" title="Complete">
+      <dcworkflow status="published" title="Published"/>
+    </exit>
+  </ntask>
+
+</workflow>

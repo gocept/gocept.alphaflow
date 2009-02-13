@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- not valid -->
+<workflow
+  id="testworkflow"
+  startActivity="start">
+
+  <switch id="start" mode="first">
+    <start>
+      <expression expression="python:object.note('start')" />
+    </start>
+    <case id="escalate"
+      activities="escalate"
+      condition="python:object.route == 'escalate'"/>
+    <case id="normal"
+      activities="normal"
+      condition="python:object.route == 'normal'"
+      />
+  </switch>
+
+  <switch id="escalate"
+    mode="first">
+    <start>
+      <expression expression="python:object.setRoute('normal')" />
+      <expression expression="python:object.note('escalate')" />
+    </start>
+    <case id="exit"
+          condition="python:True">
+      <parent continue_with_parent_of="escalate" />
+    </case>
+  </switch>
+
+  <ntask id="normal">
+    <start>
+      <expression expression="python:object.note('normal')" />
+    </start>
+    <exit id="escalate" title="Escalate" activities="escalate"/>
+    <exit id="finish" title="Finish">
+      <expression expression="python:object.note('finish')" />
+    </exit>
+    <assignees kind="actual" roles="Manager"/>
+  </ntask>
+
+</workflow>

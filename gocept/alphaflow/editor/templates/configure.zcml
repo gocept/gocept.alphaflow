@@ -1,0 +1,20 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="alphaflow">
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    class=".timelimit.TimeLimitedAssignment"
+    permission="alphaflow.ManageWorkflows"
+    name="template-timelimit"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    class=".review.ParallelReview"
+    permission="alphaflow.ManageWorkflows"
+    name="template-parallelreview"
+    />
+
+</configure>

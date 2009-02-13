@@ -1,0 +1,24 @@
+=============================
+AlphaFlow compatibility notes
+=============================
+
+AlphaFlow is beeing checked repeatedly against multiple platforms. This
+AlphaFlow release is known to be compatible with:
+
+- Zope 2.9.6 and Zope 2.9.8
+- Windows 2003 server and Linux
+- Plone 2.5.2
+
+LinguaPlone
+===========
+
+AlphaFlow is compatible with LinguaPlone in that we provide special support
+for the content actions menu.
+
+However, for AlphaFlow and LinguaPlone to work together, the AlphaFlow skin
+layer *has* to have a higher priority in the skin configuration than
+LinguaPlone. This gets definitely screwed up if you install LinguaPlone
+*after* AlphaFlow, so please check you skin folder.
+
+The symptom of a non-working configuration is that you will miss AlphaFlow's
+workflow menu from the content actions bar.

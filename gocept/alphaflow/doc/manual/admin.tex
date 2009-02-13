@@ -1,0 +1,145 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Administering AlphaFlow}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This chapter describes AlphaFlow's administration facilities in the Zope
+Management Interface (ZMI). You find them in the \member{workflow\_manager} 
+in your Plone site after installing AlphaFlow.
+
+There are two aspects to administering AlphaFlow: managing workflow
+definitions, and managing workflow instances.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Definitions}
+
+The definitions view is a list of all AlphaFlow workflow definitions that
+exist in the Plone portal. For each definition, the list displays its id,
+title, and description and has actions for editing and deleting. 
+
+The ``edit'' action will start the graphical workflow editor. \notice{The
+graphical editor is only a technology preview. It is not even in alpha state.
+The preferred way to create and edit workflows is to use ALF files.}
+
+Using the definitions view  you can also import workflow definitions by
+uploading ALF files from your computer. The chapter ``activity reference''
+shows how to use ALF files.
+
+You can enter an \var{id} by which the workflow definition will be known. It
+must not yet be used by another AlphaFlow workflow definition. If you omit the
+\var{id}, it is taken from ALF file.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Instances}
+
+The ``instances'' view of the \member{workflow\_manager} offers an overview of
+all workflow instances that are or were running in the portal.
+
+Initially no instances will be shown. You can select different filters
+based on the workflow instances states to get a list of all process instances
+in that state.
+
+Each entry in the instances list tells you the state of the instance and what
+work items are currently active. Furthermore, it contains links to the
+instance's overview, its workflow definition, and its content object.
+
+\notice{Beware: Showing \emph{all} instances can be very slow and time
+consuming on large installations. Use one of the filtered lists for better
+performance.}
+
+\subsection{Controlling a workflow instance}
+
+Clicking on an instance in the instance list brings you to the overview page of
+the workflow instance.  This page displays the instance's state, workflow
+definition, and content object. It also lists all its work items, and displays
+the event log.
+
+The following actions can be performed on a workflow instance:
+\begin{description}
+\item[start] For an ``initiated'' instance, create work items for all start-up
+  activities and change state to ``active''.
+\item[dropin] Put a fall-out instance back in ``active'' state if there are
+  currently no fall-out work items left.
+\item[terminate] Terminate all active work items of the instance and change
+  state to ``terminated''.
+\item[reset] Terminate all active work items of the instance and change state
+  to ``initiated''.
+\item[restart] Terminate all active work items of the instance, create work
+  items for all start-up activities, and change state to ``active''.
+\end{description}
+If you comment on an action you take, the comment will appear in the event
+log.
+
+The \emph{work item list} contains all work items ever started in this workflow
+instance. For each, it provides links to the work item page and the
+corresponding activity. It also displays each work item's state, the time it
+was started and, for completed items, the time it finished.
+
+The \emph{event log} reports on the instance's creation and the actions that were
+performed on it later, such as starting or restarting it. This log does not
+contain information on any individual work items.
+
+\subsection{Controlling a work item}
+
+The work item management view is similar to that for workflow instances. It
+starts out with information on the work item: its state, activity, and
+instance, the users relevant to this work item, the work item that created it,
+and all work items created by it.
+
+Other than workflow instances, work items offer two kinds of actions to
+perform: user actions and management actions. User actions depend on the type
+of work item, e.g. ``complete'' for a task; automatic work items do not have
+any user actions. You cannot comment on a user action you perform from the
+ZMI; this is only possible from the Plone interface. User actions can only be
+taken for active work items, they are merely listed for other states.
+
+The following management actions are available for work items:
+\begin{description}
+\item[fall out] Mark the work item as being in an exceptional state. This also
+  makes the workflow instance fall out.
+\item[terminate] Terminate the work item without waiting for it to complete
+  successfully.
+\item[restart] Restart the work item all over. This puts it back into the
+  state ``active''. It also creates work items for its start activities again.
+\end{description}
+For these actions, there is an input field for comments.
+
+The work item event log lists the actions, including comments, that have been
+performed on the work item. This is the same information that can be found in
+the detailed work item overview provided by the Plone user interface.
+
+\section{Administration Tools}
+
+The "`tools"' tab on the \member{workflow\_manager} provides utilities that
+allow you to smoothly administer your workflows. They are especially helpful
+on large installations.
+
+\begin{memberdesc}{Clean terminated and stale instances} Removes workflow
+    instances that are no longer of interest. Terminated instances are those
+    cast away by a manager, stale instances those whose content object no
+    longer exists or instances where the process definition does not exist. 
+\end{memberdesc}
+
+\begin{memberdesc}{Run sanity check}
+Runs sanity checks on all AlphaFlow-aware content in the
+portal. It reports missing or duplicate references between content objects and
+workflow instances.
+\end{memberdesc}
+
+\begin{memberdesc}{Bulk drop-in}
+
+In the case of many processes falling out, the bulk drop-in allows you to
+\emph{try} dropping in all instances that are fallen out at the moment. It will
+ignore all instances that still have work items fallen out. Use this button
+after reparing many workflows that were fallen out.
+
+\end{memberdesc}
+
+\begin{memberdesc}{Restart helper}
+
+In the case of a workflow or application failure resulting in many work items
+falling out you can use the restart helper to reactive all work items that
+belong to a certain activity of a certain process and are fallen out. The work
+items are restarted. Use the \member{bulk drop-in} feature to let those
+workflows continue.
+
+\end{memberdesc}

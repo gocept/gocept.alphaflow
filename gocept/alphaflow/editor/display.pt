@@ -1,0 +1,12 @@
+<form metal:use-macro="context/@@editor_form/form"
+      i18n:domain="alphaflow">
+
+  <div metal:fill-slot="header">
+    <p i18n:translate="">
+      This is an activity of the type
+      &laquo;<span i18n:name="activity_type"
+                   tal:replace="context/activity_type"/>&raquo;.
+    </p>
+  </div>
+
+</form>

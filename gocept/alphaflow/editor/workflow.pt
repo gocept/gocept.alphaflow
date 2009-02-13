@@ -1,0 +1,7 @@
+<form metal:use-macro="context/@@editor_form/form"
+      i18n:domain="alphaflow">
+
+  <h2 metal:fill-slot="header"
+      i18n:translate="heading_edit_workflow">Edit workflow</h2>
+
+</form>

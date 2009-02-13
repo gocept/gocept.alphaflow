@@ -1,0 +1,160 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+
+<style type="text/css">
+  <!--
+    @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+<h3>
+  Work item (<span tal:define="state here/getDetailStatus"
+                          tal:attributes="class state"
+                          tal:content="state" />)
+</h3>
+
+<p>Here you can control all aspects of this work item.</p>
+
+<dl>
+    <dt class="form-label">Activity</dt>
+    <dd class="form-text" tal:define="workitem nocall:here">
+      <metal:activity use-macro="here/manage_linkmacros/macros/workitem_to_activity" />
+    </dd>
+
+    <dt class="form-label">Relevant users</dt>
+    <dd class="form-text" tal:content="python:', '.join(here.listRelevantUsers()) or 'None'"></dd>
+
+    <dt class="form-label">Parent workitem</dt>
+    <dd class="form-text" tal:define="workitem here/getParent">
+      <tal:workitem condition="nocall:workitem">
+        <metal:activity use-macro="here/manage_linkmacros/macros/to_workitem" />:
+        <metal:activity use-macro="here/manage_linkmacros/macros/workitem_to_activity" />
+      </tal:workitem>
+      <tal:none condition="not:nocall:workitem">None</tal:none>
+    </dd>
+
+    <dt class="form-label">Generated workitems</dt>
+    <dd class="form-text" tal:define="workitems here/getGeneratedWorkItems">
+      <ul tal:condition="workitems">
+        <li tal:repeat="workitem workitems">
+          <metal:activity use-macro="here/manage_linkmacros/macros/to_workitem" />:
+          <metal:activity use-macro="here/manage_linkmacros/macros/workitem_to_activity" />
+        </li>
+      </ul>
+      <tal:none condition="not:workitems">None</tal:none>
+    </dd>
+</dl>
+
+<div class="form-label">User actions</div>
+
+  <tal:block define="active python:here.state == 'active'"
+    tal:on-error="string:No actions available (error)">
+    <ul>
+      <li tal:repeat="action here/getActions">
+        <tal:action define="display string:${action/title} (${action/id})">
+          <a href=""
+             tal:condition="active"
+             tal:attributes="href string:manage_userAction?actionId=${action/id}"
+             tal:content="display" />
+          <span tal:condition="not:active"
+                tal:replace="display" />
+        </tal:action>
+      </li>
+    </ul>
+
+    <p tal:condition="not:active">
+    User actions are not available because the workitem is not active.
+    </p>
+  </tal:block>
+
+  <div class="form-label">Lifecycle control</div>
+
+<form action="manage_action" method="post">
+
+<table>
+  <tbody>
+    <tr>
+      <td class="form-text">Action:</td>
+      <td>
+        <select name="action">
+          <option value="start">start</option>
+          <option value="restart">restart</option>
+          <option value="terminate">terminate</option>
+          <option value="reset">reset</option>
+          <option disabled="disabled">Failure control</option>
+          <option value="fail">fail</option>
+          <option value="recover">recover</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td class="form-text">Comment:</td>
+      <td>
+        <textarea name="comment"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <input type="submit" value="Perform action"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</form>
+
+<div class="form-label">Checkpoints</div>
+
+<span tal:define="checkpoints here/objectValues">
+  <table class="pagewidth" tal:condition="checkpoints">
+    <tbody>
+      <tr class="list-header">
+          <th>Checkpoint</th>
+          <th>State</th>
+      </tr>
+      <tr tal:repeat="checkpoint checkpoints"
+        tal:attributes="class python:repeat['checkpoint'].odd() and 'row-hilite' or 'row-normal'">
+        <td class="form-text">
+          <a tal:attributes="href
+            string:${checkpoint/absolute_url}/manage_overview">
+            <span tal:content="python:checkpoint.getDefinition().title_or_id()"
+              tal:on-error="string:(Missing checkpint definition)"></span>
+          </a>
+        </td>
+
+        <td class="form-text active"
+          tal:define="state checkpoint/@@overview/controller/state"
+          tal:attributes="class string:form-text $state"
+          tal:content="state" />
+
+      </tr>
+    </tbody>
+  </table>
+  <span tal:condition="not:checkpoints" class="form-text">
+    There are currently no existing checkpoints.
+  </span>
+</span>
+
+<div class="form-label">Event log</div>
+<table class="pagewidth">
+  <tbody tal:define="logs here/@@overview/event_log">
+    <tr class="list-header">
+        <th>Time</th>
+        <th>User</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    <tal:repeat repeat="log logs">
+      <tr class="row-hilite">
+          <td class="form-text" tal:content="python:path('context/@@plone').toLocalizedTime(log[0],True)"/>
+          <td class="form-text" tal:content="python:log[1]"/>
+          <td class="form-text" tal:content="python:log[2]"/>
+          <td class="form-text" tal:content="python:log[3]"/>
+        </tr>
+        <tr class="row-normal">
+          <td class="form-text" colspan="4" tal:content="structure python:log[4]"/>
+        </tr>
+    </tal:repeat>
+  </tbody>
+</table>
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

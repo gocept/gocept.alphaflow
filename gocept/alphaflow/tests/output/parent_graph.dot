@@ -1,0 +1,12 @@
+digraph G {
+size="2,2!";
+"self_reference" [URL="activity://self_reference", shape=ellipse];
+"normal" [URL="activity://normal", shape=ellipse];
+"normal" -> "self_reference" [color=khaki];
+"task" [URL="activity://task", shape=ellipse];
+"task" -> "self_reference" [color="black:khaki", dir=both];
+"__init__" [shape=point];
+"__init__" -> "self_reference";
+"__init__" -> "normal";
+"__init__" -> "task";
+}

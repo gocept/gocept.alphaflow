@@ -1,0 +1,71 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="alphaflow">
+
+  <body>
+
+    <div tal:define="processes view/list"
+         metal:fill-slot="main">
+
+      <h1 i18n:translate="heading_processes">
+        Workflows
+      </h1>
+
+      <a href=""
+        class="link-parent"
+        tal:attributes="href string: $portal_url/plone_control_panel"
+        i18n:domain="plone"
+        i18n:translate="label_up_to_plone_setup">
+        Up to Site Setup
+      </a>
+
+      <div class="documentDescription"
+           i18n:translate="description_workflow_overview">
+        This is the overview of
+        <tal:workflow i18n:name="workflows">
+        <tal:global condition="view/is_global"
+                    i18n:translate="">global workflows.</tal:global>
+        <tal:local condition="not: view/is_global"
+                   i18n:translate="">workflows installed for
+          <span i18n:name="title" tal:replace="here/title" />.</tal:local>
+        </tal:workflow>
+        You can add and edit workflows and gather statistics here.
+      </div>
+
+      <table metal:use-macro="here/alphaflow_macros/macros/alphaflow-process-container-table" />
+
+      <fieldset>
+        <legend i18n:translate="label_configlet_new_workflow">
+          Create new workflow
+        </legend>
+
+        <form action=""
+          tal:attributes="action string:${here/absolute_url}/@@addProcess">
+
+          <input type="hidden" name="redirect"
+                 tal:attributes="value view/absolute_url" />
+
+          <div class="field">
+            <label for="title"
+              i18n:translate="label_configlet_new_workflowtitle">
+              Title of the workflow
+            </label>
+
+            <div class="formHelp">
+              Give the workflow a distinguishable title.
+              This title will be shown to users when selecting the workflow.
+            </div>
+
+            <div></div>
+
+            <input type="text" value="" name="title" />
+          </div>
+
+          <input type="submit" class="context" value="Anlegen" />
+        </form>
+      </fieldset>
+    </div>
+  </body>
+</html>
+

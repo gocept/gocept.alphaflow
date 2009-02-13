@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workflow
+  id="testworkflow"
+  startActivity="self_reference normal task">
+
+  <ntask id="self_reference">
+    <exit id="done">
+      <parent continue_with_parent_of="self_reference" />
+    </exit>
+  </ntask>
+
+  <ntask id="normal">
+    <exit id="done2">
+      <parent continue_with_parent_of="self_reference" />
+    </exit>
+  </ntask>
+
+  <ntask id="task">
+    <exit id="done3" activities="self_reference">
+    </exit>
+  </ntask>
+
+</workflow>

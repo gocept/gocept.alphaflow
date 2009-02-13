@@ -1,0 +1,237 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="alphaflow">
+
+  <!-- Generic stuff -->
+  <browser:resourceDirectory
+      name="alphaflow"
+      directory="resources"
+      />
+
+  <!-- Process manager -->
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessManager"
+    name="manage_overview"
+    template="process_manager_overview.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessManager"
+    name="manage_instances"
+    template="manage_instances.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessManager"
+    name="manage_tools"
+    template="manage_tools.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="*"
+    name="manage_linkmacros"
+    template="manage_linkmacros.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:pages
+    for="Products.AlphaFlow.interfaces.IProcessManager"
+    class=".processmanager.Tools"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+      name="manage_cleanup"
+      attribute="cleanup"
+      />
+  </browser:pages>
+
+  <!-- Process instance -->
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IAlphaFlowed"
+    name="workflow_protocol"
+    class=".instance.WorkflowLog"
+    template="workflow_protocol.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IInstance"
+    name="manage_overview"
+    template="instanceOverview.pt"
+    class=".instance.ZMIOverview"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IWorkItem"
+    name="manage_overview"
+    template="workitemOverview.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.ICheckpoint"
+    name="manage_overview"
+    template="checkpointOverview.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IAspect"
+    name="manage_overview"
+    template="aspectOverview.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.ILifeCycleObject"
+    name="overview"
+    class=".workitem.Overview"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:pages
+    for="*"
+    class=".process.PortalProcesses"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+       name="alphaflow_macros"
+       template="macros.pt"
+       />
+    <browser:page
+       name="prefs_alphaflow"
+       template="prefs_alphaflow.pt"
+       />
+  </browser:pages>
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessManager"
+    name="manage_definitions"
+    class=".process.PortalProcesses"
+    template="portalProcesses.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:pages
+    for="*"
+    class=".process.ProcessReadContainer"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+      name="manage_processes"
+      template="processContainerOverview.pt"
+      />
+    <browser:page
+      name="alphaflow_processes"
+      template="alphaflow_processes.pt"
+      />
+  </browser:pages>
+
+  <browser:pages
+    for="*"
+    class=".process.ProcessWriteContainer"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+      name="manage_addProcess"
+      attribute="manage_addProcess"
+      />
+    <browser:page
+      name="addProcess"
+      attribute="addProcess"
+      />
+    <browser:page
+      name="manage_removeProcess"
+      attribute="manage_removeProcess"
+      />
+    <browser:page
+      name="removeProcess"
+      attribute="removeProcess"
+      />
+    <browser:page
+      name="manage_importXML"
+      attribute="manage_importXML"
+      />
+  </browser:pages>
+
+  <browser:pages
+    for="Products.AlphaFlow.interfaces.IProcess"
+    class=".process.Process"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+      name="manage_update"
+      attribute="manage_update"
+      />
+    <browser:page
+      name="update"
+      attribute="update"
+      />
+  </browser:pages>
+
+  <browser:pages
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    class=".process.ProcessVersion"
+    permission="alphaflow.ManageWorkflows"
+    >
+    <browser:page
+      name="restartInstances"
+      attribute="restartInstances"
+      />
+    <browser:page
+      name="make_editable"
+      attribute="make_editable"
+      />
+  </browser:pages>
+
+  <browser:page
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    name="statistics"
+    class=".statistics.Statistics"
+    template="statistics.pt"
+    permission="alphaflow.ManageWorkflows"
+    />
+
+  <browser:pages
+    for="Products.AlphaFlow.interfaces.IProcessVersion"
+    class=".processrendering.ProcessGraph"
+    permission="alphaflow.ManageWorkflows">
+
+    <browser:page
+      name="graph.png"
+      attribute="getGraph"
+      />
+
+    <browser:page
+      name="graph.svg"
+      attribute="getGraphSVG"
+      />
+
+    <browser:page
+      name="map"
+      attribute="getMap"
+      />
+
+    <browser:page
+      name="expandGroup"
+      attribute="expandGroup"
+      />
+
+    <browser:page
+      name="closeGroup"
+      attribute="closeGroup"
+      />
+
+    <browser:page
+      name="closeAllGroups"
+      attribute="closeAllGroups"
+      />
+  </browser:pages>
+
+</configure>
