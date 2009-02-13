@@ -1,0 +1,56 @@
+=============================
+AlphaFlow Development Roadmap
+=============================
+
+2.0
+---
+
+  - Fix deprecations
+
+      - make manage_add/delete use events
+
+  - Code cleanup, refactoring
+
+      - check XXX
+
+      - review code for bad bad patterns
+
+  - Put "Workflow tools" tab in ZMI on all process definitions (or versions?)
+    - restart helper
+    - clean, sanity check, bulk drop
+    - Remove restart helper from central place
+
+  - Make a windows package for pygraphviz
+
+  - Cleanup methods in process manager
+
+    - separate view code where reasonable
+
+  - Consolidate the view classes ProcessReadContainer and
+    ProcessWriteContainer
+
+  - views/www is chaotic, should be moved to browser/ and turned into real
+    views.
+
+  ­ put getDefinition() in interfaces
+ 
+  - workitem.getActivity() should be getDefinition()
+
+  - Provide more tests:
+
+    - Functional: af_select_workflow, af_assign_process, manage_definitions
+
+    - Instance control UI
+
+    - ZMI: import of XML workflow files
+
+  - Update manual
+
+Future
+------
+
+    - RSS worklists
+
+    - Documentation about extending AlphaFlow
+
+    - Change installation to GenericSetup

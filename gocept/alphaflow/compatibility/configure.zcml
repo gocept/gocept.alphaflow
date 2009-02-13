@@ -1,0 +1,18 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    for="zope.schema.interfaces.ITuple
+      zope.schema.interfaces.IIterableSource
+      zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".source.SourceOrderedMultiSelectWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zope.app.form.browser.interfaces.IInputWidget"
+    provides="zope.app.traversing.interfaces.ITraversable"
+    factory="zope.app.traversing.adapters.DefaultTraversable"
+    />
+
+</configure>

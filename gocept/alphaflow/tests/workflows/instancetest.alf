@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+    id="ntasktestworkflow"
+    startActivity="foo bar"
+    description="Blubb"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <ntask id="foo"
+      title="Foo" sort="1">
+      <exit id="done" title="Done">
+      </exit>
+      <assignees kind="actual" expression="python:['author']" />
+    </ntask>
+
+    <ntask id="bar"
+      title="Bar" sort="1">
+      <exit id="done2" title="Done">
+      </exit>
+      <assignees kind="actual" roles="Member" />
+    </ntask>
+
+</workflow>

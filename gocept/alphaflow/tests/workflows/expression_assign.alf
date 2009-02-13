@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workflow  
+    startActivity="write_document"
+    onlyAllowRoles="Manager Reviewer">
+
+    <!-- Write the document -->
+    <ntask id="write_document" title="Dokument schreiben" sort="1">
+      <exit id="complete" title="Complete">
+        <dcworkflow status="published" title="published"/>
+      </exit>
+
+      <assignees kind="actual"
+        expression="object/test_assignees" />
+    </ntask>
+
+</workflow>

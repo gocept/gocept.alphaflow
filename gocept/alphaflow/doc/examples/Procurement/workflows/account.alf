@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<workflow id="procurement"
+          title="Account-based Procurement"
+          description="XXX"
+          startActivity="edit">
+
+  <task id="edit"
+        title="Edit a procurement request">
+    <start>
+      <dcworkflow title="Mark as private."
+                  status="private" />
+      <permission-change>
+        <add name="Modify portal content" roles="Owner"/>
+      </permission-change>
+    </start>
+
+    <complete activities="review" />
+
+    <assignees kind="actual"
+               expression="python:[object.Creator()]" />
+  </task>
+
+  <route id="review"
+         title="Decide whether the article should be bought.">
+    <start>
+      <dcworkflow title="Mark as pending"
+                  status="pending" />
+    </start>
+
+    <ntask id="financial_review"
+           title="Decision by the financial dept.">
+
+      <assignees kind="actual"
+                 roles="Finance" />
+
+      <exit id="accept"
+            title="Accept"
+            activities="accept" />
+
+      <exit id="reject"
+            title="Reject"
+            activities="reject" />
+
+      <exit id="return"
+            title="Return for editing"
+            activities="return" />
+    </ntask>
+
+    <ntask id="account_review"
+           title="Account-based decision.">
+
+      <assignees kind="actual"
+                 expression="python:[object.getAccountGroup()]" />
+
+      <exit id="accept"
+            title="Accept"
+            activities="accept" />
+
+      <exit id="reject"
+            title="Reject"
+            activities="reject" />
+
+      <exit id="return"
+            title="Return for editing"
+            activities="return" />
+    </ntask>
+
+    <gate id="accept"
+          title="Accept"
+          mode="synchronizing-merge">
+      <continue activities="buy" />
+    </gate>
+
+    <gate id="reject"
+          title="Reject"
+          mode="discriminate">
+
+      <continue>
+        <dcworkflow title="Mark as rejected."
+                    status="rejected" />
+      </continue>
+
+    </gate>
+
+    <gate id="return"
+          title="Return for editing"
+          mode="discriminate">
+      <continue activities="edit" />
+    </gate>
+  </route>
+
+  <task id="buy"
+        title="Buy">
+    <start>
+      <dcworkflow title="Mark as accepted."
+                  status="accepted" />
+    </start>
+
+    <complete>
+      <dcworkflow title="Mark as bought."
+                  status="bought" />
+    </complete>
+
+    <assignees kind="actual"
+               roles="Procurement" />
+  </task>
+
+</workflow>

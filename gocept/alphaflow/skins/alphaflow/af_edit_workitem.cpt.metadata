@@ -1,0 +1,12 @@
+[default]
+title = Edit
+
+[validators]
+validators = validate_workitem_edit
+validators..form_add =
+validators..cancel =
+
+[actions]
+action.success = traverse_to:string:workitem_edit
+action.success..cancel = traverse_to:string:go_back
+action.failure = traverse_to:string:af_edit_workitem

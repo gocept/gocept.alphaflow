@@ -1,0 +1,8 @@
+=======================
+AlphaFlow upgrade notes
+=======================
+
+AlphaFlow 1.0 to 2.0
+====================
+
+AlphaFlow 1.0 and 2.0 are incompatible releases. There is no upgrade path.

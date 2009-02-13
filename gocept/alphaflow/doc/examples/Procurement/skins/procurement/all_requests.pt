@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="alphaflow">
+
+  <body>
+    <div metal:fill-slot="main">
+      <tal:block repeat="item here/getAllRequests">
+        <h2 tal:content="python:item[0]" />
+
+        <ul>
+          <li tal:repeat="request python:item[1]">
+              <a href=""
+                 tal:attributes="href request/absolute_url"
+                 tal:content="request/getArticle" />
+          </li>
+        </ul>
+      </tal:block>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE grammar SYSTEM "relaxng.dtd">
+
+<grammar 
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+    >
+  <!-- Elements -->
+  <start>
+    <element name="workflow">
+      <attribute name="id">
+        <data type="ID" />
+      </attribute>
+      <attribute name="startActivity">
+        <data type="IDREFS" />
+      </attribute>
+      <optional>
+        <choice>
+          <attribute name="object_name" />
+          <attribute name="title" />
+          <attribute name="description" />
+          <attribute name="onlyAllowRoles">
+            <data type="token" />
+          </attribute>
+        </choice>
+      </optional>
+      <oneOrMore>
+        <choice>
+          <ref name="Task" />
+          <ref name="Decision" />
+          <ref name="Route" />
+          <ref name="Alarm" />
+          <ref name="Switch" />
+          <ref name="Expression" />
+          <ref name="Ntask" />
+          <ref name="Email" />
+          <ref name="Configuration" />
+        </choice>
+      </oneOrMore>
+    </element>
+  </start>
+
+  <define name="Route">
+    <element name="route">
+      <zeroOrMore>
+        <choice>
+          <ref name="Gate" />
+          <ref name="Security" />
+          <ref name="Dcworkflow" />
+          <ref name="Task" />
+          <ref name="Decision" />
+          <ref name="Recursion" />
+          <ref name="Route" />
+          <ref name="Alarm" />
+          <ref name="Switch" />
+          <ref name="Expression" />
+          <ref name="Ntask" />
+          <ref name="Email" />
+        </choice>
+      </zeroOrMore>
+      <ref name="common-attlist" />
+    </element>
+  </define>
+
+  <define name="Alarm">
+    <element name="alarm">
+      <ref name="common-tales-attlist" />
+      <ref name="Aspects" />
+    </element>
+  </define>
+  
+  
+  <define name="Email">
+    <element name="email">
+      <ref name="common-automatic-attlist" />
+      <attribute name="mailSubject" />
+      <attribute name="template" />
+      <oneOrMore>
+        <ref name="Recipient" />
+      </oneOrMore>
+      <ref name="Aspects" />
+    </element>
+  </define>
+
+  <define name="Switch">
+    <element name="switch">
+      <ref name="common-automatic-attlist" />
+      <attribute name="mode">
+        <choice>
+          <value>first</value>
+          <value>all</value>
+        </choice>
+      </attribute>
+      <ref name="Aspects" />
+    </element>
+  </define>
+
+  <define name="Gate">
+    <element name="gate">
+      <ref name="common-automatic-attlist" />
+      <attribute name="mode">
+        <choice>
+          <value>synchronizing-merge</value>
+          <value>discriminate</value>
+          <value>multi-merge</value>
+        </choice>        
+      </attribute>
+    </element>
+  </define>
+
+
+  <define name="Configuration">
+    <element name="configuration">
+      <ref name="Aspects" />
+      <ref name="common-assignable-attlist" />
+      <ref name="Assignees" />
+      <choice>
+        <attribute name="configures">
+          <data type="IDREFS" />
+        </attribute>
+        <attribute name="configures_all">
+          <choice>
+            <value>false</value>
+            <value>true</value>
+          </choice>
+      </attribute>
+      </choice>
+    </element>
+  </define>
+
+  
+
+  <!-- Assignable Activities -->
+
+  <define name="Decision">
+    <element name="decision">
+      <ref name="common-assignable-attlist" />
+      <attribute name="decision_modus">
+        <choice>
+          <value>first_yes</value>
+          <value>all_yes</value>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="decision_notice" />
+        <attribute name="reject_activity">
+          <data type="IDREFS" />
+        </attribute>
+        <attribute name="accept_activity">
+          <data type="IDREFS" />
+        </attribute>
+      </optional>
+      <ref name="Assignees" />
+      <ref name="Aspects" />
+    </element>
+  </define>
+
+  <define name="Task">
+    <element name="task">
+      <ref name="common-assignable-attlist" />
+      <zeroOrMore>
+        <ref name="Assignees" />
+      </zeroOrMore>
+      <ref name="Aspects" />
+    </element>
+  </define>
+
+  <define name="Ntask">
+    <element name="ntask">
+      <ref name="common-assignable-attlist" />
+      <zeroOrMore>
+        <choice>
+          <ref name="Assignees" />
+        </choice>
+      </zeroOrMore>
+      <ref name="Aspects" />
+    </element>
+  </define>
+
+  <!-- 
+    A S P E C T S
+  -->
+  <!-- Common aspect elemens -->
+  <define name="Aspects">
+    <zeroOrMore>
+      <choice>
+        <ref name="StartAspect" />
+        <ref name="ExitAspect" />
+        <ref name="EndAspect" />
+      </choice>
+    </zeroOrMore>
+  </define>
+
+  <define name="StartAspect">
+    <element name="start">
+      <zeroOrMore>
+        <choice>
+          <ref name="Assignees" />
+          <ref name="Security" />
+          <ref name="Dcworkflow" />
+          <ref name="Recursion" />
+          <ref name="Route" />
+          <ref name="Activities" />
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="ExitAspect">
+    <element name="exit">
+      <zeroOrMore>
+        <choice>
+          <ref name="Assignees" />
+          <ref name="Security" />
+          <ref name="Dcworkflow" />
+          <ref name="Recursion" />
+          <ref name="Route" />
+          <ref name="Activities" />
+        </choice>
+      </zeroOrMore>
+      <ref name="exit-attlist" />
+    </element>
+  </define>
+  <define name="EndAspect">
+    <element name="end">
+      <zeroOrMore>
+        <choice>
+          <ref name="Assignees" />
+          <ref name="Security" />
+          <ref name="Dcworkflow" />
+          <ref name="Recursion" />
+          <ref name="Route" />
+          <ref name="Activities" />
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="Activities">
+    <element name="activities">
+      <attribute name="ids">
+        <data type="IDREFS" />
+      </attribute>
+    </element>
+  </define>
+  
+  <!-- Automatic Activities -->
+  <define name="Dcworkflow">
+    <element name="dcworkflow">
+      <ref name="common-automatic-attlist" />
+      <attribute name="status">
+        <text />
+      </attribute>
+    </element>
+  </define>
+
+  <define name="Recursion">
+    <element name="recursion">
+      <ref name="common-automatic-attlist" />
+      <attribute name="recursion_activity">
+        <data type="IDREFS" />
+      </attribute>
+      <attribute name="break_activities">
+        <data type="IDREFS" />
+      </attribute>
+      <optional>
+        <attribute name="optional_recursion">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+    </element>
+  </define>
+  
+  <!-- TALES Activities -->
+  <define name="Expression">
+    <element name="expression">
+      <ref name="common-tales-attlist" />
+    </element>
+  </define>
+  
+
+  <define name="Security">
+    <element name="security">
+      <ref name="common-automatic-attlist" />
+      <zeroOrMore>
+        <choice>
+          <ref name="Permission" />
+          <ref name="Add" />
+          <ref name="Remove" />
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  
+  
+  <define name="Recipient">
+    <element name="recipient">
+      <attribute name="type">
+        <choice>
+          <value>actual_role</value>
+          <value>next_assignees</value>
+          <value>previous_assignees</value>
+          <value>owner</value>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="roles" />
+      </optional>
+    </element>
+  </define>
+
+  <define name="Assignees">
+    <element name="assignees">
+      <attribute name="kind">
+        <choice>
+          <value>actual</value>
+          <value>possible</value>
+        </choice>
+      </attribute>
+      <choice>
+        <ref name="roles-attrib" />
+        <attribute name="expression" />
+      </choice>
+    </element>
+  </define>
+  
+  <define name="Permission">
+    <element name="permission">
+      <attribute name="acquire">
+        <choice>
+          <value>false</value>
+          <value>true</value>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="name" />
+        <attribute name="roles" />
+      </optional>
+    </element>
+  </define>
+
+  <define name="Add">
+    <element name="add">
+      <attribute name="name" />
+      <attribute name="roles" /> 
+    </element>
+  </define>
+
+  <define name="Remove">
+    <element name="remove">
+      <attribute name="name" />
+      <attribute name="roles" />
+    </element>
+  </define>
+  
+  <!-- Attributes -->
+  <define name="id-attrib">
+    <attribute name="id">
+      <data type="ID" />
+    </attribute>
+  </define>
+  <define name="sort-attrib">
+    <optional>
+      <attribute name="sort">
+        <data type="int" />
+      </attribute>
+    </optional>
+  </define>
+  <define name="review_notice-attrib">
+    <optional>
+      <attribute name="review_notice" />
+    </optional>
+  </define>
+  <define name="rejectaccept-attrib">
+    <attribute name="reject_activity">
+      <data type="IDREF" />
+    </attribute>
+    <attribute name="accept_activity">
+      <data type="IDREF" />
+    </attribute>
+  </define>
+
+  <define name="roles-attrib">
+    <attribute name="roles">
+      <data type="token" />
+    </attribute>
+  </define>
+
+  <define name="nonEditableFields-attrib">
+    <attribute name="nonEditableFields">
+      <data type="token" />
+    </attribute>
+  </define>
+
+  <define name="common-attlist">
+    <ref name="id-attrib" />
+    <optional>
+      <choice>
+        <attribute name="startActivity">
+          <data type="IDREFS" />
+        </attribute>
+        <attribute name="title" />
+        <ref name="sort-attrib" />
+        <ref name="nonEditableFields-attrib" />
+      </choice>
+    </optional>
+  </define>
+
+  <define name="common-automatic-attlist">
+    <ref name="common-attlist" />
+    <optional>
+      <attribute name="continue_activity">
+        <data type="IDREFS" />
+      </attribute>
+    </optional>
+  </define>
+
+  <define name="common-assignable-attlist">
+    <ref name="common-attlist" />
+    <optional>
+      <choice>
+        <attribute name="view_url_expr" />
+        <attribute name="content_roles" />
+        <attribute name="completion_url_expr" />
+      </choice>
+    </optional>
+ </define>
+
+ <define name="exit-attlist">
+   <attribute name="id">
+     <data type="ID" />
+   </attribute>
+   <attribute name="title" />
+   <attribute name="condition" />
+ </define>
+
+ <define name="common-tales-attlist">
+   <ref name="common-automatic-attlist" />
+   <attribute name="expression" />
+ </define>
+</grammar>

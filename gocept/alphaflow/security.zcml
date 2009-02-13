@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="alphaflow">
+
+    <permission
+      id="alphaflow.ManageWorkflows"
+      title="Manage workflows"
+      />
+
+    <permission
+      id="alphaflow.UseInstance"
+      title="Work with process instance"
+      />
+
+</configure>

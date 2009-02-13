@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+  <workflow
+    id="testworkflow"
+    startActivity="some-task expression-test"
+    description="Test sibilng"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <expression id="expression-test"
+      expression="python:object.set('expr_works', 1)" />
+
+    <ntask id="some-task">
+      <start>
+        <expression expression="python:object.set('before', 1)" />
+      </start>
+
+      <complete>
+        <expression expression="python:object.set('after', 1)" />
+      </complete>
+
+      <assignees kind="possible" roles="Reviewer" />
+      <exit id="complete" title="Complete" />
+    </ntask>
+
+</workflow>

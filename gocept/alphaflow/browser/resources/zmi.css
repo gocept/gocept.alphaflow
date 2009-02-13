@@ -1,0 +1,100 @@
+div.form-label {
+  background-color: #ccc;
+  padding: 0.2em;
+  margin: 0.4em;
+  margin-left: 0;
+}
+
+h4 {
+  text-decoration: underline;
+}
+
+table thead th {
+  text-align: left;
+  background-color: #ccc;
+}
+
+table.pagewidth {
+  width: 100%;
+}
+
+table.process_activities {
+  margin-top: 1em;
+  border-collapse: collapse;
+}
+
+table.process_activities thead th {
+  border-bottom: 1px solid gray;
+}
+
+table.process_activities tbody tr td {
+  border-bottom: 1px dotted gray;
+}
+
+table.process_activities tr.even td {
+  background-color: #EEE;
+}
+
+fieldset {
+  border: 1px solid #999;
+  margin-top: 0.5em;
+}
+
+fieldset legend {
+  font-size: 100%;
+  font-weight: bold;
+}
+
+textarea {
+  width: 40em;
+  height: 10em;
+}
+
+span.instanceitem {
+  border: 1px solid white;
+}
+
+span.instanceitem h5 {
+  margin: 0.3em;
+  padding: 0 0.2em;
+  border-bottom: 1px solid #999;
+}
+
+span.instanceitem dl dt {
+  margin-right: 1em;
+  float: left;
+}
+
+dl {
+  font-size: 80%;
+  margin-left: 1em;
+}
+
+dl dt {
+  font-weight: bold;
+}
+
+.initiated,
+.active {
+  color: green;
+}
+
+.complete,
+.terminated {
+  color: blue;
+}
+
+.failed {
+  color: red;
+}
+
+.validation_error {
+  background-color: rgb(255, 221, 221);
+  border: 1px solid #ffa2a2;
+  display: block;
+}
+
+.validation_error h1 {
+  font-size: 100%;
+}
+

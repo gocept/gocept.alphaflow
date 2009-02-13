@@ -1,0 +1,162 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="alphaflow">
+
+    <utility
+        factory=".core.XMLImporter"
+        name="xml"
+        />
+
+    <utility
+        factory=".core.ProcessVersionImporter"
+        name="workflow"
+        />
+
+    <adapter
+        factory=".domimporters.Checkpoint"
+        name="start"
+        />
+
+    <adapter
+        factory=".domimporters.Checkpoint"
+        name="end"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="exit"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="continue"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="complete"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="accept"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="reject"
+        />
+
+    <adapter
+        factory=".domimporters.Exit"
+        name="case"
+        />
+
+    <adapter
+        factory=".domimporters.Alarm"
+        name="alarm"
+        />
+
+    <adapter
+        factory=".domimporters.Configuration"
+        name="configuration"
+        />
+
+    <adapter
+        factory=".domimporters.DCWorkflow"
+        name="dcworkflow"
+        />
+
+    <adapter
+        factory=".domimporters.Decision"
+        name="decision"
+        />
+
+    <adapter
+        factory=".domimporters.Expression"
+        name="expression"
+        />
+
+    <adapter
+        factory=".domimporters.ExpressionAspect"
+        name="expression"
+        />
+
+    <adapter
+        factory=".domimporters.Gate"
+        name="gate"
+        />
+
+    <adapter
+        factory=".domimporters.EMailAspect"
+        name="email"
+        />
+
+    <adapter
+        factory=".domimporters.EMail"
+        name="email"
+        />
+
+    <adapter
+        factory=".domimporters.Recipient"
+        for="..activities.notify.EMailActivity"
+        name="recipient"
+        />
+
+    <adapter
+        factory=".domimporters.Recipient"
+        for="..aspects.notify.EMailAspectDefinition"
+        name="recipient"
+        />
+
+    <adapter
+        factory=".domimporters.NTask"
+        name="ntask"
+        />
+
+    <adapter
+        factory=".domimporters.Parent"
+        name="parent"
+        />
+
+    <adapter
+        factory=".domimporters.PermissionSetting"
+        name="permission"
+        />
+
+    <adapter
+        factory=".domimporters.PermissionAddSetting"
+        name="add"
+        />
+
+    <adapter
+        factory=".domimporters.PermissionRemoveSetting"
+        name="remove"
+        />
+
+    <adapter
+        factory=".domimporters.PermissionAspect"
+        name="permission-change"
+        />
+
+    <adapter
+        factory=".domimporters.Route"
+        name="route"
+        />
+
+    <adapter
+        factory=".domimporters.SimpleDecision"
+        name="simpledecision"
+        />
+
+    <adapter
+        factory=".domimporters.Switch"
+        name="switch"
+        />
+
+    <adapter
+        factory=".domimporters.Termination"
+        name="termination"
+        />
+
+</configure>

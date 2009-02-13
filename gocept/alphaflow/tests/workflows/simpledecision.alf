@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow 
+  id="testworkflow"
+  startActivity="config_deci_1"
+  onlyAllowRoles="Manager Reviewer Member">
+
+  <configuration id="config_deci_1"
+                 configures="deci_1">
+    <complete activities="deci_1" />
+  </configuration>
+
+  <simpledecision id="deci_1"
+                  decision_notice="decision with possible roles">
+    <accept activities="deci_2" />
+    <reject>
+      <dcworkflow status="private" />
+    </reject>
+    <assignees kind="possible" roles="Reviewer" />
+  </simpledecision>
+
+  <simpledecision id="deci_2"
+                  decision_notice="decision with actual roles">
+    <accept>
+      <dcworkflow status="published" />
+    </accept>
+    <reject activities="deci_3" />
+    <assignees kind="actual" roles="Reviewer" />
+  </simpledecision>
+  
+  <simpledecision id="deci_3"
+                  decision_notice="decision with assignees expression">
+    <accept>
+      <dcworkflow status="published" />
+    </accept>
+    <reject>
+      <dcworkflow status="private" />
+    </reject>
+    <assignees kind="actual" expression="python:['editor1', 'editor2']" />
+  </simpledecision>
+
+</workflow>

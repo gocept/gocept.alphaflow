@@ -1,0 +1,33 @@
+<metal:block>
+  <metal:macro define-macro="instance_to_process">
+    <a href=""
+       tal:define="process instance/getProcess"
+       tal:attributes="href string:${process/absolute_url}/manage_workspace"
+       tal:content="string:${process/title}"
+       tal:on-error="nothing" />
+  </metal:macro>
+
+  <metal:macro define-macro="instance_to_object">
+    <a href=""
+       tal:on-error="string:MISSING OBJECT"
+       tal:define="obj instance/getContentObject"
+       tal:attributes="href string:${obj/absolute_url}/manage_workspace"
+       tal:content="string:${obj/absolute_url_path} - ${obj/title_or_id}"/>
+  </metal:macro>
+
+  <metal:macro define-macro="workitem_to_activity">
+    <tal:block define="activity python:workitem.getInstance().getProcess().process[workitem.activity_id]"
+      on-error="workitem/activity_id">
+        <a href=""
+           tal:condition="nocall:activity"
+           tal:attributes="href string:${activity/absolute_url}/manage_workspace"
+           tal:content="string:${activity/title_or_id} (${activity/activity_type})" />
+    </tal:block>
+  </metal:macro>
+
+  <metal:macro define-macro="to_workitem">
+    <a href=""
+      tal:attributes="href string:${workitem/absolute_url}/manage_workspace">
+      <span tal:content="python:workitem.getActivity().title_or_id()"
+        tal:on-error="string:(Title not available)"></span></a></metal:macro>
+</metal:block>

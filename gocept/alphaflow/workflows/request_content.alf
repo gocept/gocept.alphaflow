@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<workflow id="request_content"
+          title="Request content from an author"
+          onlyAllowRoles="Owner"
+          description="A simple publication workflow that allows you to ask a member of this portal to write about a given topic."
+          startActivity="choose_author">
+
+    <configuration id="choose_author"
+        title="Choose a member who should create the content"
+        configures="create_content">
+
+    <start>
+      <dcworkflow title="Mark as private."
+                  status="private" />
+      <permission-change title="set permissions for private state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner" />
+      </permission-change>
+    </start>
+
+      <complete activities="create_content" />
+        <assignees kind="actual"
+            roles="Owner"/>
+    </configuration>
+
+    <ntask id="create_content"
+      title="Create content">
+    <start>
+      <permission-change title="set permissions for member to modify state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="View"
+                    acquire="true"
+                    roles="ProcessUser Owner" />
+      </permission-change>
+    </start>
+      <exit id="complete" title="Complete" activities="review"/>
+
+      <assignees kind="possible" roles="Member"/>
+    </ntask>
+
+    <ntask id="revise"
+        title="Content rejected, please revise">
+    <start>
+      <permission-change title="set permissions for member to modify state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="ProcessUser" />
+        <permission name="View"
+                    acquire="true"
+                    roles="ProcessUser Owner" />
+      </permission-change>
+    </start>
+      <exit id="complete" title="Complete" activities="review" />
+        <assignees kind="actual"
+            expression="python: object.getInstance().getWorkItems(state='complete', activity_id='create_content')[-1].getActivityConfiguration('assignees')"/>
+    </ntask>
+
+    <decision id="review"
+        title="Review requested content"
+        decision_modus="first_yes">
+
+    <start>
+      <dcworkflow title="Mark as private."
+                  status="private" />
+      <permission-change title="set permissions for private state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner" />
+      </permission-change>
+    </start>
+
+      <reject activities="revise" />
+      <accept activities="publish" />
+        <assignees kind="actual"
+            roles="Owner"/>
+    </decision>
+    
+
+    <ntask id="publish"
+        title="Published content">
+
+    <start>
+      <dcworkflow title="Mark as published."
+                  status="published" />
+      <permission-change title="set permissions for published state">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+      </permission-change>
+    </start>
+
+    <exit id="retract"
+          title="Retract content">
+      <dcworkflow title="Mark as private."
+                  status="private" />
+      <permission-change title="set permissions for private state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner" />
+      </permission-change>
+    </exit>
+
+        <assignees kind="actual" roles="Owner" />
+    </ntask>
+
+</workflow>

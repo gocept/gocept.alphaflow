@@ -1,0 +1,50 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+<style type='text/css'>
+  <!--
+  @import url(/++resource++alphaflow/zmi.css);
+  -->
+</style>
+
+<h3>Administration tools</h3>
+
+<p class="form-help">
+  These tools allow you to manage running workflow instances.
+</p>
+
+<form action=""  tal:attributes="action here/absolute_url" method="POST"
+  enctype="multipart/form-data">
+  <input type="submit"
+    class='button' 
+    name="manage_cleanup:action"
+    value="Clean terminated and stale instances"/>
+  <input type="submit"
+    class='button' 
+    name="sanityCheck:method"
+    value="Run sanity check"/>
+  <input type="submit"
+    class='button' 
+    name="bulkDropin:method"
+    value="Bulk drop-in"/> 
+</form>
+
+<form action="" tal:attributes="action string:${here/absolute_url}/restartHelper">
+  <p class="form-help"><strong>Restart helper for massive failure:</strong></p>
+
+  <p class="form-help">
+    <input type="submit" value="Restart"/>
+    all work items in state <strong>failed</strong> of activity
+    <select name="activityandprocess">
+      <tal:block repeat="process here/listProcessDefinitions">
+        <optgroup tal:repeat="version process/objectValues"
+          tal:attributes="label string:${process/title_or_id} - version ${version/getId}">
+          <option tal:repeat="activity version/listActivityIds"
+            tal:attributes="value string:$activity&amp;${version/UID}"
+            tal:content="activity"/>
+        </optgroup>
+      </tal:block>
+    </select>
+  </p>
+</form>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

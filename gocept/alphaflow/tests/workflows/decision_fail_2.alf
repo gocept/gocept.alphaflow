@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Note: This process definition is supposed to fail. -->
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title=""  
+  startActivity="deci_1"
+  description=""
+  onlyAllowRoles="Manager,Reviewer,Member">
+  
+  <decision id="deci_1"
+    decision_notice="first yes counts"
+    decision_modus="vote">
+  </decision>
+
+</workflow>

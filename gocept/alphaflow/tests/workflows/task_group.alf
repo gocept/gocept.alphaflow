@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+    id="testworkflow"
+    startActivity="edit"
+    description="Blubb"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <ntask id="edit"
+          title="Dokument bearbeiten" sort="1">
+
+    <exit id="complete" title="Complete">
+      <dcworkflow status="published" title="" />
+    </exit>
+
+      <assignees kind="actual" expression="python:['group1']" />
+
+    </ntask>
+
+</workflow>

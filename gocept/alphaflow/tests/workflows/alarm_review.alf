@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow id="testworkflow"
+  startActivity="edit_ticket deadline"
+  onlyAllowRoles="Manager Reviewer Member">
+
+  <ntask id="edit_ticket"
+    title="Ticket bearbeiten"
+    sort="1">
+    <exit id="complete" title="Complete" activities="deadline" />
+  </ntask>
+
+  <alarm id="deadline"
+    title="Wiedervorlage"
+    due="object/deadline">
+    <continue>
+      <dcworkflow status="pending" title="Pending"/>
+    </continue>
+  </alarm>
+
+</workflow>

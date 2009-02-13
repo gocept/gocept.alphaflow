@@ -1,0 +1,150 @@
+% Complete documentation on the extended LaTeX markup used for Python
+% documentation is available in ``Documenting Python'', which is part
+% of the standard documentation for Python.  It may be found online
+% at:
+%
+%     http://www.python.org/doc/current/doc/doc.html
+
+\documentclass{manual}
+\RequirePackage[latin9]{inputenc}
+\usepackage{graphicx}
+
+\title{AlphaFlow manual}
+
+% Please at least include a long-lived email address;
+% the rest is at your discretion.
+\authoraddress{
+    gocept GmbH \& Co. KG\\
+    Forsterstraﬂe 29\\
+    06112 Halle (Saale)\\
+    E-Mail: \email{ct@gocept.com}
+}
+
+\date{\today}     % update before release!
+                % Use an explicit date so that reformatting
+                % doesn't cause a new date to be used.  Setting
+                % the date to \today can be used during draft
+                % stages to make it easier to handle versions.
+
+\release{2.0.0}           % release version; this is used to define the
+                          % \version macro
+
+\makeindex          % tell \index to actually write the .idx file
+
+\begin{document}
+
+\maketitle
+
+% This makes the contents more accessible from the front page of the HTML.
+\ifhtml
+\chapter*{Front matter\label{front}}
+\fi
+
+\copyright 2004-2006 gocept gmbh \& co. kg
+
+Licensed under the Zope Public License, Version 2.1 (the ``License''); you may not use this file except in compliance with the License. You may obtain a copy of the License at \url{http://www.zope.org/Resources/ZPL}.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESSED
+OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+\begin{abstract}
+
+\noindent
+
+AlphaFlow is a simple, flexible and easy-to-customize workflow engine for
+Plone. It implements an activity based workflow concept to manage content
+objects in Plone.
+
+This document is the official documentation for developers and administrators
+using AlphaFlow. It contains a tutorial, a user guide and a reference.
+
+\begin{seealso}
+    \seetitle[http://www.gocept.com/open\_source\_software/AlphaFlow/]{AlphaFlow homepage}{for up to date news, releases and information about AlphaFlow.}
+\end{seealso}
+\end{abstract}
+
+\tableofcontents
+
+
+\include{introduction}
+
+\include{installation}
+
+\include{tutorial}
+
+\include{architecture}
+
+\include{admin}
+
+% Activity reference
+\include{activities}
+
+% API reference
+\include{api}
+
+\include{recipes}
+
+\chapter{Reporting bugs}
+
+If you find a problem in AlphaFlow, we would love to fix it. You can use the
+mailinglist to discuss whether the problem is a bug or not and how it should be
+fixed. But to allow us to track problems and react appropriately, please file
+any problem you find in the gocept bugtracker (\url{http://bugs.gocept.com}). 
+
+\begin{itemize}
+
+    \item If you submit a bug in our tracker for the first time, please make
+        sure you create an account with your email address as username.
+
+    \item Then use the ``search'' action to check if the problem you found has
+        already been submitted by someone else. Please do not file duplicate
+        bugs, but comment existing bugs and tell us about your experience with
+        the problem.
+
+    \item If the problem is not reported yet, please click the ``New'' action to create a new bug entry.
+
+    \item Then select ``AlphaFlow'' as the relevant product to file the bug into.
+
+    \item In the following form, you have to fill out a couple of fields that are mandatory:
+        \begin{description}
+        \item[Version] where you indicate which version of AlphaFlow you use
+        \item[Summary] should give a short and distinguishable description of the problem in (less than) one sentence
+        \item[Description] As much relevant information about the problem as you have. Typically this might include code examples, tracebacks and other
+            textual explanations. Try to describe the problem as detailed as possible to allow us to reproduce it.
+        \end{description}
+
+        The form also has a couple of links that will explain the other fields
+        to you, allowing even better specified problem reports.
+
+    \item At last, click on the button ``Commit'', and you have successfully reported the problem to us.
+\end{itemize}
+
+Once you have filed a problem in the bug tracker, you will automatically get
+informed when we work on the problem and when we fix it. We also use it to
+communicate with you to get more information or tell you about possible short
+term fixes.
+
+\chapter{Getting support}
+
+\begin{description}
+   \item[Mailinglist]
+       Send an email with the word ``subscribe'' in the subject to 
+       \email{alphaflow@lists.gocept.com} to join the AlphaFlow mailinglist.
+       
+   \item[Commercial support]
+        Commercial support is available from gocept
+        (\url{http://www.gocept.com}) in various flavours. Please email us at
+        support@gocept.com or call +49 345 122 98 89 0 to get an offer for
+        training, consulting, support contracts or custom developments.
+\end{description}
+
+
+\end{document}

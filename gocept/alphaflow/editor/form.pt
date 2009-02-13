@@ -1,0 +1,78 @@
+<form
+  action="."
+  metal:define-macro="form"
+  id="zc.page.browser_form"
+  class="edit-form" 
+  enctype="multipart/form-data"
+  tal:attributes="action python:request.URL"
+  method="post"
+  i18n:domain="alphaflow">
+
+  <metal:block define-slot="header" />
+
+  <div class="form-status errorbox"
+    tal:define="status python:view.status"
+    tal:condition="status">
+
+    <div class="summary"
+      i18n:translate=""
+      tal:content="status">
+      Form status summary
+    </div>
+
+    <ul class="errors" tal:condition="python:view.errors">
+      <li tal:repeat="error python:view.error_views()">
+        <span tal:replace="structure error">Error Type</span>
+      </li>
+    </ul>
+  </div>
+
+  <div
+    class="field"
+    tal:repeat="widget python:list(view.widgets)">
+
+    <div class="label">
+      <label tal:attributes="for python:widget.name">
+        <span
+          tal:condition="widget/compact|nothing"
+          tal:replace="structure widget"
+          />
+        <span tal:content="python:widget.label">
+          label
+        </span>
+      </label>
+    </div>
+
+    <div class="hint"
+      i18n:translate=""
+      tal:define="hint python:widget.hint"
+      tal:content="hint"
+      tal:condition="hint">
+      Title of this content object.
+    </div>
+
+    <div class="error"
+      tal:condition="python:widget.error()">
+      <span tal:replace="structure python:widget.error()">
+        error
+      </span>
+    </div>
+
+    <div class="widget"
+      tal:condition="not:widget/compact|nothing"
+      tal:content="structure widget">
+      Widget goes here
+    </div>
+
+  </div>
+
+  <div id="actionsView">
+    <span class="actionButtons">
+      <input type="button" class="button" name="form.actions.apply"
+        id="submitForm" value="Save" i18n:attributes="value"/>
+    </span>
+  </div>
+
+  <metal:block define-slot="footer" />
+
+</form>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+
+  <workflow
+    id="testworkflow"
+    startActivity="assign_task"
+    description="Test of configuration activity"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <configuration id="assign_task"
+                   configures_all="true">
+      <complete activities="write_doc" />
+      <assignees kind="actual" roles="Member" />
+    </configuration>
+
+    <ntask id="write_doc">
+      <start>
+        <dcworkflow status="published" title="published"/>
+      </start>
+      <exit id="complete" title="Complete" activities="review" />
+      <assignees kind="possible" roles="Member" />
+    </ntask>
+
+    <ntask id="review">
+      <assignees kind="possible" roles="Reviewer" />
+      <exit id="complete" title="Complete" />
+    </ntask>
+
+</workflow>

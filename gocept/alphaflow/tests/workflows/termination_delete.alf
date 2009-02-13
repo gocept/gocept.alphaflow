@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow
+    id="testworkflow"
+    startActivity="terminate">
+
+    <termination id="terminate">
+      <end>
+        <expression
+           expression="python:object.getParentNode().manage_delObjects([object.getId()])"
+           />
+      </end>
+    </termination>
+
+</workflow>

@@ -1,0 +1,303 @@
+# translation of af-it.po to
+# Gettext Message File for alphaflow.
+# Fabrizio Reale, 2005.
+# Fabrizio Reale, 2005.
+# Fabrizio Reale, 2005.
+# Fabrizio Reale, 2005.
+# Daniel Havlik <dh@gocept.com>, 2004.
+# Fabrizio Reale, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: af-it\n"
+"POT-Creation-Date: 2008-04-16 13:26+0000\n"
+"PO-Revision-Date: 2005-10-03 11:38+0200\n"
+"Last-Translator: Fabrizio Reale\n"
+"Language-Team: <fabrizio.reale@redomino.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-Code: it\n"
+"Language-Name: Italian\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: alphaflow\n"
+"X-Is-Fallback-For: it-ch\n"
+"X-Generator: KBabel 1.10.2\n"
+
+#. Default: "Activity"
+#: ./skins/alphaflow/af_list_tasks.pt:22
+msgid "Activity"
+msgstr "Attività"
+
+#: ./editor/form.py:102
+msgid "Apply"
+msgstr ""
+
+#. Default: "Aspects are executed in the given order when this checkpoint is reached."
+#: ./editor/checkpoint.pt:29
+msgid "Aspects are executed in the given order when this checkpoint is reached."
+msgstr ""
+
+### af_list_tasks
+#. Default: "Assigned by"
+#: ./skins/alphaflow/af_list_tasks.pt:24
+msgid "Assigned by"
+msgstr "Assegnato a"
+
+#. Default: "Current Activities"
+#: ./skins/alphaflow/af_list_requests.pt:30
+msgid "Current Activities"
+msgstr "Processo corrente"
+
+#. Default: "Current Users"
+#: ./skins/alphaflow/af_list_requests.pt:31
+msgid "Current Users"
+msgstr "Utente attuale"
+
+#. Default: "Date"
+#: ./browser/workflow_protocol.pt:16
+msgid "Date"
+msgstr ""
+
+#. Default: "Description"
+#: ./skins/alphaflow/af_list_tasks.pt:23
+msgid "Description"
+msgstr "Descrizione"
+
+#: ./editor/form.py:117
+msgid "No changes"
+msgstr ""
+
+### af_list_requests
+#. Default: "Object"
+#: ./skins/alphaflow/af_list_requests.pt:29
+msgid "Object"
+msgstr "Oggetto"
+
+#. Default: "Result"
+#: ./browser/workflow_protocol.pt:19
+msgid "Result"
+msgstr "Risultato"
+
+#. Default: "Save"
+#: ./editor/form.pt:71
+msgid "Save"
+msgstr ""
+
+#. Default: "Show workflow graphics..."
+#: ./skins/alphaflow/af_select_workflow.pt:26
+msgid "Show workflow graphics..."
+msgstr ""
+
+#. Default: "Start the activities:"
+#: ./editor/activity_details.pt:39
+msgid "Start the activities:"
+msgstr ""
+
+#. Default: "Task"
+#: ./browser/workflow_protocol.pt:18
+msgid "Task"
+msgstr ""
+
+#. Default: "This is an activity of the type &laquo;${activity_type}&raquo;."
+#: ./editor/display.pt:7
+msgid "This is an activity of the type &laquo;${activity_type}&raquo;."
+msgstr ""
+
+#: ./editor/form.py:112
+msgid "Updated on ${date_time}"
+msgstr ""
+
+#. Default: "User"
+#: ./browser/workflow_protocol.pt:17
+msgid "User"
+msgstr ""
+
+#. Default: "Workflow"
+#: ./skins/alphaflow/af_select_workflow.pt:26
+msgid "Workflow"
+msgstr ""
+
+#. Default: "This is the overview of ${workflows} You can add and edit workflows and gather statistics here."
+#: ./browser/alphaflow_processes.pt:26
+msgid "description_workflow_overview"
+msgstr ""
+
+#. Default: "global workflows."
+#: ./browser/alphaflow_processes.pt:27
+msgid "global workflows."
+msgstr ""
+
+### af_Select_workflow
+#. Default: "Select a workflow"
+#: ./skins/alphaflow/af_select_workflow.pt:10
+msgid "header_select_workflow"
+msgstr "Scegli il workflow"
+
+#. Default: "Activities"
+#: ./editor/activitypanel.pt:26
+msgid "heading_activities"
+msgstr ""
+
+#. Default: "Add new aspect"
+#: ./editor/checkpoint.pt:46
+msgid "heading_add_new_aspect"
+msgstr ""
+
+#. Default: "Aspects"
+#: ./editor/checkpoint.pt:27
+msgid "heading_aspects"
+msgstr ""
+
+#. Default: "Edit workflow"
+#: ./editor/workflow.pt:4
+msgid "heading_edit_workflow"
+msgstr ""
+
+#. Default: "Exits"
+#: ./editor/activity_details.pt:17
+msgid "heading_exits"
+msgstr ""
+
+#. Default: "Permission changes"
+#: ./editor/permission.pt:4
+msgid "heading_permission_changes"
+msgstr ""
+
+#. Default: "Workflows"
+#: ./browser/alphaflow_processes.pt:11
+msgid "heading_processes"
+msgstr ""
+
+#. Default: "The workflow has errors ..."
+#: ./editor/activitypanel.pt:7
+msgid "heading_workflow_has_errors"
+msgstr ""
+
+#. Default: "Initializing editor ..."
+#: ./editor/index.pt:154
+msgid "initializing_editor"
+msgstr ""
+
+#. Default: "Activity groups ..."
+#: ./editor/index.pt:125
+msgid "label_activity_groups"
+msgstr ""
+
+#. Default: "Add activity ..."
+#: ./editor/index.pt:105
+msgid "label_add_activity"
+msgstr ""
+
+#. Default: "Collapse all"
+#: ./editor/index.pt:127
+msgid "label_collapse_all"
+msgstr ""
+
+#. Default: "Collapse group: ${name}"
+#: ./editor/index.pt:133
+msgid "label_collapse_group"
+msgstr ""
+
+#. Default: "Workflows"
+#: ./browser/prefs_alphaflow.pt:10
+msgid "label_configlet_alphaflow_editor"
+msgstr ""
+
+#. Default: "Create new workflow"
+#: ./browser/alphaflow_processes.pt:39
+msgid "label_configlet_new_workflow"
+msgstr ""
+
+#. Default: "Title of the workflow"
+#: ./browser/alphaflow_processes.pt:50
+msgid "label_configlet_new_workflowtitle"
+msgstr ""
+
+#. Default: "Down"
+#: ./compatibility/orderedSelectionList.pt:41
+msgid "label_down"
+msgstr ""
+
+#. Default: "Download as SVG"
+#: ./editor/index.pt:137
+msgid "label_download_svg"
+msgstr ""
+
+#. Default: "Edit permission setting"
+#: ./editor/permissionsetting.pt:18
+msgid "label_edit_permission_setting"
+msgstr ""
+
+#. Default: "New"
+#: ./editor/activity_details.pt:19
+msgid "label_new"
+msgstr ""
+
+#. Default: "Parallel review"
+#: ./editor/index.pt:119
+msgid "label_parallel_review"
+msgstr ""
+
+#. Default: "Remove"
+#: ./compatibility/orderedSelectionList.pt:29
+msgid "label_remove"
+msgstr ""
+
+#. Default: "Time-limited assignment"
+#: ./editor/index.pt:116
+msgid "label_time_limited_assignment"
+msgstr ""
+
+#. Default: "Up"
+#: ./compatibility/orderedSelectionList.pt:35
+msgid "label_up"
+msgstr ""
+
+#. Default: "Use template ..."
+#: ./editor/index.pt:114
+msgid "label_use_template"
+msgstr ""
+
+#. Default: "Zoom in"
+#: ./editor/index.pt:142
+msgid "label_zoom_in"
+msgstr ""
+
+#. Default: "Zoom out"
+#: ./editor/index.pt:146
+msgid "label_zoom_out"
+msgstr ""
+
+#. Default: "My Requests"
+#: ./skins/alphaflow/af_list_requests.pt:15
+msgid "list_requests_headline"
+msgstr ""
+
+#. Default: "My Tasks"
+#: ./skins/alphaflow/af_list_tasks.pt:15
+msgid "list_tasks_headline"
+msgstr ""
+
+# Seleziona workflow di testa
+#. Default: "Select a workflow how this object should be handled."
+#: ./skins/alphaflow/af_select_workflow.pt:12
+msgid "select_workflow_desc"
+msgstr ""
+
+#. Default: "Workflow editor: ${title}"
+#: ./editor/index.pt:10
+msgid "title_workflow_editor"
+msgstr ""
+
+### portlet
+#. Default: "Work items"
+#: ./skins/alphaflow/portlet_worklist.pt:15
+msgid "wi_portlet_headline"
+msgstr ""
+
+#. Default: "workflows installed for ${title}."
+#: ./browser/alphaflow_processes.pt:31
+msgid "workflows installed for ${title}."
+msgstr ""
+

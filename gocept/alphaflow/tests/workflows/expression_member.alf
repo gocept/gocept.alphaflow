@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+    id="testworkflow"
+    startActivity="edit"
+    description="Blubb"
+    onlyAllowRoles="Manager Reviewer Member">
+  
+    <expression id="edit"
+      expression="python:setattr(object, 'member', member.getUserName())">
+    </expression>
+</workflow>

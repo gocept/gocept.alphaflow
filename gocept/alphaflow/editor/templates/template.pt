@@ -1,0 +1,9 @@
+<form metal:use-macro="context/@@editor_form/form">
+
+  <div metal:fill-slot="header">
+    <h2 tal:content="view/title"/>
+
+    <p class="description" tal:content="view/description"/>
+  </div>
+
+</form>

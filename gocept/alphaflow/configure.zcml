@@ -1,0 +1,125 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:five="http://namespaces.zope.org/five"
+  i18n_domain="alphaflow">
+
+  <!-- Permissions -->
+  <!-- The titles have to be the same as the names of the permissions
+       in Zope 2! -->
+  <permission
+    id="alphaflow.ManageWorkflows"
+    title="Manage workflows"/>
+
+  <include file="security.zcml" />
+  <include package=".compatibility" />
+
+  <!-- Aspect components -->
+  <adapter factory=".aspect.Aspect"
+    for=".interfaces.IAspectDefinition
+    str"
+    provides=".interfaces.ILifeCycleObject"
+    />
+
+  <!-- Checkpoint components -->
+  <adapter factory=".checkpoint.ExitDefinition"
+    for=".interfaces.IActivity"
+    provides=".interfaces.IExitDefinition"
+    />
+  <adapter factory=".checkpoint.Checkpoint"
+    for=".interfaces.ICheckpointDefinition
+    str"
+    provides=".interfaces.ILifeCycleObject"
+    />
+
+  <!-- Work item components -->
+  <adapter factory=".workitem.WorkItemFactory" />
+  <adapter factory=".workitem.GenericLogEntry" />
+  <subscriber handler=".workitem.update_after_event" />
+
+  <!-- Instance components -->
+  <subscriber handler=".instance.update_after_event" />
+  <adapter for=".process.ProcessVersion
+    zope.interface.Interface
+    str"
+    provides=".interfaces.ILifeCycleObject"
+    factory=".instance.Instance"
+    />
+
+  <!-- Life cycle components -->
+  <adapter
+    for=".interfaces.ILifeCycleObject"
+    provides=".interfaces.ILifeCycleController"
+    factory=".lifecycle.LifeCycleControllerFactory"
+    />
+
+  <class class=".lifecycle.LifeCycleController">
+    <require
+      permission="alphaflow.UseInstance"
+      interface=".interfaces.ILifeCycleController"
+      />
+  </class>
+
+  <!-- Other packages -->
+  <include package=".aspects" />
+  <include package=".activities" />
+  <include package=".xmlimport" />
+  <include package=".editor" />
+  <include package=".browser" />
+
+  <!-- Subscribers -->
+  <subscriber handler=".workitem.added_base_workitem" />
+  <subscriber handler=".activity.added_base_activity" />
+  <subscriber handler=".processmanager.added_process_manager" />
+  <subscriber handler=".processmanager.added_process_to_portal" />
+  <subscriber handler=".processmanager.removed_process_from_portal" />
+  <subscriber handler=".checkpoint.checkpoint_failed" />
+  <subscriber handler=".aspect.aspect_failed" />
+
+  <!-- Silence deprecation warnings -->
+
+  <five:deprecatedManageAddDelete
+    class=".workitem.BaseWorkItem"/>
+  <five:deprecatedManageAddDelete
+    class=".activity.BaseActivity"/>
+  <five:deprecatedManageAddDelete
+    class=".processmanager.ProcessManager" />
+  <five:deprecatedManageAddDelete
+    class=".process.Process" />
+  <five:deprecatedManageAddDelete
+    class=".process.ProcessVersion" />
+  <five:deprecatedManageAddDelete
+    class=".tests.content.DummyContent" />
+  <five:deprecatedManageAddDelete
+    class=".instance.Instance" />
+  <five:deprecatedManageAddDelete
+    class=".aspects.expression.ExpressionAspect"/>
+  <five:deprecatedManageAddDelete
+    class=".aspects.dcworkflow.DCWorkflowAspect"/>
+  <five:deprecatedManageAddDelete
+    class=".aspects.permission.PermissionAspect"/>
+  <five:deprecatedManageAddDelete
+    class=".aspects.notify.EMailAspect"/>
+  <five:deprecatedManageAddDelete
+    class=".aspects.parent.ParentAspect"/>
+  <five:deprecatedManageAddDelete
+    class=".checkpoint.Checkpoint"/>
+  <five:deprecatedManageAddDelete
+    class=".tests.content.DummyFolder"/>
+  <five:deprecatedManageAddDelete
+    class=".tests.content.DefaultTestContent"/>
+
+  <include package="zope.app.annotation" />
+  <include package="zc.sourcefactory" file="configure-z2.zcml" />
+
+  <five:traversable class=".editor.adapters.PermissionSettingEdit" />
+  <five:traversable class="OFS.Application.Application" />
+
+  <!-- Graphing -->
+  <adapter factory=".graphing.WorkflowGraph"
+           for=".interfaces.IProcessVersion" />
+
+  <!-- Statistics -->
+  <adapter factory=".statistics.Statistics" />
+
+</configure>

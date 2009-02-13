@@ -1,0 +1,62 @@
+<tal:i18n xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="alphaflow">
+<div class="ordered-selection-field">
+
+  <div>
+    <select id="to" name="to" size="5" multiple=""
+      tal:attributes="name string:${view/name}.to;
+      id string:${view/name}.to">
+      <option tal:repeat="entry view/selected"
+        tal:attributes="value entry/value"
+        tal:content="entry/text" i18n:translate=""/>
+    </select>
+    <input name="foo-empty-marker" type="hidden"
+      tal:attributes="name string:${view/name}-empty-marker"/>
+    <span id="toDataContainer"
+      tal:attributes="id string:${view/name}.toDataContainer">
+      <a tal:attributes="href
+        string:call-function://copyDataForSubmit/${view/name}"
+        style="display:none;"></a>
+    </span>
+  </div>
+
+  <div class="select-controls">
+    <button name="from2toButton" type="button" value="add"
+      onclick="javascript:from2to()"
+      tal:attributes="onClick string:javascript:from2to('${view/name}')"
+      i18n:translate="label_add" i18n:domain="plone"
+      >Add</button>
+    <button name="to2fromButton" type="button" value="remove"
+      onclick="javascript:to2from()"
+      tal:attributes="onClick string:javascript:to2from('${view/name}')"
+      i18n:translate="label_remove"
+      >Remove</button>
+    <span class="spacer"/>
+    <button
+      name="upButton" type="button" value="up"
+      onclick="javascript:moveUp()"
+      tal:attributes="onClick string:javascript:moveUp('${view/name}')"
+      i18n:translate="label_up"
+      >Up</button>
+    <button
+      name="downButton" type="button" value="v"
+      onclick="javascript:moveDown()"
+      tal:attributes="onClick string:javascript:moveDown('${view/name}')"
+      i18n:translate="label_down"
+      >Down</button>
+  </div>
+
+  <div>
+
+    <select id="from" name="from" size="5" multiple=""
+      tal:attributes="name string:${view/name}.from;
+      id string:${view/name}.from">
+      <option tal:repeat="entry view/choices"
+        tal:attributes="value entry/value"
+        tal:content="entry/text" i18n:translate=""/>
+    </select>
+
+  </div>
+  <div style="clear:both;"></div>
+</div>
+</tal:i18n>

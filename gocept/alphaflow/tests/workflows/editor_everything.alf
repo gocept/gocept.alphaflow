@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+    id="editor_everything"
+    description="Blubb"
+    onlyAllowRoles="Manager Reviewer Member">
+    <!-- This workflow has an instance of all (core) activities and all (core)
+    aspects. It is used to trigger the /@@edit action on all objects.
+    -->
+
+    <alarm
+      id="alarm"
+      title="alarm"
+      due="object/deadline">
+      <continue>
+        <dcworkflow status="pending" title="Pending"/>
+        <expression expression="asdf"/>
+        <email template="default_email" mailSubject="asdf">
+          <recipient type="owner"/>
+        </email>
+        <parent continue_with_parent_of="alarm"/>
+        <permission-change>
+          <add name="Modify portal content" roles="Owner"/>
+          <remove name="Modify portal content" roles="Owner"/>
+          <permission name="Modify portal content" roles="Manager" acquire="false"/>
+        </permission-change>
+      </continue>
+    </alarm>
+
+    <configuration
+      id="configuration"
+      title="configuration"
+      configures="alarm">
+    </configuration>
+
+    <decision
+      id="decision"
+      title="decision"
+      decision_notice="first yes"
+      decision_modus="first_yes">
+      <accept />
+      <reject />
+    </decision>
+
+    <email
+      id="email"
+      title="email"
+      mailSubject="asdf"
+      template="default_email">
+      <recipient type="owner"/>
+    </email>
+
+    <ntask
+      id="ntask"
+      title="ntask"
+      >
+      <exit id="ntask_exit" title="Exit"/>
+    </ntask>
+
+    <simpledecision
+      id="simpledecision"
+      title="simpledecision"
+      decision_notice="decision"
+      />
+
+    <switch
+      id="switch"
+      title="switch"
+      mode="all"
+      >
+      <case
+        id="switch_case"
+        title="Case"
+        condition="true"
+        />
+    </switch>
+
+    <route
+      id="route"
+      title="route">
+      <gate
+        id="gate"
+        title="gate"
+        mode="discriminate"
+        />
+    </route>
+
+</workflow>

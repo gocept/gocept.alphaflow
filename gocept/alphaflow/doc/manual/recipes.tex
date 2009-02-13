@@ -1,0 +1,91 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Workflow pattern recipes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section shall help you to learn implementing several standard patterns
+that occur when modelling workflow. We are using the terminology and patterns
+from the site \url{http://www.workflowpatterns.com} and will link each of the
+implemented patterns to the definition on this site.
+
+Parts of this chapter are taken from the workflow patterns homepage (\url{workflowpatterns.com}).
+
+\section{Simple Merge}
+
+See \url{http://is.tm.tue.nl/research/patterns/simple_merge.htm} for the complete description of this pattern.
+
+\subsection{Synonyms}
+
+XOR-join, asynchronous join, merge
+
+\subsection{Examples}
+
+Activity archive_claim is enabled after either pay_damage or contact_customer is executed.
+
+After the payment is received or the credit is granted the car is delivered to the customer.
+
+\subsection{Implementation in AlphaFlow}
+
+Simple merge is just having one activity as completion acitvity of several others. Since it is an assumption of this pattern that none of the alternative branches is ever executed in parallel, we can merge them without taking care of syncronization issues.
+
+\begin{verbatim}
+...
+<task id="pay_damage" ...
+    completion_activity="archive_claim">
+
+<task id="contact_customer" ...
+    completion_activity="archive_claim">
+
+<activity id="archive_claim" ...>
+...
+
+\end{verbatim}
+
+
+\section{Milestone}
+
+See \url{http://is.tm.tue.nl/research/patterns/milestone.htm} for the complete
+description of this pattern.
+
+\subsection{Synonyms}
+
+Test arc, deadline, state condition, withdraw message
+
+\subsection{Examples}
+
+In a travel agency, flights, rental cars, and hotels may be booked as
+long as the invoice is not printed. 
+
+A customer can withdraw purchase orders until two days before the
+planned delivery. 
+
+A customer can claim air miles until six months after the
+flight. 
+
+\subsection{Implementation in AlphaFlow}
+
+A milestone can easily be implemented by using a routing mechanism. The routing
+situation has a single discriminating gate that will terminate either the
+milestone or the optional activity depending on the actual situation.
+
+\begin{verbatim}
+    ...
+    <route id="milestone">
+
+        <alarm id="miles_claiming_deadline"
+            expression="python:object.flightDate()+6*30"
+            continue_activity="exit_milestone"/>
+
+        <decision id="miles_claiming"
+            accept_activity="accept_miles"
+            reject_activity="exit_milestone"/>
+
+        <gate id="exit_milestone" 
+            mode="discriminate"
+            continue_activity="after_milestone"/>
+    </route>
+
+    <action id="accept_miles" expression="object.milesAccepted()"
+        continue_activity="exit_milestone"/>
+    ...
+\end{verbatim}
+

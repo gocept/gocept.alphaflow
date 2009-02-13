@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- A test workflow to test the assignment modes `possible roles` and
+     `possible groups`. -->
+
+<workflow title="multi_review"
+  id="testworkflow">
+
+  <ntask id="write_document">
+    <assignees kind="possible" roles="Author" />
+  </ntask>
+
+  <ntask id="review_document">
+    <assignees kind="possible" groups="group1" />
+  </ntask>
+
+  <ntask id="review_document2">
+  </ntask>
+
+</workflow>

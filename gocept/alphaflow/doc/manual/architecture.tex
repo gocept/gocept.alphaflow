@@ -1,0 +1,220 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{AlphaFlow architecture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Work items}
+
+Work items represent activities that 
+When an activity has to be performed, a work item is created. Depending on the activity,
+different work items 
+
+Different work items are available to support various operations:
+
+\begin{itemize}
+    \item \code{task}s that are assigned to users (e.g. writing a document)
+    \item \code{decision}s that need to be made (e.g. deciding if a written document should be published or not)
+    \item \code{email}s that need to be send to the users assigned for another work item
+\end{itemize}
+
+Within a workflow, operations are typically followed by other operations. Work
+items are therefore responsible to generate other work items:
+
+\begin{itemize}
+    \item \code{Task} work items create other work items when completed. (e.g. deciding if a changed document should be published)
+    \item \code{Decision} work items create different work items depending on whether the decision was accepted or rejected. (e.g either start a \code{task} to edit a document or start a different work item to publish it)
+    \item The \code{email} work item first generates a following \code{task} and then sends out \code{email}s for the responsible users.
+\end{itemize}
+
+Work items can roughly be categorized:
+
+\begin{description}
+
+    \item[Assignable work items] are assigned to one or more users and map some
+        real world task. The exist for a longer time until the real world task
+        is completed.
+
+    \item[Automatic work items] are used to perform actions within the system
+        and are performed automatically and immediately. The do not necessarily
+        map real world tasks. Examples are work items implementing control flow
+        (\code{switch}), code execution (\code{expression}) and other packaged functionality
+        (\code{permission}, \code{alarm}, \code{email} \ldots).
+
+    \item[Daemon work items] are specially used to support other work items
+        within the workflow.  to support other work items. An example of a
+        daemon work item is the \code{recursion} work item which replicates
+        given work items for every sub-object of the content-object.
+\end{description}
+
+As AlphaFlow is tightly integrated in Zope and Plone, there are some work items
+that are special to Zope and Plone. E.g. the \code{permission} work item allows
+to change the permission settings of the content object and the
+\code{dcworkflow} work item allows to emulate the DCWorkFlow state variable.
+
+\subsection{Work item states}
+
+Work items have a simple life cycle. It begins with the state ``active'' and
+usually ends with ``complete''. In special situations the work item might
+assume the ``failed'' or ``terminated'' state, either automatically or by
+manual intervention.
+
+  \begin{description}
+
+    \item[active] means that the work item is beeing processed by the system.
+        If it is an assignable work item it is waiting for feedback from the
+        user. ``Daemon'' work items are waiting for signals from other work
+        items. There can be multiple active work items at the same time in a
+        workflow instance.
+
+    \item[failed] means that some kind of exceptional state was detected while
+        the work item was carried out. This might either be a common Python
+        exception or an obvious inconsistency in the workflow or the
+        application. The work item then needs manual care by an administrator.
+
+    \item[complete] means that the activity the work item was supposed to
+        perform was completed.
+
+    \item[terminated] means that the work item was terminated manually by an
+        administrator. This is used to put a workflow into a consistent state
+        after a failure occured.
+
+  \end{description}
+
+\section{Workflow instances}
+
+When a workflow runs on a content object, the work items are stored in a
+``workflow instance'' (or ``process instance''). A workflow instance also
+stores additional information about a single run of a workflow for one certain
+content object, including which workflow is run, when it was started and
+finished, and what state it is in.
+
+Assigning a workflow to a certain content object creates a workflow instance.
+Starting a workflow instance generates one or more initial work items. After
+that those work items continue to control the workflow by generating more work
+items. (See section ``work items'')
+
+When only work items in ``complete'' or ``terminated'' state are left, the
+workflow instance is considered to be completed. If only ``daemon'' work items
+are left, the workflow instance will be considered complete as well.  After a
+workflow instance is completed, the content object can be used for another
+workflow.
+
+\begin{notice}
+    \begin{itemize}
+    \item It is not possible to run multiple workflows at the same time for a single content object.
+    \item Creating and starting a workflow instance can be done at once or seperately.
+    \end{itemize}
+\end{notice}
+
+\subsection{States of a workflow instance}
+
+Workflow instances have a life cycle, just as work items, with the additional
+state: ``initiated''. This state allows to distinguish between assigning a
+workflow to a content object and starting the workflow. The typical life cycle
+for a workflow instance is: ``initiated'', ``active'' and ``complete''. In special
+situations, just like work items, a workflow instance might assume the states
+``failed'' or ``terminated''.  
+
+  \begin{description}
+
+      \item[initiated] means that the workflow instance has been created and
+          was assigned to a content object but has not been started yet.
+
+      \item[active] that the workflow instance was started and is currently
+          running under normal conditions.
+
+      \item[failed] means that at least one work item changed its state to
+          ``failed'' and needs manual care. A workflow instance in this state
+          is not usable by the application. Any further action by the work
+          items will be blocked until the ``failed'' state was resolved.
+
+      \item[complete] means that all of the work items are completed and the
+          process finished without problems. 
+          New workflows can be started for
+          the content object.
+
+      \item[terminated] means that the process instance was stopped prematurely
+          by an administrator. This state is typically used when a ``failed''
+          situation can not be resolved cleanly and the process is either terminated
+          or restarted.
+
+          When a process is terminated, all work items in ``active'' or
+          ``failed'' state are terminated as well.
+
+          New workflows can be started for the content object.
+
+  \end{description}
+
+\section{Activities}
+
+How work items perform operations in a workflow is controlled by ``activities''.
+Exactly one activity is associated with each work item.
+
+The activity type determines what kind of operation a work
+item performs: whether it represents a task to be handled by a user,
+orchestrates the making of a decision, or sends out email notifications.
+
+Besides having a type, activities can be configured. The configuration of an
+activity controls the details of how associated work items perform their
+operation. The subject line of messages sent by an email work item is given by
+the ``mailSubject'' property of the work item's associated email activity.
+
+Work items drive the workflow by creating more work items. Activities are
+important for the creation of new work items in two ways:
+
+\begin{enumerate}
+    \item The activity type determines \emph{when} to create new work items.
+    \item The activity's configuration specifies \emph{what} work items are created.
+\end{enumerate}
+
+For example, a task work item can create other work items both when it is
+created itself, and when it is declared completed. An email work item creates
+other work items upon creation and before it sends out notifications. For each
+time a work item needs to create other work items, its activity has a
+configuration property that lists the activities to create new work items for.
+
+\section{Workflow definitions}
+
+Just as workflow instances collect work items, workflow definitions collect
+activities. Each workflow instance is associated with exactly one workflow
+definition.
+
+Workflow definitions have some configuration properties of their own. Most
+importantly, they have a list of start-up activities. When a workflow instance
+is started, it creates work items for each start-up activity of its workflow
+definition to get the workflow running.
+
+A workflow definition may contain more than one activity of any given type,
+each with its own configuration. Activities have an ID to distinguish them
+within a workflow definition. It is by their ID that activities refer to each
+other, for example when listing completion activities. Workflow definitions
+list their start-up activities by their IDs as well.
+
+Activities can only refer to other activities within the same workflow
+definition.  Thus, a workflow definition fully describes what is possible in
+any associated workflow instance.
+
+\section{Instance configuration}
+
+Work items determine the details of their operation by looking up how their
+associated activities are configured. The same activity may be associated with
+work items in several workflow instances, running on different content
+objects. However, it is not always desirable to share the activity's entire
+configuration between content objects. Therefore, activity properties may be
+customized per workflow instance.
+
+In such cases, the activity configuration expresses that the work item should
+look up a certain property with its own workflow instance. For example, a task
+activity ``edit'' might only list possible assignees. Each instance of the
+workflow containing ``edit'' then has a property that lists some of them as
+actual assignees. Any ``edit'' work item will be assigned to the actual
+assignees for ``edit'' as listed by the workflow instance it belongs to.
+
+Instance configuration is done by configuration work items. They may be run at
+any point of a workflow. A configuration work item prompts an assigned user
+for per-instance properties of one or more activities and stores them on its
+own workflow instance.
+
+It is entirely possible to change a workflow instance's configuration of
+activities while they have active work items in that instance. If multiple
+work items of the same activity are running simultaneously in a given workflow
+instance, they share any per-instance configuration of their activity.

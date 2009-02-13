@@ -1,0 +1,25 @@
+<div i18n:domain="alphaflow">
+  <form metal:use-macro="context/@@aspect_form/form"/>
+
+  <h2><tal:i18n i18n:translate="heading_permission_changes">
+      Permission changes</tal:i18n>
+    (<a tal:attributes="href string:new-permission-setting://${context/@@workflow_relative_url}"
+        i18n:translate="label_add" i18n:domain="plone">Add</a>)</h2>
+
+  <dl>
+    <tal:block repeat="change python:sorted(context.objectValues(), key=lambda
+      x:x.permission)">
+      <dt><span tal:content="change/permission"/>
+        (<a tal:attributes="href string:edit://${change/@@workflow_relative_url}"
+            i18n:translate="label_edit" i18n:domain="plone">Edit</a>)
+      </dt>
+
+      <dd>
+        <span tal:replace="change/verb"/>: <span tal:content="python:', '.join(change.roles)"/><br/>
+        <span tal:condition="change/acquire">Acquire additional roles.</span>
+        <span tal:condition="not:change/acquire">Do not acquire additional
+          roles.</span>
+      </dd>
+    </tal:block>
+  </dl>
+</div>

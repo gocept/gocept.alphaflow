@@ -1,0 +1,1018 @@
+\chapter{Activity Reference}\label{sec:activityref}
+
+As AlphaFlow processes are assembled from a variety of specialised activities,
+every activity has its own uses and configuration variants. This section
+describes the existing standard activities.
+
+
+\section{Structure of the activity reference}
+
+In the following sections, we describe every activity in a common format:
+
+\begin{description}
+    \item[Title and purpose] of each section will show the name of the activity and a very short 
+        description of its purpose.
+    \item[Introduction] will introduce the activity and its use cases.
+    \item[Activity configuration] describes all options that can be specified for an activity, e.g. in ALF.
+    \item[Instance configuration] describes options that can be specified on a per-workflow-instance level.
+    \item[Work item actions] explains the possible interaction with users, external systems or programmers while a work item of an activity is active. 
+    \item[ALF example] An example is given how a configuration of this activity in an ALF file would look like.
+\end{description}
+
+\section{XML workflow definitions}
+
+The preferred way of defining workflows for AlphaFlow is by creating XML files
+in the ALF format and importing them. This section is a short introduction
+about the basics of the ALF format and is supplemented by the ``ALF example''
+sections in this reference.
+
+As ALF is an XML format, you should stick to the official XML specifications.
+
+An ALF file always has a \member{workflow} element as the root element.  All
+activity definitions are child elements of the \member{workflow} element.
+
+The \member{workflow} element has following attributes:
+
+\begin{memberdesc}{id}
+  A suggestion for the Zope id of the workflow definition. It may be
+  overridden on import.
+\end{memberdesc}
+
+\begin{memberdesc}{title}
+A title to be used in the user interface.
+\end{memberdesc}
+
+\begin{memberdesc}{description}
+A description to be used in the user interface.
+\end{memberdesc}
+
+\begin{memberdesc}{startActivity}
+A list of activity IDs. Work items for these activities
+  are started when an instance of the workflow is started.
+\end{memberdesc}
+
+\begin{memberdesc}{onlyAllowRoles}
+Only members with one of these roles may start instances
+  of this workflow. If omitted, anyone may do so.
+\end{memberdesc}
+
+\begin{memberdesc}{object_name}
+   An optional name for the content object that is used in any
+  TALES expressions that may appear in the workflow definition. It defaults to
+  ``object''.
+\end{memberdesc}
+
+\begin{memberdesc}{commentfield}
+ Controls the view of the commentfield. Set it to ``required'' to make 
+ the user input required. Set it to ``hidden'' to hide the commentfield 
+ from the UI.
+\end{memberdesc}
+
+ALF example:
+
+\begin{verbatim}
+<?xml version="1.0" encoding="utf-8"?>
+<workflow id="simple_review"
+          title="Simple review"
+          description="A simple review workflow."
+          startActivity="switch_configuration"
+          onlyAllowRoles="Owner"
+          object_name="document">
+    ...
+</workflow>
+\end{verbatim}
+
+\section{Common configuration options}
+
+AlphaFlow provides common functionality for all activities and therefor
+includes common configuration options for all activities.
+
+\begin{memberdesc}{id}
+    The id is the unique reference for an activity within a workflow definition. It is used by
+    other configuration options to refer to a certain activity. The id must conform to the XML attribute ``id'' and
+    the rules for Zope object ids.
+\end{memberdesc}
+
+\begin{memberdesc}{title}
+    The title is a title that is displayed to the user. It will appear in the work list, the workflow menu
+    and other places visible to the user. The title can be any unicode string.
+\end{memberdesc}
+
+\begin{memberdesc}{sort} This priority, given as an integer, is used when
+    displaying configuration activities. It sorts the configuration schemas of
+    all included activities by their priority. E.g. first display ``select
+    author'', then ``select reviewer'' then ``decide whether recursion is
+    applied''.
+\end{memberdesc}
+
+\begin{memberdesc}{view\_url\_expr} A TALES expression that returns a URL the
+    user is redirected to when clicking on the work item in the work item list.
+    If not specified, the user will be redirected to the content object.
+\end{memberdesc}
+
+\begin{memberdesc}{startActivity}
+    When a work item for this activity is created, all activities listed as ``startActivity'' will be started.
+    Then the created work item is started. This allows for useful grouping of actions and to refer to common
+    entry points without having to know its prerequisites. E.g. you can refer to ``write a document'' without knowing
+    that ``set permissions'' and ``set dcworkflow state'' should be run as well. This also makes refactoring 
+    of a workflow easier.
+\end{memberdesc}
+
+ALF example:
+
+\begin{verbatim}
+<task id="write_document"
+    title="Write a document"
+    sort="1"
+    viewUrlExpression="string:${object/absolute_url}/explain_writing_a_document"
+    startActivity="dc_private perm_authoring"
+    completion_activity="review">
+    <assignees kind="possible" roles="Member"/>
+</task>
+\end{verbatim}
+
+\section{Assignable Activities}
+
+  Assignable activities are, as the name says, assigned to a user or external
+  system to perform a real world task, outside of AlphaFlow. Those activities
+  typically provide a user interface and/or API to interact with.
+
+  \subsection{Common configuration options for assignable activities}
+
+  All assignable activities have common configuration options to control
+  user and role assignments within a workflow.
+    
+  \begin{memberdesc}{assignees}
+
+        Determines the responsible users for an activity. The assignee
+        configuration supports selecting users based on role or an expression
+        determining individual user ids. Additionally a certain set of users
+        may be selected for a certain workflow instance from all users with a
+        role.
+
+        In ALF files the assignee configuration is given as a sub-element for
+        an activity and may only be given once.
+
+        \begin{description}
+
+            \item[kind='actual', roles='\ldots'] All users with a given role
+                will be responsible for the work item. Typically only one user
+                will actually perform the activity. But special activities,
+                like \code{Decision} may use the list of all assigned users to
+                deduce more complex behaviour. 
+
+            \item[kind='actual', expression='\ldots'] All users returned by the
+                given TAL expression will be responsible. The TAL expression
+                must return a list of user ids. The TAL expression is evaluated
+                when the work item is started and cached afterwards. It should
+                always return the same list of users, otherwise the systems
+                behaviour is currently not guaranteed to be predictable.
+
+            \item[kind='possible', roles='\ldots']
+
+                The actual list of users will be selected when running the
+                workflow. A list of all users having at least one of the
+                specified roles will be given and the user configuring the
+                running workflow can select one ore more users to be assigned
+                to the work item.
+                
+        \end{description}
+
+        Examples:
+
+        \begin{enumerate}
+            \item All users with the ``Finance'' role are assigned:
+\begin{verbatim}
+<assignees kind="actual" roles="Finance"/>
+\end{verbatim}
+            \item The users ``Peter'', ``Paul'' and ``Mary'' are assigned:
+\begin{verbatim}
+<assignees kind="actual" expression="python:['Peter', 'Paul', 'Mary']"/>
+\end{verbatim}
+            \item One or more users with the role ``Reviewer'' may be selected when running the workflow:
+\begin{verbatim}
+<assignees kind="possible" roles="Reviewer"/>
+\end{verbatim}
+        \end{enumerate}
+  \end{memberdesc}
+
+  \begin{memberdesc}{contentRoles}
+
+        Assigns one or more local roles to every user assigned to the work item.
+
+        The local roles are given on the content object of the work item and
+        valid as long as the work item is active.
+
+        In ALF files the contentRoles configuration is given as an attribute
+        for an activity.
+
+        Examples:
+
+        The reviewers for ``Marketing'' will get the role ``MarketingReviewer''
+        while the task ``review\_marketing'' is active.
+
+        \begin{enumerate}
+            \item The assigned user will get the ``MarketingReviewer'' role while assigned to the ``review\_marketing'' task:
+\begin{verbatim}
+<task id="review_marketing" contentRoles="MarketingReviewer"/>
+\end{verbatim}
+        \end{enumerate}
+
+  \end{memberdesc}
+
+  \subsection{\module{Task} --- Perform a task}
+
+  \declaremodule{standard}{task}
+  \modulesynopsis{Assign tasks to users}
+
+  The \module{Task} is the most basic activity a user will be confronted with.
+  It allows to ask the assigned users to carry out some real world task. This
+  can range from editing a document in Plone, ordering new paper for your
+  office, or sending a letter to a customer.
+
+  The assigned users will see a work item in their work list telling them what
+  to do. When the task is completed, one of them selects
+  ``\guilabel{Complete}'' from the workflow menu which will complete the work
+  item and start the \code{completion\_activity}.
+
+  \subsubsection{Activity configuration}
+
+            
+    \begin{memberdesc}{title} The title is used as a static description of the
+            task. This will be displayed in the work list for the assigned
+            users together with the title of the content object.
+    \end{memberdesc}
+          
+    \begin{memberdesc}{completion\_activity} Lists the activities to be started
+        after the task has been completed.
+    \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+
+    \begin{description}
+            
+        \item[task] If the task (e.g. ``Write a document'') is configured when
+            running a workflow, it can be further specified and annotated for
+            the assigned user (e.g. ``Write 400 words about dead parrots.'') 
+
+    \end{description}
+
+  \subsubsection{Work item actions}
+
+    \begin{funcdesc}{complete}{comment}
+        
+      \function{Complete} is the only action \module{Task} supports. It is the
+      signal that the user has performed the required activity. Additionally,
+      the user can provide a comment when completing a task.
+
+    \end{funcdesc}
+
+  \subsubsection{ALF example}
+
+\begin{verbatim}
+<task id="write_document"
+    title="Write document"
+    completion_activity="review">
+    <assignees kind="actual" expression="python:[object.Creator()]" />
+</task>
+\end{verbatim}
+
+  \subsection{\module{NTask} --- A task with multiple completion options}
+
+  \declaremodule{standard}{ntask}
+  \modulesynopsis{A task that lets the user choose how the process continues.}
+
+  The \module{NTask} activity is an extension to the \module{Task} that allows
+  the user to choose how the workflow should continue. It also allows to
+  provide your own labels for the workflow menu that the user sees.
+
+  The different options to continue the workflow are called ``exits''.
+
+  Examples:
+
+  \begin{itemize}
+      
+      \item Ask someone to ship a package. He can select ``successfully
+          shipped'' or ``shipping didn't happen'' to signal whether he
+          successfully shipped the package or not.
+
+      \item Make someone decide whether a customer request email has to be handled
+          in a certain way or other.
+
+  \end{itemize}
+
+  \subsubsection{Activity configuration}
+
+    \begin{description}
+        \item[exit] A sub-element with an \var{id}, \var{title} and a list of \var{activities}. Can be given multiple times
+            to supply multiple exits.
+    \end{description}
+
+  \subsubsection{Instance configuration}
+
+    \begin{description}
+        \item[task] If the task (e.g. ``Write a document'') is configured when
+            running a workflow, it can be further specified and annotated for
+            the assigned user (e.g. ``Write 400 words about dead parrots.'') 
+
+    \end{description}
+
+  \subsubsection{Work item actions} %user interface
+
+    Work item actions are determined by the given \var{exits}.
+    
+  \subsubsection{ALF example}
+
+\begin{verbatim}
+    <ntask id="edit" title="Modify document">
+        <exit id="make_public" title="Make public" activities="public"/>
+        <exit id="make_pending" title="Approve Document" activities="pending"/>
+        <exit id="make_private" title="Close Document" activities="private"/>
+        <assignees kind="actual" roles="Member" />
+    </ntask>
+\end{verbatim}
+
+ \subsection{\module{Configuration} --- Configure other activities}
+
+ \declaremodule{standard}{configuration}
+ \modulesynopsis{Configures other activities}
+ 
+  The \module{Configuration} activity provides some \emph{meta} functionality:
+  it allows a workflow user to configure parts of the workflow while running
+  it.
+
+  Useful examples include: 
+  
+  \begin{itemize}
+      \item selecting specific users for a certain review or decision
+      \item selecting if a folder should be published recursively or not
+      \item specifying a task more precisely
+  \end{itemize}
+
+  The \module{Configuration} activity is responsible to configure the
+  parameters given in the ``Instance configuration'' sections of other
+  activities.
+  
+  \subsubsection{Activity configuration}
+
+
+    \begin{memberdesc}{configures}
+        A list of activities that have to be configured by this
+          configuration activity.
+    \end{memberdesc}
+          
+    \begin{memberdesc}{configures\_all} A marker that all activities that have
+        instance configuration options should be configured by this activity.
+        Useful at the beginning of a workflow.
+    \end{memberdesc}
+
+    \begin{memberdesc}{continue\_activity} A list of activities that shall be
+        started after the configuration.  
+    \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+
+  Not applicable.
+    
+  \subsubsection{Work item actions} %user interface
+
+
+    \begin{funcdesc}{configure}{comment}
+        
+      \function{configure} is the only action \module{Configuration} supports.
+      It assumes that the configuration data was previously saved using the
+      standard forms generated by AlphaFlow.
+
+    \end{funcdesc}
+
+  \subsubsection{ALF Example}
+
+  In this example, the \module{Configuration} asks the owner of an object
+  (likely a document) to select another member who should write a document and
+  starts the corresponding task afterwards.
+
+\begin{verbatim}
+<task id="write_doc"
+    title="Write document">
+    <assignees kind="possible" roles="Member"/>
+</task>
+
+<configuration 
+    id="assign_task" 
+    title="Select a user to write the document"
+    configures="write_doc"
+    continue_activity="write_doc">
+  <assignees kind="actual" roles="Owner" />
+</configuration>
+\end{verbatim}
+
+ \subsection{\module{Decision} --- Let a group of people make a decision}
+ 
+ \declaremodule{standard}{decision}
+ \modulesynopsis{Let a group of people make a decision}
+ 
+ A \module{Decision} allows to let a a group of people decide for or against
+ some proposed action. The the possible exits are named ``accept'' and
+ ``reject'' accordingly. A \module{Decision} works much like casting a vote.
+ More policies could extend the decision to allow majority votes or similar
+ schemes.
+ 
+ Two different policies for making a decision are implemented:
+
+ \begin{description}
+
+     \item[first\_yes:] As soon as someone agrees, the whole decision will be
+         agreed on.
+         
+     \item[all\_yes:] Everybody has to agree to make the decision. As soon as a
+         single user disagrees, the decision will be rejected.
+         
+ \end{description}
+
+ In both schemes, the work item for a decision will be completed as soon as
+ enough votes are casted so the result is known.
+ 
+  \subsubsection{Activity configuration}
+
+    \begin{memberdesc}{accept\_activity}
+        Is a list of activities to be started when the decision is \emph{accepted}.
+    \end{memberdesc}
+
+    \begin{memberdesc}{reject\_activity}
+      Is a list of activities to be started when the decision is \emph{rejected}.
+    \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+
+  No instance configurable options are available.
+     
+  \subsubsection{Work item actions} %user interface
+
+    \begin{funcdesc}{accept}{comment}
+        
+        \function{Accept} Registers the currently logged-in user to have voted to \emph{accept}
+            the proposed action.    
+
+        \function{Reject} Registers the currently logged-in user to have voted to \emph{reject}
+            the proposed action.    
+
+    \end{funcdesc}
+
+  \subsubsection{ALF Example}
+
+\begin{verbatim}
+<decision id="decide_witch"
+  decision_notice="Decide whether she is a witch."
+  accept_activity="burn_her"
+  reject_activity="send_her_home"
+  decision_modus="all_yes">
+  <assignees kind="actual" roles="Peasants" />
+</decision>
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Automatic activities}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+ Automatic activities carry out some procedure when the workflow activates
+ them. They usually exist only for a short time period and continue the
+ workflow immediately.
+  
+ \subsection{Common activity configuration}
+    
+ Some configuration parameters are shared amongst automatic activities through
+ their base class. 
+
+ \begin{memberdesc}{continue\_activity}
+     This specifies the activities that should be started after the automatic work item
+     finished.
+ \end{memberdesc}
+
+ \subsection{\module{DCWorkflow} --- Emulate DCWorkFlow-compatible ``states''}
+ 
+ \declaremodule{standard}{dcworkflow}
+ \modulesynopsis{An activity which emulates a DCWorkflow states.}
+  
+    To integrate AlphaFlow applications into Plone best this activity allows to
+    set the DCWorkflow state for the content object. The content object should
+    be connected with the \code{alphaflow\_fake} workflow to support this.
+
+    The \module{DCWorkflow} activity does not use DCWorkFlows abilities to
+    manage permissions or anything else. It only performs the necessary
+    operations to display the state correctly in Plone.
+ 
+    \subsubsection{Activity configuration}
+
+     \begin{memberdesc}{status}
+        Specifies the id of the workflow status to assume.
+     \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+ 
+  Not applicable.
+     
+  \subsubsection{ALF Example}
+
+\begin{verbatim}
+<dcworkflow id="private" status="private" />
+\end{verbatim}
+  
+ \subsection{\module{Email} --- Notify users about events in the workflow}
+ 
+ \declaremodule{standard}{email}
+ \modulesynopsis{Notify users about events in the workflow}
+  
+ The \module{email} activity allows to inform users when an activity is
+ started. It provides flexible ways to determine the recipients of the
+ notification:
+
+ \begin{itemize}
+     \item notify the owner of the process
+     \item notify the assignees of the next activities
+     \item notify everybody with a certain role
+ \end{itemize}
+
+ The subject and the id of a template for the mail body can be given in the
+ workflow definition as well.
+ 
+ \subsubsection{Activity configuration}
+
+    \begin{memberdesc}{template}
+        An id of a template available from the Plone root object. Used to render the mail body. This
+        is typically a DTML template.
+    \end{memberdesc}
+
+    \begin{memberdesc}{mailSubject}
+        Specifies the subject printed in the email.
+    \end{memberdesc}
+
+    \begin{memberdesc}{recipient}
+        Determines who is notified. Can be repeated multiple times. Following types are available:
+
+        \begin{description}
+                
+            \item[next\_assignees] will notify all people who are responsible
+                for the activities that \emph{follow} the notification. This
+                allows to easily model something like: modify document, notify
+                reviewers, review document \ldots
+
+                Note that if the following activity is a route, it will use
+                the contained activities to find out recipients.
+
+            \item[previous\_assignees] will notify all people who were
+              responsible for the email's parent activity.
+
+                
+            \item[owner] will only notify the actual owner of the content
+              object. It willl \emph{not} notify the users with the Owner
+              role.
+                
+            \item[actual\_role] will notify all people with at least one of 
+                the given roles.
+
+        \end{description}
+    \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+
+  Not applicable.
+  
+  \subsubsection{ALF example}
+
+  Notify reviewers that they have to check something:
+
+\begin{verbatim}
+<email id="notify_reviewer" title="Notify about new review"
+    template="default_email"
+    mailSubject="Mail send by AlphaFlow">
+    <recipient type="next_assignees"/>
+</email>
+\end{verbatim}
+
+  Notify the process owner that the review was rejected: 
+
+\begin{verbatim}
+<email id="notify_owner" title="Review was rejected"
+    template="reject_email"
+    mailSubject="Your content was rejected">
+    <recipient type="owner"/>
+</email>
+\end{verbatim}
+
+  Notify all administrators that something bad happened:
+
+\begin{verbatim}
+<email id="notify_admin" title="Notify about the end of the world"
+    template="trouble_email"
+    mailSubject="Something bad happened">
+    <recipient type="actual_role" roles="Manager"/>
+</email>
+\end{verbatim}
+
+ \subsection{\module{Expression} --- Execute arbitrary code}
+ \declaremodule{standard}{expression}
+ \modulesynopsis{Execute arbitrary code}
+ 
+ The \module{Expression} activity enables you to call any method
+ your application needs within a workflow to talk to external systems,
+ perform computation or other things. The Expression is given as a TALES expression. The calling context
+ is initialized with those top level variables:
+
+ \begin{tableii}{l|l}{constant}{Variable}{Description}
+       \lineii{content, here, <object\_name>}{The content object the workflow instance manages.}
+       \lineii{workitem}{The work item for the activity that executes the expression.}
+       \lineii{portal}{The Plone root object.}
+       \lineii{activity}{The expression activity.}
+       \lineii{member}{The current member.}
+       \lineii{alphaflow}{alphaflow/currentUser and alphaflow/systemUser.}
+ \end{tableii}
+
+  \subsubsection{Activity configuration}
+
+    \begin{memberdesc}{expression}
+        The TALES expression to execute when the activity is run.
+    \end{memberdesc}
+
+    \begin{memberdesc}{runAs}
+        TALES expression returning a user or a username. The
+        \texttt{expression} will be run under that user (like sudo)
+    \end{memberdesc}
+
+  \subsubsection{Instance configuration}
+
+  Not applicable.
+
+  \subsubsection{ALF example}
+
+\begin{verbatim}
+<expression id="annotate" 
+    expression="python:object.addComment('Running expression: %s' % activity.title_or_id())"/>
+\end{verbatim}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Permission} --- Control access to the content object}
+
+\declaremodule{standard}{permission}
+\modulesynopsis{Control access to the content object}
+ 
+The \module{Permission} activity is able to change permission settings on the
+content object. This can happen either by modifying the list of allowed roles
+for a permission or giving a complete set of roles for a permission.
+  
+\subsubsection{Activity configuration}
+
+\begin{funcdesc}{add}{permission, roles}
+    Add the given permission for the given roles.
+\end{funcdesc}
+
+\begin{funcdesc}{remove}{permission, roles}
+    Remove the given permission for the given roles.
+\end{funcdesc}
+
+\begin{funcdesc}{permission}{permission, roles, [acquire]}
+    Set the given permission for exactly the given roles. Optionally, modify the 
+    acquisition flag.
+\end{funcdesc}
+
+\subsubsection{Instance configuration}
+
+Not applicable.
+
+\subsubsection{ALF Example}
+
+\begin{verbatim}
+<permission-change id="perm_no_author">
+    <remove name="Modify portal content" 
+            roles="Owner"/>
+    <add name="View"
+         roles="Anonymous"/>
+    <permission name="Access contents information" 
+         roles="Anonymous Manager" 
+         acquire="True"/>
+</permission-change>
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Roleassign} --- Assign local roles to users on the content object}
+
+\declaremodule{standard}{roleassign}
+\modulesynopsis{Assign local roles to users on the content object}
+ 
+The \module{Roleassign} activity is able to assign or remove given local roles for configurable 
+users on the content object. 
+  
+\subsubsection{Activity configuration}
+
+\begin{memberdesc}{roles}
+    List of roles to assign users to on the content object. 
+\end{memberdesc}
+
+\subsubsection{Instance configuration}
+
+    \begin{description}
+        \item[users] Lets the user select which users the roles should be assigned.
+    \end{description}
+
+\subsubsection{ALF Example}
+
+\begin{verbatim}
+  <roleassign id="choose_manager"
+              continue_activity="some_activity"
+              roles="Manager"/>
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Switch} --- Programmatically select routes in the workflow}
+
+\declaremodule{standard}{switch}
+\modulesynopsis{Programmatically select routes in the workflow}
+ 
+The \module{Switch} allows to programmatically decide to run alternative or
+parallel routes in the workflow.  It is designed with the \code{switch}
+statement from C/C++/Java in mind: You list multiple expressions that are
+evaluated in the given order. If the mode is set to \var{all} the activities in
+all given will be started for every condition that evalutes to \var{True}.  If
+the mode is set to \var{first}, the activities for the first condition that
+evaluates to \var{True} will be started and the evaluation of further
+conditions will be stopped.
+ 
+\subsubsection{Activity configuration}
+
+\begin{memberdesc}{mode}
+    oither set to \var{all} or \var{first}. 
+\end{memberdesc}
+\begin{memberdesc}{case}
+    A TALES expression that evaluates to \var{True} or \var{False}.
+
+    \notice{Check the \module{Expression} activity for the list of variables availabe in the expression context.}
+\end{memberdesc}
+
+\subsubsection{Instance configuration}
+ 
+Not applicable.
+
+\subsubsection{ALF example}
+
+\begin{verbatim}
+<switch id="check_money"
+        mode="all">
+  <case id="groceries"
+        condition="python:account.current >= 20"
+        activities="buy_groceries" />
+  <case id="icecream"
+        condition="python:account.current >= 30"
+        activities="buy_icecream" />
+  <case id="lotta_money"
+        condition="python:account.current >= 500000"
+        activities="buy_porsche" />
+</switch>
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Alarm} --- Perform scheduled activities}
+\declaremodule{standard}{alarm}
+\modulesynopsis{Perform scheduled activities}
+ 
+An \module{alarm} activity waits until a given deadline to run other
+activities. The deadline is given as an expression and will be evaluated every
+time when the alarm work item will be asked if the deadline was reached. You
+can implement shifting deadlines by that.
+
+An alarm is very suitable for:
+
+\begin{itemize}
+    \item reminders to re-review already published content
+    \item create a milestone to escalate if someone doesn't react in a certain amount of time
+\end{itemize}
+
+\begin{notice} Please check the chapter ``Installation'' about installing support
+ for time based activities.
+\end{notice}
+  
+\subsubsection{Activity configuration}
+
+\begin{memberdesc}{expression}
+    Is a TALES expression that returns a \var{DateTime} object that specifies the
+    deadline for this alarm.
+
+    \note{Check the \module{Expression} activity for the list of variables availabe in the expression context.}
+\end{memberdesc}
+
+\subsubsection{Instance configuration}
+
+Not applicable.
+
+\subsubsection{ALF Example}
+
+In this example, the \var{review} will be triggered 3 months after the object
+was modified the last time:
+
+\begin{verbatim}
+<alarm id="wait_for_rereview"
+   title="Re-review published content"
+   expression="python:object.Modified() + 3*30"
+   continue_activity="review" />
+\end{verbatim}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Other Activities}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A small amount of activities do not fit well into the previous categories.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Route} --- Complex split and join operations}
+\declaremodule{standard}{route}
+\modulesynopsis{Complex split and join operations}
+ 
+The \module{route} activity is a comprehensive and powerful implementation to manage complex
+split and join operations within a workflow. As parallel splits are a natural
+part of AlphaFlow and other kinds of splits are implemented by the individual
+activities, the \module{route} activity provides the tools for joining those
+threads again.
+
+A route is a kind of entry point that starts multiple activities and provides
+one or more defined ``gates'' to join those routes.
+
+When a gate is reached, it registers this. Depending on the mode of the gate,
+it will start its \var{continue\_activity} and either wait for more routes to
+trigger it or, when completed, will kill all remaining routes and gates.
+
+For example, routes are used for:
+
+\begin{itemize}
+    \item multiple parallel reviews
+    \item the milestone pattern (see the ``Recipes'' section)
+    \item XOR operations (either one task has to be completed or another)
+\end{itemize}
+
+\subsubsection{Activity configuration}
+
+Some rules about the configuration of a route:
+
+\begin{itemize}
+    \item The activities listed within a route are the individual routes that are started when the route is started.
+    \item Those routes are called ``competing'' routes and are identified by their initial activity.
+    \item Routes can refer to activities outside the route activity.
+    \item \var{gate}s are given in parallel to the routes. They are not routes themselves.
+    \item Gates automatically know which routes exist and which activities belong to those routes.
+    \item Gates are triggered by checking which competing route the activity that triggered it belongs to.
+    \item Each competing route can trigger a gate only once.
+    \item When the first gate is completed, all other gates will be terminated. Every running activity 
+        from the remaining competing routes and the route activity itself will be terminated as well.
+\end{itemize}
+        
+\begin{funcdesc}{gate}{id, mode, continue\_activity}
+    Specifies a gate within the route. Can be given multiple times. When the
+    gate is triggered, the continue\_activity will be started. When the gate
+    completes, other gates and the remaining routes will be killed.
+
+    The mode determines when the gate triggers and completes:
+
+    \begin{description}
+
+        \item[multi-merge] Triggers once for every route when it reaches the
+        gate. Completes when all routes have triggered the gate.
+
+        \item[discriminate] Triggers when the first route reaches the gate.
+        Completes directly after triggering.
+
+        \item[delayed-discriminate] Triggers when the last route is about to be
+        completed and at least one route previously reached this gate.
+        Completes directly after triggering.
+
+        \item[synchronizing-merge] Triggers when all routes have reached the
+        gate. Completes directly after triggering.
+
+    \end{description}
+\end{funcdesc}
+
+\begin{notice}
+    A smart combination of gates in various modes is very powerful.  Check the
+    examples to get a good overview how various combinations work.
+\end{notice}
+
+\begin{notice}
+    The delayed-discriminate mode allows to implement a review where everybody
+    has to give his decision although the result is already known.
+\end{notice}
+
+\subsubsection{Instance configuration}
+
+Not applicable.
+
+\subsubsection{ALF example}
+
+This example implements a multi review: different decisions have either be all
+together be accepted or they are rejected all. Note: The graphical
+representation of the multi-review is very systematic and appealing!
+
+\begin{verbatim}
+<route id="demo_route">
+    <decision id="decision_1"
+        accept_activity="accept" 
+        reject_activity="reject" 
+        .../>
+    <decision id="decision_2"
+        accept_activity="accept" 
+        reject_activity="reject" 
+        .../>
+    <decision id="decision_3"
+        accept_activity="accept" 
+        reject_activity="reject" 
+        .../>
+
+    <gate id="reject" mode="discriminate" continue="everything_was_rejected"/>
+    <gate id="accept" mode="synchronizing-merge" continue="everything_was_rejected"/>
+</route>
+\end{verbatim}
+
+See the milestone pattern for another very powerful application of the \module{route} activity.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\module{Recursion} --- Apply workflow to many objects at once}
+
+\declaremodule{standard}{Recursion}
+\modulesynopsis{Apply workflow to many objects at once}
+
+When managing content with a workflow it is sometimes very convenient to
+publish a complete folder with all contained objects at once. In Zope and Plone
+this requires you to modify status labels, permissions and more for a complete
+hierarchy of objects.
+
+In AlphaFlow you do not have to manage a workflow instance for each of those
+objects but control them from a central workflow that is run on the top-most
+folder.
+
+The \module{recursion} activity duplicates the workflow for certain activities
+for every contained object and manages the suppression of parts of the
+workflow. In theory you could replicate e.g. review decisions for each single
+sub-object, but in practice you only want some parts of the workflow to be
+replicated.
+
+The \module{recursion} is one of the few daemon work items: it has to be
+enabled once and will stay active in the workflow until the workflow instance
+itself is completed. It then monitors what other activities are started and
+duplicates them on the sub-objects, starting little sub-workflows on them.
+
+\subsubsection{Activity configuration}
+
+\begin{memberdesc}{recursion\_activity}
+    The activities that should be applied recursively. They are started on all sub-objects
+    and will run their following activities as well, resulting in sub-workflows for the sub-objects.
+\end{memberdesc}
+\begin{memberdesc}{break\_activity}
+    To avoid completely duplicated workflows on the sub-objects, the activities listed as \var{break\_activity}
+    will be suppressed when started on a sub-object.
+\end{memberdesc}
+\begin{memberdesc}{optional\_recursion}
+    If the content object is a folder and this is set to \var{True}, the user who configures the
+    workflow will be allowed to choose whether the workflow should only be applied to the
+    content object or to the sub-objects as well.
+    If this is set to \var{False} the recursion will always be active if the content object
+    is folderish.
+
+    Typically an archive workflow would have mandatory recursion as you wouldn't archive a folder
+    but not it's contents.
+\end{memberdesc}
+
+\subsubsection{Instance configuration}
+
+    \begin{description}
+        \item[apply] Lets the user select whether the workflow should be applied 
+            recursively or not.
+    \end{description}
+
+\subsubsection{ALF example}
+
+This example asks an author to prepare a folder for publication. Notice that
+the recursion will trigger the ``perm\_pending'' and ``dc\_pending'' activities
+but not the ``review'' activity.
+
+\begin{verbatim}
+<workflow ...
+    startActivity="prepare_folder recurse">
+    
+    <recursion id="recurse"
+        recursion_activity="perm_pending"
+        break_activity="review"
+        optional="False"/>
+        
+    <task id="prepare_folder"
+          completion_activity="perm_pending">
+          ...
+    </task>
+
+    <permission id="perm_pending"
+        continue_activity="dc_pending review">
+        <add name="Modify portal content" roles="Reviewer"/>
+        <remove name="Modify portal content" roles="Owner"/>
+    </permission>
+
+    <dcworkflow id="dc_pending" state="pending"/>
+    
+    <decision id="review" .../>
+
+    ...
+\end{verbatim}
+

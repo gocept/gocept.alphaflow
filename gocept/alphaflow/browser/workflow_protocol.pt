@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  lang="en"
+  metal:use-macro="here/main_template/macros/master"
+  i18n:domain="alphaflow">
+
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1>Workflow log</h1>
+
+      <table class="listing alphaflow nosort" metal:define-macro="protocol">
+        <thead>
+          <tr>
+            <th class="nosort"></th>
+            <th i18n:translate="">Date</th>
+            <th i18n:translate="">User</th>
+            <th i18n:translate="">Task</th>
+            <th i18n:translate="">Result</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+
+        <tal:block tal:repeat="log_entry view/log_entries">
+          <tr>
+          <td>
+            <img tal:attributes="src string:alphaflow_${log_entry/state}_icon.gif"/>
+          </td>
+          <td tal:content="python:path('context/@@plone').toLocalizedTime(path('log_entry/date'), True)"></td>
+          <td tal:content="python:', '.join([(x.getProperty('fullname') or x.getUserName()) for x in log_entry.users])"></td>
+          <td tal:content="log_entry/task"></td>
+          <td tal:content="log_entry/results"></td>
+          <td>
+            <p tal:content="log_entry/comment"/>
+            <p tal:condition="log_entry/annotation"
+              tal:content="structure log_entry/annotation"/>
+          </td>
+        </tr>
+      </tal:block>
+
+      </table>
+    </div>
+
+  </body>
+</html>

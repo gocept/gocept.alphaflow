@@ -1,0 +1,175 @@
+<?xml encoding="UTF-8"?>
+
+<!-- Elements -->
+
+<!ELEMENT workflow (permission-change|dcworkflow|task|decision|recursion
+                    |route|alarm|switch|expression|ntask|email
+                    |configuration)+>
+<!ATTLIST workflow
+  id ID #REQUIRED
+  startActivity IDREFS #REQUIRED
+  object_name CDATA #IMPLIED
+  title CDATA #IMPLIED
+  description CDATA #IMPLIED
+  onlyAllowRoles CDATA #IMPLIED>
+
+<!-- Attributes -->
+
+<!ENTITY % id-attrib "
+  id ID #REQUIRED">
+
+<!ENTITY % common-attlist "
+  %id-attrib;
+  startActivity IDREFS #IMPLIED
+  title CDATA #IMPLIED
+  sort CDATA #IMPLIED
+  nonEditableFields CDATA #IMPLIED">
+
+<!ELEMENT route (gate|permission-change|dcworkflow|task|decision
+                 |recursion|route|alarm|switch|expression|ntask|email)*>
+<!ATTLIST route
+  %common-attlist;>
+
+<!ENTITY % common-automatic-attlist "
+  %common-attlist;
+  continue_activity IDREFS #IMPLIED">
+
+<!ENTITY % common-tales-attlist "
+  %common-automatic-attlist;
+  expression CDATA #REQUIRED">
+
+<!-- TALES Activities -->
+
+<!ELEMENT expression EMPTY>
+<!ATTLIST expression
+  %common-tales-attlist;>
+
+<!ELEMENT alarm EMPTY>
+<!ATTLIST alarm
+  %common-tales-attlist;>
+
+<!-- Automatic Activities -->
+
+<!ELEMENT dcworkflow EMPTY>
+<!ATTLIST dcworkflow
+  %common-automatic-attlist;
+  status CDATA #REQUIRED>
+
+<!ELEMENT recursion EMPTY>
+<!ATTLIST recursion
+  %common-automatic-attlist;
+  recursion_activity IDREFS #REQUIRED
+  break_activities IDREFS #REQUIRED
+  optional_recursion (true|false) #IMPLIED>
+
+<!ELEMENT version EMPTY>
+<!ATTLIST version
+  %common-automatic-attlist;>
+
+<!ELEMENT email (recipient)+>
+<!ATTLIST email
+  %common-automatic-attlist;
+  mailSubject CDATA #REQUIRED
+  template CDATA #REQUIRED>
+
+<!ELEMENT switch (case)+>
+<!ATTLIST switch
+  %common-automatic-attlist;
+  mode (first|all) #REQUIRED>
+
+<!ELEMENT gate EMPTY>
+<!ATTLIST gate
+  %common-automatic-attlist;
+  mode (synchronizing-merge|discriminate|multi-merge) #REQUIRED>
+
+<!ENTITY % common-assignable-attlist "
+  %common-attlist;
+  view_url_expr CDATA #IMPLIED
+  content_roles CDATA #IMPLIED
+  completion_url_expr CDATA #IMPLIED">
+
+<!-- Assignable Activities -->
+
+<!ELEMENT decision (assignees)>
+<!ATTLIST decision
+  %common-assignable-attlist;
+  decision_modus (first_yes|all_yes) #REQUIRED
+  decision_notice CDATA #IMPLIED
+  reject_activity IDREFS #IMPLIED
+  accept_activity IDREFS #IMPLIED>
+
+<!ELEMENT task (assignees)*>
+<!ATTLIST task
+  %common-assignable-attlist;
+  completion_activity IDREFS #IMPLIED>
+
+<!ELEMENT ntask (exit|assignees)*>
+<!ATTLIST ntask
+  %common-assignable-attlist;>
+
+<!ELEMENT configuration (assignees)>
+<!ATTLIST configuration
+  %common-assignable-attlist;
+  continue_activity IDREFS #REQUIRED
+  configures IDREFS #IMPLIED
+  configures_all (false|true) #IMPLIED>
+
+<!-- Helper Elements -->
+
+<!ELEMENT permission-change (permission|add|remove)*>
+<!ATTLIST permission-change
+  %common-automatic-attlist;>
+
+<!ELEMENT recipient EMPTY>
+<!ATTLIST recipient
+  type (actual_role|next_assignees|previous_assignees|owner) #REQUIRED
+  roles CDATA #IMPLIED>
+
+<!ELEMENT case EMPTY>
+<!ATTLIST case
+  %id-attrib;
+  activities IDREFS #REQUIRED
+  condition CDATA #REQUIRED>
+
+<!ELEMENT exit EMPTY>
+<!ATTLIST exit
+  %common-attlist;
+  activities IDREFS #REQUIRED>
+
+<!ELEMENT assignees EMPTY>
+<!ATTLIST assignees
+  kind (actual|possible) #REQUIRED
+  roles CDATA #IMPLIED
+  expression CDATA #IMPLIED>
+
+<!ELEMENT permission EMPTY>
+<!ATTLIST permission
+  acquire (false|true) #REQUIRED
+  name CDATA #IMPLIED
+  roles CDATA #IMPLIED>
+
+<!ELEMENT add EMPTY>
+<!ATTLIST add
+  name CDATA #REQUIRED
+  roles CDATA #REQUIRED>
+
+<!ELEMENT remove EMPTY>
+<!ATTLIST remove
+  name CDATA #REQUIRED
+  roles CDATA #REQUIRED>
+
+<!ENTITY % sort-attrib "
+  sort CDATA #IMPLIED">
+
+<!ENTITY % review_notice-attrib "
+  review_notice CDATA #IMPLIED">
+
+<!ENTITY % rejectaccept-attrib "
+  reject_activity IDREF #REQUIRED
+  accept_activity IDREF #REQUIRED">
+
+<!ENTITY % roles-attrib "
+  roles CDATA #REQUIRED">
+
+<!ENTITY % nonEditableFields-attrib "
+  nonEditableFields CDATA #REQUIRED">

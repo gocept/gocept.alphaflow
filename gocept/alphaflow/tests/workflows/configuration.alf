@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+  <workflow
+    id="testworkflow"
+    startActivity="assign_task"
+    description="Test of configuration activity"
+    onlyAllowRoles="Manager Reviewer Member">
+
+    <configuration id="assign_task"
+                   configures="write_doc review delete_doc">
+      <complete activities="write_doc" />
+      <assignees kind="actual" roles="Member" />
+    </configuration>
+
+    <ntask id="write_doc">
+      <start>
+        <dcworkflow status="published" title="Published"/>
+      </start>
+      <complete activities="review" />
+      <assignees kind="possible" roles="Member" />
+    </ntask>
+
+    <ntask id="review">
+      <exit id="complete" title="Complete" activities="publish" />
+      <assignees kind="possible" roles="Reviewer" />
+    </ntask>
+
+    <ntask id="publish">
+      <exit id="complete" title="Complete" activities="delete_doc" />
+      <assignees kind="possible" roles="Reviewer" />
+    </ntask>
+
+    <!-- task which should not be displayed by getGroupedSchema -->
+    <ntask id="delete_doc"
+       nonEditableFields="task">
+       <assignees kind="actual" roles="Reviewer" />
+       <exit id="complete" title="Complete" />
+    </ntask>
+
+</workflow>

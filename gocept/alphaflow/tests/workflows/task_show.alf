@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title="Testworkflow"
+          id="ntasktestworkflow"
+          startActivity="visible hidden"
+          description="Blubb">
+
+  <ntask id="visible" title="Dokument bearbeiten">
+    <assignees kind="actual" roles="Owner" />
+  </ntask>
+
+  <ntask id="hidden" title="Dokument bearbeiten" show_in_work_list="false">
+    <assignees kind="actual" roles="Owner" />
+  </ntask>
+
+</workflow>

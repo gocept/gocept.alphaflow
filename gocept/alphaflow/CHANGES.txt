@@ -1,0 +1,125 @@
+=================
+AlphaFlow History
+=================
+
+AlphaFlow 2.0a8 (unreleased)
+============================
+
+- Added `condition` field to all exits which is checked by switches and ntasks.
+  ntasks use this expression to disallow using an exit under certain
+  conditions.
+
+- Made workflow listing a bit more readable and include descriptions now.
+
+- Added feature to copy old versions of a workflow to the working copy.
+
+- Added `read only` mode for editor, allow viewing old versions of a
+  workflow.
+
+- Added `export to SVG` feature in editor.
+
+- Better visualisation of parent aspects. Note: grouping interferes with the
+  visualisation of graphs. To see all parent aspects correctly you have to
+  unfold all groups.
+
+- Fixed sorting order of group source to sort by the group titles.
+
+- Extended workflow catalog to explicity capture what type an lifecycle object
+  is (workitem, instance, checkpoint, aspect)
+
+- Fixed reverse workflow path traversal for statistics.
+
+- Simplified the workflow log and made it more useful for endusers.
+
+- Made installer disable DCWorkFlow for work item content types.
+
+- Made getViewUrl() more robust (e.g. not break cataloging or UI) when an
+  activity for a running workflow was deleted.
+
+- Fixed a problem with the rolecache. Inconsistent states (e.g. missing
+  content objects) would disallow updating the portal catalog.
+
+- Fixed importer to correctly default to the configuration activity`s URL
+  expression so that users who finish a work item and are responsible for the
+  next configuration activity get redirected immediately.
+
+- Optimized graph forms and layout a bit.
+
+- Added feature for grouping activities.
+
+- Fixed zooming the graphs.
+
+- Added support for LinguaPlone's content menu.
+
+- Added support for assignments via groups.
+
+- Fixed a huge performance problem by switching away from determing assignment
+  based on global roles. Only local roles are considerered now whenever
+  AlphaFlow talks about `roles`.
+
+- Fixed a layout problem with IE in the workflow editor that made parts of the
+  side bar inaccessible due to a missing scroll bar.
+
+- Fixed an encoding problem when redirecting to the work item view.
+
+- Lots of cleanup and manual checking.
+
+- Added new attribute to IWorkItem: completed_by. Provides the user name of
+  the user who completed the work item.
+
+- Fixed the way we create lists of users. Plone 2.5 uses PAU which will only
+  list users from the first persistent user source. To support LDAP or AD
+  installations we have to create complete lists of users (at least for now).
+
+- Switched away from pygraphviz to pydot for Windows compatibility.
+
+AlphaFlow 2.0a7
+===============
+
+- Cleaned up documentation area.
+
+- Cleaned up tests a bit.
+
+- Made the import dependency of pygraphviz a bit more soft. AlphaFlow will
+  only log a warning when pygraphviz isn't installed. The visual editor won't
+  be fully functional then, everything else works, though.
+
+- Cleaned up imports.
+
+- Fixed conflicting security declarations.
+
+- Fixed UID issue with Zope 2.9.6.
+
+- Cleaned up usage of obsolete utility functions.
+
+- Removed compatibility code for Zope 2.7, Plone < 2.5 and Python < 2.4.
+
+AlphaFlow 2.0a6
+===============
+
+- Cleanup, manually tested and fixed things that aren't covered by tests.
+
+- Removed GenericSetup integration again.
+
+- Refactored the generation of workflow graphs to use `pygraphviz`. The graph
+  is now generated once as an abstract model and then operated upon (e.g. to
+  highlight activities, label the nodes, etc.)
+
+- Refactored lots of API, made AlphaFlow in many places more component
+  oriented.
+
+- Added the ability to define workflows in arbitrary places, not only the
+  workfow_manager.
+
+AlphaFlow 2.0a2-a5
+==================
+
+Not recorded in HISTORY.txt.
+
+AlphaFlow 2.0a1
+===============
+
+    - Refactored the whole system to include an aspect model.
+
+    - Added a graphical workflow editor.
+

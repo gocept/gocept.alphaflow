@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow
+  id="testworkflow"
+  startActivity="write_document"
+  onlyAllowRoles="Manager Reviewer">
+
+  <!-- Write the document -->
+  <ntask id="write_document" title="Dokument schreiben" sort="1">
+    <exit id="complete" title="complete">
+      <dcworkflow status="published" title="Published"/>
+    </exit>
+    <assignees kind="actual" roles="ChiefEditor" />
+  </ntask>
+
+</workflow>

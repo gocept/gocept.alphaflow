@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow 
+    id="testworkflow"
+    startActivity="test1"
+    onlyAllowRoles="Manager Member">
+
+    <expression id="test1"
+                expression="python:object.set('run_system', object.getCurrentUserName())">
+      <continue activities="test2" />
+    </expression>
+
+    <expression id="test2"
+                runAs="alphaflow/currentUser"
+                expression="python:object.set('run_current', object.getCurrentUserName())">
+      <continue activities="test3" />
+    </expression>
+
+    <expression id="test3"
+                runAs="string:author"
+                expression="python:object.set('run_author', object.getCurrentUserName())">
+      <continue activities="test4" />
+    </expression>
+
+    <expression id="test4"
+                runAs="alphaflow/systemUser"
+                expression="python:object.set('run_system_explicit', object.getCurrentUserName())">
+      <continue activities="end" />
+    </expression>
+
+    <ntask id="end">
+      <exit id="complete" title="Complete"/>
+    </ntask>
+
+</workflow>

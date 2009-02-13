@@ -1,0 +1,43 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="here/prefs_main_template/macros/master"
+  i18n:domain="alphaflow">
+
+<body>
+
+  <div metal:fill-slot="prefs_configlet_main">
+
+    <h1 i18n:translate="label_configlet_alphaflow_editor">
+      Workflows
+    </h1>
+
+    <a href=""
+      class="link-parent"
+      tal:attributes="href string: $portal_url/plone_control_panel"
+      i18n:domain="plone"
+      i18n:translate="label_up_to_plone_setup">
+      Up to Site Setup
+    </a>
+
+    <div class="documentDescription">
+      This is the overview of workflows installed anywhere in the portal.
+      You can edit workflows and gather statistics here.
+    </div>
+
+    <tal:container repeat="item view/list_by_path">
+      <tal:processes define="processes item/processes">
+
+      <h2>
+        <a tal:attributes="href item/plone_url" tal:content="item/title" />
+      </h2>
+
+      <table metal:use-macro="here/alphaflow_macros/macros/alphaflow-process-container-table">
+        <td metal:fill-slot="delete" />
+        <metal:omit fill-slot="old-versions" />
+      </table>
+
+      </tal:processes>
+    </tal:container>
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+
+<workflow
+    id='testworkflow'
+    startActivity="write_document"
+    onlyAllowRoles="Manager Reviewer">
+
+    <!-- Write the document -->
+    <ntask id="write_document" title="Dokument schreiben" sort="1">
+      <exit id="complete" title="Complete" activities="write_document" />
+      <assignees kind="actual" expression="object/test_assignees" />
+    </ntask>
+</workflow>

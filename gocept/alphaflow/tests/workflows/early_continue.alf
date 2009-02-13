@@ -1,0 +1,15 @@
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow id="testworkflow"
+          onlyAllowRoles=""
+          startActivity="email1">
+
+  <email id="email1" title="Email versenden" sort="1"
+         template="default_email"
+         mailSubject="Asdf">
+    <continue activities="task1" />
+    <recipient type="owner"/>
+  </email>
+
+  <ntask id="task1" title="Task to test next assignee" />
+
+</workflow>

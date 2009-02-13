@@ -1,0 +1,34 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="alphaflow">
+
+<body>
+
+<!-- The work item information box -->
+
+<div metal:define-macro="portlet"
+  tal:define="wis here/workflow_manager/queryWorkItemsForCurrentUser">
+
+    <dl class="portlet" id="portlet-workitems"
+         tal:condition="wis">
+
+        <dt class="portletHeader" i18n:translate="wi_portlet_headline">Work items</dt>
+
+        <dd class="portletItem" tal:repeat="wi wis"
+            tal:attributes="class python:'portletItem ' + test(repeat['wi'].odd(), 'odd', 'even')">
+            <a  href="view"
+              tal:attributes="href wi/getViewUrl"
+              tal:content="wi/getActivityTitleOrId">
+                Dokument schreiben
+            </a>
+
+            <p tal:content="wi/contentTitle" />
+
+          </dd>
+
+          <dd class="portletItemLast"></dd>
+    </dl>
+</div>
+
+</body>
+</html>

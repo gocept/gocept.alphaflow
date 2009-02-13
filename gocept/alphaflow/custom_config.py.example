@@ -1,0 +1,18 @@
+# Copyright (c) 2004-2005 gocept gmbh & co. kg
+# See also LICENSE.txt
+# $Id: config.py 2965 2005-05-30 12:20:28Z mac $
+
+# your site encoding
+# NOTE: this must be the same as set in plone (verbose explanation see below)
+SITE_ENCODING = "UTF8"
+
+# Why site_encoding here? 
+# We have a *lot* of calls to archetype fields, even in security
+# relevant parts resulting in a *vast* amount of getCharset calls.
+# Being a skin method getCharset is utterly slow. Defining the site encoding
+# here too speeds up *a lot*.
+
+
+# Only for Plone 2.1: Do you want to patch Plone's default content types to
+# use AlphaFlow?
+PATCH_PLONE_TYPES = True

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Note: This process definition is supposed to fail. -->
+<!DOCTYPE workflow SYSTEM "../../schemas/alphaflow.dtd">
+<workflow title=""  
+    startActivity="write_document"
+    description=""
+    onlyAllowRoles="Manager,Reviewer">
+
+    <!-- Write the document -->
+    <ntask id="write_document" title="Dokument schreiben" sort="1">
+      <exit id="complete" title="Complete">
+        <dcworkflow title="" status="published"/>
+      </exit>
+      <assignees kind="possible"
+        expression="object/test_assignees" />
+      <assignees kind="possible"
+        roles="Editor" />
+    </ntask>
+
+</workflow>

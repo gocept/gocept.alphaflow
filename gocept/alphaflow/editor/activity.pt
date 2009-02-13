@@ -1,0 +1,13 @@
+<form metal:use-macro="context/@@editor_form/form">
+
+  <div metal:fill-slot="header">
+    <h2>
+      <a tal:attributes="href
+        string:activity://${context/getId}"
+        tal:content="context/title">Back</a>
+      &raquo;
+      <tal:i18n i18n:translate="label_edit" i18n:domain="plone">Edit</tal:i18n>
+    </h2>
+  </div>
+
+</form>

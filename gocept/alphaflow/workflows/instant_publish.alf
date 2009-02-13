@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<workflow id="instant_publish"
+          title="Instant publish"
+          onlyAllowRoles="Manager"
+          description="A small workflow that allows the creator of a document to publish it immediately after editing."
+          startActivity="publish">
+
+    <ntask id="publish"
+        title="Published content">
+
+    <start>
+      <dcworkflow title="Mark as published."
+                  status="published" />
+      <permission-change title="set permissions for published state">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Anonymous Manager" />
+      </permission-change>
+    </start>
+
+    <exit id="retract_vis"
+          title="Retract content (set state to visible)">
+      <dcworkflow title="Mark as visible."
+                  status="visible" />
+      <permission-change title="set permissions for visible state">
+        <permission name="Access contents information"
+                    acquire="true"
+                    roles="Anonymous Manager Reviewer" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="true"
+                    roles="Anonymous Manager Reviewer" />
+      </permission-change>
+    </exit>
+
+    <exit id="retract"
+          title="Retract content (set state to private)">
+      <dcworkflow title="Mark as private."
+                  status="private" />
+      <permission-change title="set permissions for private state">
+        <permission name="Access contents information"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Change portal events"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="Modify portal content"
+                    acquire="false"
+                    roles="Manager Owner" />
+        <permission name="View"
+                    acquire="false"
+                    roles="Manager Owner" />
+      </permission-change>
+    </exit>
+
+    <assignees kind="actual" expression="python: [object.Creator()]" />
+
+    </ntask>
+
+</workflow>
