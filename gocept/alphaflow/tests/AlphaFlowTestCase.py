@@ -21,11 +21,11 @@ ZopeTestCase.installProduct("PlacelessTranslationService")
 ZopeTestCase.installProduct("SiteAccess")
 ZopeTestCase.installProduct("BTreeFolder2")
 ZopeTestCase.installProduct("ZCatalog")
-ZopeTestCase.installProduct("AlphaFlow")
+ZopeTestCase.installProduct("gocept.alphaflow")
 ZopeTestCase.installProduct("PloneTestCase")
 ZopeTestCase.installProduct("Five")
 
-PloneTestCase.setupPloneSite(products=('AlphaFlow',))
+PloneTestCase.setupPloneSite(products=('gocept.alphaflow',))
 
 from gocept.alphaflow.interfaces import IWorkflowImporter
 from gocept.alphaflow.process import Process
