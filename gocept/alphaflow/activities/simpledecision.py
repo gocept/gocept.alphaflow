@@ -12,14 +12,14 @@ from Products.Archetypes.public import registerType
 from Products.Archetypes import public as atapi
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     ISimpleDecisionActivity, IDecisionWorkItem, IWorkItemFactory
-from Products.AlphaFlow.workitem import BaseAssignableWorkItem
-from Products.AlphaFlow.activity import BaseAssignableActivity
-from Products.AlphaFlow import config, utils
-from Products.AlphaFlow.action import Action
+from gocept.alphaflow.workitem import BaseAssignableWorkItem
+from gocept.alphaflow.activity import BaseAssignableActivity
+from gocept.alphaflow import config, utils
+from gocept.alphaflow.action import Action
 
 
 class WorkItemFactory(object):

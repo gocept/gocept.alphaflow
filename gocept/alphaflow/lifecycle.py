@@ -20,12 +20,12 @@ from Globals import InitializeClass
 
 from Products.Archetypes.atapi import BaseFolder
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow import config
+from gocept.alphaflow.interfaces import \
     ILifeCycleObject, ILifeCycleController, ILifeCycleEvent
-from Products.AlphaFlow.compatibility.factory import factory
-from Products.AlphaFlow.exception import LifeCycleError
-from Products.AlphaFlow import utils
+from gocept.alphaflow.compatibility.factory import factory
+from gocept.alphaflow.exception import LifeCycleError
+from gocept.alphaflow import utils
 
 
 DEBUG_FAILURE = os.getenv('ALPHAFLOW_RAISE_ON_FAIL')

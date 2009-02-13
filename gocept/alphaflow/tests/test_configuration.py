@@ -6,12 +6,12 @@ import unittest
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import\
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import\
      IConfigurationActivity, IConfigurationWorkItem, ILifeCycleController
-from Products.AlphaFlow.activities.configuration import \
+from gocept.alphaflow.activities.configuration import \
      ConfigurationActivity, ConfigurationWorkItem
-from Products.AlphaFlow.exception import ConfigurationError
+from gocept.alphaflow.exception import ConfigurationError
 
 
 class ConfigurationTest(AlphaFlowTestCase):

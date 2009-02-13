@@ -12,9 +12,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.Archetypes import public as atapi
 from Products.Archetypes.Extensions.utils import installTypes, install_subskin
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
      IWorkflowImporter, IProcessWriteContainer
-from Products.AlphaFlow.process import Process
+from gocept.alphaflow.process import Process
 from Products.Procurement import config, utils
 
 

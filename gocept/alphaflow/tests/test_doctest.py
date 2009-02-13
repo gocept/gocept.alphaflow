@@ -10,7 +10,7 @@ from Testing import ZopeTestCase
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 
-from Products.AlphaFlow.Extensions import dcworkflow
+from gocept.alphaflow.Extensions import dcworkflow
 
 PloneTestCase.setupPloneSite()
 

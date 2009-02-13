@@ -8,17 +8,17 @@ from AccessControl import SpecialUsers
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
      IExpressionActivity, IExpressionWorkItem, ILifeCycleController
-from Products.AlphaFlow.activities.expression import \
+from gocept.alphaflow.activities.expression import \
      ExpressionActivity, ExpressionWorkItem
-from Products.AlphaFlow.aspects.interfaces import \
+from gocept.alphaflow.aspects.interfaces import \
      IExpressionAspectDefinition, IExpressionAspect
-from Products.AlphaFlow.aspects.expression import \
+from gocept.alphaflow.aspects.expression import \
      ExpressionAspectDefinition, ExpressionAspect
 
-from Products.AlphaFlow.utils import getTalesContext
+from gocept.alphaflow.utils import getTalesContext
 
 
 class ExpressionTest(AlphaFlowTestCase):

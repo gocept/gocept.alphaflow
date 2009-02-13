@@ -9,13 +9,13 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow.workitem import BaseWorkItem
-from Products.AlphaFlow.activity import BaseAutomaticActivity
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.workitem import BaseWorkItem
+from gocept.alphaflow.activity import BaseAutomaticActivity
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     IDaemonActivity, IGateActivity, IGateWorkItem
-from Products.AlphaFlow import config
+from gocept.alphaflow import config
 
 
 DELAYED_DISCRIMINATE = config.DELAYED_DISCRIMINATE

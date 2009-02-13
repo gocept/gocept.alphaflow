@@ -9,13 +9,13 @@ from Products.Archetypes.tests.common import *
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.interfaces import IExitDefinition
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.interfaces import IExitDefinition
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
      INTaskWorkItem, INTaskActivity, ILifeCycleController
-from Products.AlphaFlow.activities.ntask import \
+from gocept.alphaflow.activities.ntask import \
      NTaskWorkItem, NTaskActivity
-from Products.AlphaFlow.exception import ConfigurationError
+from gocept.alphaflow.exception import ConfigurationError
 
 class NTaskTest(AlphaFlowTestCase):
 

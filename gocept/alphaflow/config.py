@@ -21,7 +21,7 @@ PATCH_PLONE_TYPES = True
 ENABLE_ZODB_COMMITS = True
 
 try:
-    from Products.AlphaFlow.custom_config import *
+    from gocept.alphaflow.custom_config import *
 except ImportError:
     pass
 

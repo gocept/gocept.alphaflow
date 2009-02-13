@@ -5,10 +5,10 @@
 import unittest
 
 from Products.CMFCore.utils import getToolByName
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
         ISwitchWorkItem, ISwitchActivity, ILifeCycleController
-from Products.AlphaFlow.activities.switch import \
+from gocept.alphaflow.activities.switch import \
         SwitchWorkItem, SwitchActivity
 
 class SwitchTest(AlphaFlowTestCase):

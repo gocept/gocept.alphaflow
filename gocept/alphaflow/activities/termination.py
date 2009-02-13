@@ -7,12 +7,12 @@ import zope.interface
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.workitem import BaseAutomaticWorkItem
-from Products.AlphaFlow.activity import BaseAutomaticActivity
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow import config
+from gocept.alphaflow.workitem import BaseAutomaticWorkItem
+from gocept.alphaflow.activity import BaseAutomaticActivity
+from gocept.alphaflow.interfaces import \
      IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
      ITerminationActivity, ITerminationWorkItem
 
 

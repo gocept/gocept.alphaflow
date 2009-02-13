@@ -16,12 +16,12 @@ from Products.Archetypes import public as atapi
 
 from Products.CMFCore.utils import getToolByName
 
-import Products.AlphaFlow.utils
-from Products.AlphaFlow import config
-from Products.AlphaFlow.workitem import BaseAutomaticWorkItem
-from Products.AlphaFlow.activity import BaseAutomaticActivity
-from Products.AlphaFlow.interfaces import IActivityClass, IWorkItemClass
-from Products.AlphaFlow.activities.interfaces import \
+import gocept.alphaflow.utils
+from gocept.alphaflow import config
+from gocept.alphaflow.workitem import BaseAutomaticWorkItem
+from gocept.alphaflow.activity import BaseAutomaticActivity
+from gocept.alphaflow.interfaces import IActivityClass, IWorkItemClass
+from gocept.alphaflow.activities.interfaces import \
     IEMailActivity, IEMailWorkItem, IEMailRecipientMode
 
 
@@ -158,7 +158,7 @@ class RecipientActualRole(AbstractRecipent):
         if contentObject is None:
             relevant = []
         else:
-            relevant = Products.AlphaFlow.utils.listMembersWithLocalRoles(
+            relevant = gocept.alphaflow.utils.listMembersWithLocalRoles(
                 contentObject, self.roles)
         return list(relevant)
 
@@ -187,7 +187,7 @@ def _send_email(context, definition, work_items):
     template = wf_tool.email_templates[definition.template]
     subject_expr = definition.mailSubject
     subject_expr = "string:" + subject_expr
-    subject = Products.AlphaFlow.utils.evaluateTales(
+    subject = gocept.alphaflow.utils.evaluateTales(
         subject_expr, workitem=workitem)
     mail_header_data = {
         'From': _quoteAddressField(portal_properties.email_from_name,

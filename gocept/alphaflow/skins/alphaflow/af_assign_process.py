@@ -4,7 +4,7 @@
 # af_assign_process.py,v 1.5.6.2 2005/05/02 10:08:52 zagy Exp
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.config import UID_CATALOG
-from Products.AlphaFlow.interfaces import ILifeCycleController
+from gocept.alphaflow.interfaces import ILifeCycleController
 request = context.REQUEST
 
 uids = getToolByName(context, UID_CATALOG)

@@ -6,12 +6,12 @@ import unittest
 
 from Products.CMFCore.utils import getToolByName
 
-import Products.AlphaFlow.activities.decision
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.interfaces import \
+import gocept.alphaflow.activities.decision
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.interfaces import \
      IDecisionWorkItem, IDecisionActivity, ILifeCycleController
-from Products.AlphaFlow.activities.decision import DecisionWorkItem, DecisionActivity
-from Products.AlphaFlow.exception import ConfigurationError
+from gocept.alphaflow.activities.decision import DecisionWorkItem, DecisionActivity
+from gocept.alphaflow.exception import ConfigurationError
 
 class DecisionTest(AlphaFlowTestCase):
 
@@ -105,7 +105,7 @@ class DecisionTest(AlphaFlowTestCase):
         self.assertEqual(wis[0].getActivity().getId(), "deci_n")
 
         # Log entry support
-        entry = Products.AlphaFlow.activities.decision.DecisionLogEntry(wis[0])
+        entry = gocept.alphaflow.activities.decision.DecisionLogEntry(wis[0])
         self.assertEquals(3, len(entry.users))
         self.assertEquals('editor3: accepted<br/>editor1: accepted',
                           entry.annotation)

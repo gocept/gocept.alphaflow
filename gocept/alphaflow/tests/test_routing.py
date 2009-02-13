@@ -9,9 +9,9 @@ from Products.Archetypes.tests.common import *
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.activities.routing import RouteWorkItem, RouteActivity
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.activities.routing import RouteWorkItem, RouteActivity
+from gocept.alphaflow.activities.interfaces import \
      IRouteWorkItem, IRouteActivity, ILifeCycleController
 
 class RouteTest(AlphaFlowTestCase):

@@ -4,9 +4,9 @@
 
 import unittest
 
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.workitem import BaseWorkItem
+import gocept.alphaflow.interfaces
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.workitem import BaseWorkItem
 
 from Acquisition import Implicit
 
@@ -69,7 +69,7 @@ class WorkItemTest(AlphaFlowTestCase):
         doc = self._init_object('workflows/instancetest.alf')
         instance = doc.getInstance()
 
-        controller = Products.AlphaFlow.interfaces.ILifeCycleController(instance)
+        controller = gocept.alphaflow.interfaces.ILifeCycleController(instance)
         controller.start('testing')
 
         items = sorted(instance.getWorkItems(), key=lambda x:x.activity_id)
@@ -87,7 +87,7 @@ class WorkItemTest(AlphaFlowTestCase):
         doc = self._init_object('workflows/action_url.alf')
         instance = doc.getInstance()
 
-        controller = Products.AlphaFlow.interfaces.ILifeCycleController(instance)
+        controller = gocept.alphaflow.interfaces.ILifeCycleController(instance)
         controller.start('testing')
 
         configuration = instance.getWorkItems()[0]

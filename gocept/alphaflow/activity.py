@@ -11,11 +11,11 @@ from OFS.Folder import Folder
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes import public as atapi
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
     IActivity, IAutomaticActivity, IAssignableActivity, \
     ICheckpointDefinition, IExitDefinition
-from Products.AlphaFlow import config, utils
-from Products.AlphaFlow.checkpoint import CheckpointDefinition
+from gocept.alphaflow import config, utils
+from gocept.alphaflow.checkpoint import CheckpointDefinition
 
 
 class BaseActivity(Folder):

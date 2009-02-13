@@ -8,12 +8,12 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.interfaces import IAspectDefinitionClass
-from Products.AlphaFlow.aspect import AspectDefinition, Aspect
-from Products.AlphaFlow.aspects.interfaces import \
+from gocept.alphaflow import config
+from gocept.alphaflow.interfaces import IAspectDefinitionClass
+from gocept.alphaflow.aspect import AspectDefinition, Aspect
+from gocept.alphaflow.aspects.interfaces import \
     IExpressionAspectDefinition, IExpressionAspect
-from Products.AlphaFlow.activities.expression import evaluate_expression
+from gocept.alphaflow.activities.expression import evaluate_expression
 
 
 class ExpressionAspectDefinition(AspectDefinition):

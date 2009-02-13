@@ -6,13 +6,13 @@
 
 import Products.Five
 
-import Products.AlphaFlow.interfaces
+import gocept.alphaflow.interfaces
 
 
 class Statistics(Products.Five.BrowserView):
 
     def cycle_time(self, begin, end):
         """Adds new process to process manager."""
-        statistics = Products.AlphaFlow.interfaces.IProcessStatistics(
+        statistics = gocept.alphaflow.interfaces.IProcessStatistics(
             self.context)
         return round(statistics.cycle_time(begin, end) * 60)

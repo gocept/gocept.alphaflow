@@ -8,10 +8,10 @@ import zope.formlib.form
 import zope.interface
 import zope.schema
 
-import Products.AlphaFlow.activities.gates
-import Products.AlphaFlow.activities.alarm
-import Products.AlphaFlow.activities.routing
-import Products.AlphaFlow.sources
+import gocept.alphaflow.activities.gates
+import gocept.alphaflow.activities.alarm
+import gocept.alphaflow.activities.routing
+import gocept.alphaflow.sources
 
 
 class TimeLimitedAssignmentSchema(zope.interface.Interface):
@@ -20,10 +20,10 @@ class TimeLimitedAssignmentSchema(zope.interface.Interface):
 
     assignment = zope.schema.Choice(
         title=u"Assignment activity",
-        source=Products.AlphaFlow.sources.PossibleActivitiesSource())
+        source=gocept.alphaflow.sources.PossibleActivitiesSource())
 
 
-class TimeLimitedAssignment(Products.AlphaFlow.editor.templates.TemplateForm):
+class TimeLimitedAssignment(gocept.alphaflow.editor.templates.TemplateForm):
 
     form_fields = zope.formlib.form.FormFields(TimeLimitedAssignmentSchema)
 
@@ -39,15 +39,15 @@ class TimeLimitedAssignment(Products.AlphaFlow.editor.templates.TemplateForm):
         title = data['title']
 
         # Setup gates
-        gate1 = self._add_activity(Products.AlphaFlow.activities.gates.GateActivity,
+        gate1 = self._add_activity(gocept.alphaflow.activities.gates.GateActivity,
                                    "%s (Task done)" % title)
         gate1.mode = "discriminate"
-        gate2 = self._add_activity(Products.AlphaFlow.activities.gates.GateActivity,
+        gate2 = self._add_activity(gocept.alphaflow.activities.gates.GateActivity,
                                    "%s (Time-limit reached)" % title)
         gate2.mode = "discriminate"
 
         # Create alarm
-        alarm = self._add_activity(Products.AlphaFlow.activities.alarm.AlarmActivity,
+        alarm = self._add_activity(gocept.alphaflow.activities.alarm.AlarmActivity,
                                    "%s (Time-limit alarm)" % title)
         alarm['CHECKPOINT_COMPLETE'].activities = (gate2.getId(),)
 
@@ -57,7 +57,7 @@ class TimeLimitedAssignment(Products.AlphaFlow.editor.templates.TemplateForm):
         task['CHECKPOINT_COMPLETE'].activities = (gate1.getId(),)
 
         # Create the route
-        route = self._add_activity(Products.AlphaFlow.activities.routing.RouteActivity,
+        route = self._add_activity(gocept.alphaflow.activities.routing.RouteActivity,
                                    title)
         route.routes = (task.getId(), alarm.getId())
         route.gates = (gate1.getId(), gate2.getId())

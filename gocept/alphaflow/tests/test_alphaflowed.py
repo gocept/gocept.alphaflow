@@ -9,9 +9,9 @@ import zope.interface
 import zope.publisher.interfaces.browser
 
 from Products.Five.traversable import FakeRequest
-from Products.AlphaFlow.interfaces import IAlphaFlowed
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow.workflowedobject import AlphaFlowed
+from gocept.alphaflow.interfaces import IAlphaFlowed
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.workflowedobject import AlphaFlowed
 
 
 class AlphaFlowedTests(AlphaFlowTestCase):

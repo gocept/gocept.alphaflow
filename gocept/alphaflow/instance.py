@@ -17,12 +17,12 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
     IInstance, IAlphaFlowed, IDaemonActivity, IWorkItemFactory, \
     ILifeCycleController, ILifeCycleEvent
-from Products.AlphaFlow import config, utils
-from Products.AlphaFlow.exception import UnknownActivityError
-from Products.AlphaFlow.lifecycle import LifeCycleObjectBase
+from gocept.alphaflow import config, utils
+from gocept.alphaflow.exception import UnknownActivityError
+from gocept.alphaflow.lifecycle import LifeCycleObjectBase
 
 
 class InstanceLocalRoleFake(utils.LocalRoleFakeBase):

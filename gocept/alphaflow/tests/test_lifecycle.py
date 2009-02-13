@@ -8,11 +8,11 @@ import unittest
 import transaction
 
 import DateTime
-import Products.AlphaFlow.tests.AlphaFlowTestCase
-import Products.AlphaFlow.browser.instance
+import gocept.alphaflow.tests.AlphaFlowTestCase
+import gocept.alphaflow.browser.instance
 
 
-class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase):
+class InstanceTests(gocept.alphaflow.tests.AlphaFlowTestCase.AlphaFlowTestCase):
 
     def test_workflowlog(self):
         doc = self._init_object('workflows/instancetest.alf')
@@ -20,13 +20,13 @@ class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase
         instance = doc.getInstance()
 
         request = None
-        log = Products.AlphaFlow.browser.instance.WorkflowLog(doc, request)
+        log = gocept.alphaflow.browser.instance.WorkflowLog(doc, request)
         self.assertEquals([], log.log_entries)
 
-        Products.AlphaFlow.interfaces.ILifeCycleController(instance).start('testing')
+        gocept.alphaflow.interfaces.ILifeCycleController(instance).start('testing')
 
         # There are two active work items
-        log = Products.AlphaFlow.browser.instance.WorkflowLog(doc, request)
+        log = gocept.alphaflow.browser.instance.WorkflowLog(doc, request)
         self.assertEquals(2, len(log.log_entries))
         foo = log.log_entries[0]
         self.assertEquals('active', foo.state)
@@ -53,7 +53,7 @@ class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase
 
         # The workflow is completed now, we still see the workflow log,
         # though.
-        log = Products.AlphaFlow.browser.instance.WorkflowLog(doc, request)
+        log = gocept.alphaflow.browser.instance.WorkflowLog(doc, request)
         self.assertEquals(1, len(log.log_entries))
         bar = log.log_entries[0]
         self.assertEquals('ended', bar.state)
@@ -69,7 +69,7 @@ class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase
 
         # We can ask for the log and see an empty version if there is no instance attached yet.
         request = None
-        log = Products.AlphaFlow.browser.instance.WorkflowLog(doc , request)
+        log = gocept.alphaflow.browser.instance.WorkflowLog(doc , request)
         self.assertEquals([], log.log_entries)
         self.assertEquals(None, doc.getInstance())
 
@@ -93,11 +93,11 @@ class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase
         self.assertEquals(1, len(doc2.getAllInstances()))
         self.assertEquals(doc.getInstance(), doc2.getAllInstances()[0])
         instance = doc.getInstance()
-        Products.AlphaFlow.interfaces.ILifeCycleController(
+        gocept.alphaflow.interfaces.ILifeCycleController(
             instance).start('testing')
 
         # Complete the instance
-        log = Products.AlphaFlow.browser.instance.WorkflowLog(doc2, None)
+        log = gocept.alphaflow.browser.instance.WorkflowLog(doc2, None)
         log.log_entries[0].controller.complete('foo')
         log.log_entries[1].controller.complete('foo')
 
@@ -123,7 +123,7 @@ class InstanceTests(Products.AlphaFlow.tests.AlphaFlowTestCase.AlphaFlowTestCase
         # Start the instance, now there is a work item.
         instance = doc.getInstance()
         controller = (
-            Products.AlphaFlow.interfaces.ILifeCycleController(instance))
+            gocept.alphaflow.interfaces.ILifeCycleController(instance))
         controller.start('testing')
         self.assertEquals(1, len(doc.getWorkItemsForCurrentUser() ))
 

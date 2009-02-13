@@ -4,7 +4,7 @@
 
 # for making an application's content types AlphaFlow-aware:
 
-from Products.AlphaFlow.workflowedobject import AlphaFlowed
+from gocept.alphaflow.workflowedobject import AlphaFlowed
 
 # for extending AlphaFlow with new activity types:
 

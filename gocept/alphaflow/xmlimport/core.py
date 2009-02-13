@@ -8,12 +8,12 @@ from xml.dom import minidom
 import zope.interface
 import zope.component
 
-from Products.AlphaFlow.process import ProcessVersion
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.process import ProcessVersion
+from gocept.alphaflow.interfaces import \
      IWorkflowImporter
-from Products.AlphaFlow.xmlimport.interfaces import IDOMImporter
-from Products.AlphaFlow.xmlimport.attribute import WorkflowAttribute
-from Products.AlphaFlow.xmlimport.utils import \
+from gocept.alphaflow.xmlimport.interfaces import IDOMImporter
+from gocept.alphaflow.xmlimport.attribute import WorkflowAttribute
+from gocept.alphaflow.xmlimport.utils import \
     configure_attributes, get_element_children
 
 

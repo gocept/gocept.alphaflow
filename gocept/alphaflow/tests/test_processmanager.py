@@ -6,11 +6,11 @@ import unittest
 
 import zope.component
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
 
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow.interfaces import \
         IProcessManager, ILifeCycleController, IWorkItemClass
-from Products.AlphaFlow.processmanager import ProcessManager
+from gocept.alphaflow.processmanager import ProcessManager
 
 
 class ProcessManagerTest(AlphaFlowTestCase):

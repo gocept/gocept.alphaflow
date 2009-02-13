@@ -8,10 +8,10 @@ import zope.component
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.config import UID_CATALOG
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.process
-from Products.AlphaFlow.browser.base import AlphaFlowView
-import Products.AlphaFlow.utils
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.process
+from gocept.alphaflow.browser.base import AlphaFlowView
+import gocept.alphaflow.utils
 
 
 class Process(AlphaFlowView):
@@ -58,7 +58,7 @@ class ProcessReadContainer(AlphaFlowView):
 
     def list(self):
         for obj in self.context.objectValues():
-            if Products.AlphaFlow.interfaces.IProcess.providedBy(obj):
+            if gocept.alphaflow.interfaces.IProcess.providedBy(obj):
                 yield obj
 
 
@@ -73,15 +73,15 @@ class ProcessWriteContainer(AlphaFlowView):
                                        "/manage_processes")
 
     def manage_addProcess(self, id):
-        self.context[id] = Products.AlphaFlow.process.Process(id)
+        self.context[id] = gocept.alphaflow.process.Process(id)
         self._redirect()
 
     def addProcess(self, title, redirect):
         """Adds new process to process manager."""
-        id = Products.AlphaFlow.utils.generateUniqueId('process')
-        process = self.context[id] = Products.AlphaFlow.process.Process(id)
+        id = gocept.alphaflow.utils.generateUniqueId('process')
+        process = self.context[id] = gocept.alphaflow.process.Process(id)
         editable = process.editable(
-            Products.AlphaFlow.process.ProcessVersion())
+            gocept.alphaflow.process.ProcessVersion())
         editable.title = title
         status = "?portal_status_message=Workflow created"
         self.request.response.redirect(redirect + status)
@@ -97,9 +97,9 @@ class ProcessWriteContainer(AlphaFlowView):
 
     def manage_importXML(self, id, xmlfile):
         importer = zope.component.getUtility(
-          Products.AlphaFlow.interfaces.IWorkflowImporter, name='xml')
+          gocept.alphaflow.interfaces.IWorkflowImporter, name='xml')
         version = importer(xmlfile)
-        self.context[id] = Products.AlphaFlow.process.Process(id)
+        self.context[id] = gocept.alphaflow.process.Process(id)
         process = self.context[id]
         process.editable(version)
         self._redirect()

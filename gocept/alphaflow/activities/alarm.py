@@ -12,18 +12,18 @@ from Products.Archetypes.public import registerType
 from Products.Archetypes import public as atapi
 import Products.CMFCore.utils
 
-import Products.AlphaFlow.interfaces
-from Products.AlphaFlow.workitem import BaseWorkItem
-from Products.AlphaFlow.activity import BaseAutomaticActivity
-from Products.AlphaFlow.activities.interfaces import \
+import gocept.alphaflow.interfaces
+from gocept.alphaflow.workitem import BaseWorkItem
+from gocept.alphaflow.activity import BaseAutomaticActivity
+from gocept.alphaflow.activities.interfaces import \
     IAlarmActivity, IAlarmWorkItem
-from Products.AlphaFlow import config, utils
+from gocept.alphaflow import config, utils
 
 
 class AlarmActivity(BaseAutomaticActivity):
 
     zope.interface.implements(IAlarmActivity)
-    zope.interface.classProvides(Products.AlphaFlow.interfaces.IActivityClass)
+    zope.interface.classProvides(gocept.alphaflow.interfaces.IActivityClass)
 
     meta_type = "AlphaFlow Alarm Activity"
     activity_type = "alarm"
@@ -56,7 +56,7 @@ class AlarmWorkItem(BaseWorkItem):
     # same schema but different behaviour.
 
     zope.interface.implements(IAlarmWorkItem)
-    zope.interface.classProvides(Products.AlphaFlow.interfaces.IWorkItemClass)
+    zope.interface.classProvides(gocept.alphaflow.interfaces.IWorkItemClass)
 
     security = ClassSecurityInfo()
 
@@ -71,13 +71,13 @@ class AlarmWorkItem(BaseWorkItem):
             deadline = utils.evaluateTales(activity.due, workitem=self)
         if deadline.isPast():
             self.passCheckpoint("continue")
-            lc = Products.AlphaFlow.interfaces.ILifeCycleController(self)
+            lc = gocept.alphaflow.interfaces.ILifeCycleController(self)
             lc.complete(activity.title_or_id())
 
     security.declareProtected(config.WORK_WITH_PROCESS, 'getStatusInfo')
     def getStatusInfo(self):
         """Return current status of workitem as a text."""
-        controller = Products.AlphaFlow.interfaces.ILifeCycleController(self)
+        controller = gocept.alphaflow.interfaces.ILifeCycleController(self)
         if controller.state == 'active':
             return "deadline not yet reached"
         elif controller.state == 'ended':
@@ -89,7 +89,7 @@ InitializeClass(AlarmWorkItem)
 registerType(AlarmWorkItem, config.PROJECTNAME)
 
 
-@zope.component.adapter(Products.AlphaFlow.interfaces.ICronPing)
+@zope.component.adapter(gocept.alphaflow.interfaces.ICronPing)
 def receive_cron_ping(event):
     wc = Products.CMFCore.utils.getToolByName(
         event.process_manager, "workflow_catalog")
@@ -103,7 +103,7 @@ def receive_cron_ping(event):
             item.trigger_workitem()
         except Exception, m:
             controller = \
-                Products.AlphaFlow.interfaces.ILifeCycleController(item)
+                gocept.alphaflow.interfaces.ILifeCycleController(item)
             controller.fail('Failed to trigger the work itemm.', m)
         if config.ENABLE_ZODB_COMMITS:
             transaction.commit()

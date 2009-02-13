@@ -10,13 +10,13 @@ import logging
 import zope.component
 import zope.interface
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.utils
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.utils
 
 try:
     import pydot
 except ImportError:
-    Products.AlphaFlow.utils.logger.log(
+    gocept.alphaflow.utils.logger.log(
         logging.WARN, "pydot is not installed. The visual editor will "
         "not be fully functional.")
     pydot = None
@@ -104,8 +104,8 @@ def careful_remove(item, data):
 
 class WorkflowGraph(object):
 
-    zope.component.adapts(Products.AlphaFlow.interfaces.IProcessVersion)
-    zope.interface.implements(Products.AlphaFlow.interfaces.IWorkflowGraph)
+    zope.component.adapts(gocept.alphaflow.interfaces.IProcessVersion)
+    zope.interface.implements(gocept.alphaflow.interfaces.IWorkflowGraph)
 
     zoom = '2'
     highlight = None

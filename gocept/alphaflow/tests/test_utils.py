@@ -4,8 +4,8 @@
 
 import unittest
 
-from Products.AlphaFlow.tests.AlphaFlowTestCase import AlphaFlowTestCase
-from Products.AlphaFlow import utils
+from gocept.alphaflow.tests.AlphaFlowTestCase import AlphaFlowTestCase
+from gocept.alphaflow import utils
 
 
 class UtilityTests(AlphaFlowTestCase):

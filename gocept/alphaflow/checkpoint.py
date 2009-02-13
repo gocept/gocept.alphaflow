@@ -9,15 +9,15 @@ from AccessControl import ClassSecurityInfo
 
 import zope.interface
 
-import Products.AlphaFlow.interfaces
-import Products.AlphaFlow.lifecycle
-import Products.AlphaFlow.utils
+import gocept.alphaflow.interfaces
+import gocept.alphaflow.lifecycle
+import gocept.alphaflow.utils
 
 
 class CheckpointDefinition(Folder):
 
     zope.interface.implements(
-        Products.AlphaFlow.interfaces.ICheckpointDefinition)
+        gocept.alphaflow.interfaces.ICheckpointDefinition)
 
     security = ClassSecurityInfo()
 
@@ -28,7 +28,7 @@ class CheckpointDefinition(Folder):
     # XXX?  Was ist _activity? das gleiche wie aq_parent?
     _activity = None
 
-    schema_to_validate = Products.AlphaFlow.interfaces.ICheckpointDefinition
+    schema_to_validate = gocept.alphaflow.interfaces.ICheckpointDefinition
 
     # XXX? Warum diese Property?
     def __get_activities(self):
@@ -46,17 +46,17 @@ class CheckpointDefinition(Folder):
 
     security.declarePrivate("validate")
     def validate(self):
-        errors = Products.AlphaFlow.utils.validateFields(
+        errors = gocept.alphaflow.utils.validateFields(
             self.schema_to_validate, self)
         for aspect in self.objectValues():
-            if Products.AlphaFlow.interfaces.IAspectDefinition.providedBy(
+            if gocept.alphaflow.interfaces.IAspectDefinition.providedBy(
                 aspect):
                 errors.extend(aspect.validate())
             else:
                 errors.append((self,
                                "A Checkpoint can only contain Aspects, "
                                "but found %r." % aspect))
-        Products.AlphaFlow.utils.log_validation_errors(self, errors)
+        gocept.alphaflow.utils.log_validation_errors(self, errors)
         return errors
 
 
@@ -65,22 +65,22 @@ InitializeClass(CheckpointDefinition)
 
 class ExitDefinition(CheckpointDefinition):
 
-    zope.interface.implements(Products.AlphaFlow.interfaces.IExitDefinition)
+    zope.interface.implements(gocept.alphaflow.interfaces.IExitDefinition)
 
-    schema_to_validate = Products.AlphaFlow.interfaces.IExitDefinition
+    schema_to_validate = gocept.alphaflow.interfaces.IExitDefinition
 
     condition = u'python:True'
 
 InitializeClass(ExitDefinition)
 
 
-class Checkpoint(Products.AlphaFlow.lifecycle.LifeCycleObjectBase):
+class Checkpoint(gocept.alphaflow.lifecycle.LifeCycleObjectBase):
 
     portal_type = "Checkpoint"
 
     zope.interface.implements(
         zope.app.annotation.interfaces.IAttributeAnnotatable,
-        Products.AlphaFlow.interfaces.ICheckpoint)
+        gocept.alphaflow.interfaces.ICheckpoint)
 
     alphaflow_type = "checkpoint"
 
@@ -88,7 +88,7 @@ class Checkpoint(Products.AlphaFlow.lifecycle.LifeCycleObjectBase):
 
     manage_options = \
         ({'label' : 'Overview', 'action' : 'manage_overview'},) + \
-        Products.AlphaFlow.lifecycle.LifeCycleObjectBase.manage_options
+        gocept.alphaflow.lifecycle.LifeCycleObjectBase.manage_options
 
     log_name = "checkpoint"
     log_children_name = "aspects"
@@ -109,25 +109,25 @@ class Checkpoint(Products.AlphaFlow.lifecycle.LifeCycleObjectBase):
     def onStart(self):
         for aspect in self.getDefinition().objectValues():
             inst = self.createChild(aspect, "Aspect")
-            controller = Products.AlphaFlow.interfaces.ILifeCycleController(
+            controller = gocept.alphaflow.interfaces.ILifeCycleController(
                 inst)
             controller.start('Started by checkpoint.')
         self.generated_workitems = self.getWorkItem().createWorkItems(
             self.getActivities())
-        Products.AlphaFlow.interfaces.ILifeCycleController(self).complete(
+        gocept.alphaflow.interfaces.ILifeCycleController(self).complete(
             'Completed all aspects.')
 
 
-@zope.component.adapter(Products.AlphaFlow.interfaces.ICheckpoint,
-                        Products.AlphaFlow.interfaces.ILifeCycleEvent)
+@zope.component.adapter(gocept.alphaflow.interfaces.ICheckpoint,
+                        gocept.alphaflow.interfaces.ILifeCycleEvent)
 def checkpoint_failed(checkpoint, event):
     # XXX tests
-    cp_controller = Products.AlphaFlow.interfaces.ILifeCycleController(
+    cp_controller = gocept.alphaflow.interfaces.ILifeCycleController(
         checkpoint)
     if cp_controller.state == 'failed':
         # Cascade the failure
         workitem = checkpoint.aq_inner.getParentNode()
-        wi_controller = Products.AlphaFlow.interfaces.ILifeCycleController(
+        wi_controller = gocept.alphaflow.interfaces.ILifeCycleController(
             workitem)
         wi_controller.fail("Checkpoint failed.")
 

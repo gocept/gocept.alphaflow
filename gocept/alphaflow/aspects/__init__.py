@@ -1,2 +1,2 @@
-from Products.AlphaFlow.aspects import \
+from gocept.alphaflow.aspects import \
      expression, notify, parent, permission, dcworkflow

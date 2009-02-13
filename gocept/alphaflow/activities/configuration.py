@@ -8,15 +8,15 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-import Products.AlphaFlow.workitem
-from Products.AlphaFlow.interfaces import \
+import gocept.alphaflow.workitem
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     IConfigurationActivity, IConfigurationWorkItem
-from Products.AlphaFlow.workitem import BaseAssignableWorkItem, Group
-from Products.AlphaFlow.activity import BaseAssignableActivity
-from Products.AlphaFlow import config
-from Products.AlphaFlow.action import Action
+from gocept.alphaflow.workitem import BaseAssignableWorkItem, Group
+from gocept.alphaflow.activity import BaseAssignableActivity
+from gocept.alphaflow import config
+from gocept.alphaflow.action import Action
 
 
 class ConfigurationActivity(BaseAssignableActivity):

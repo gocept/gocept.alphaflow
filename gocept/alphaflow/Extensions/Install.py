@@ -30,12 +30,12 @@ from Products.Archetypes.public import listTypes
 from Products.CMFFormController.globalVars import ANY_BUTTON
 from Products.CMFFormController.FormAction import FormActionKey
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.utils import modifyRolesForPermission
-from Products.AlphaFlow.Extensions import dcworkflow
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow import config
+from gocept.alphaflow.utils import modifyRolesForPermission
+from gocept.alphaflow.Extensions import dcworkflow
+from gocept.alphaflow.interfaces import \
      IWorkItemClass, IWorkflowImporter
-from Products.AlphaFlow.process import Process
+from gocept.alphaflow.process import Process
 
 
 def install_dcworkflow(self, out):

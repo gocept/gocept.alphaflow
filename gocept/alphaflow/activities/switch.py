@@ -15,15 +15,15 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.Archetypes.public import registerType
 
-from Products.AlphaFlow import config
-from Products.AlphaFlow.workitem import BaseWorkItem
-from Products.AlphaFlow.activity import BaseActivity
-from Products.AlphaFlow.checkpoint import ExitDefinition
-from Products.AlphaFlow.interfaces import \
+from gocept.alphaflow import config
+from gocept.alphaflow.workitem import BaseWorkItem
+from gocept.alphaflow.activity import BaseActivity
+from gocept.alphaflow.checkpoint import ExitDefinition
+from gocept.alphaflow.interfaces import \
     IActivityClass, IWorkItemClass, ILifeCycleController
-from Products.AlphaFlow.activities.interfaces import \
+from gocept.alphaflow.activities.interfaces import \
     ISwitchActivity, ISwitchWorkItem
-from Products.AlphaFlow import utils
+from gocept.alphaflow import utils
 
 
 class CaseDefinition(ExitDefinition):

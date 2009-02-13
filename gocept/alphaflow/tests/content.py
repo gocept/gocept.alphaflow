@@ -7,8 +7,8 @@
 from AccessControl import getSecurityManager
 
 from Products.Archetypes import public as atapi
-from Products.AlphaFlow.workflowedobject import AlphaFlowed
-from Products.AlphaFlow import config
+from gocept.alphaflow.workflowedobject import AlphaFlowed
+from gocept.alphaflow import config
 
 
 class DummyContent(AlphaFlowed, atapi.BaseContent):

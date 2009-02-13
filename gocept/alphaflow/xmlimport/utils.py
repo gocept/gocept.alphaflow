@@ -6,9 +6,9 @@
 
 import zope.component
 
-from Products.AlphaFlow.exception import ConfigurationError
-import Products.AlphaFlow.utils
-import Products.AlphaFlow.xmlimport.interfaces
+from gocept.alphaflow.exception import ConfigurationError
+import gocept.alphaflow.utils
+import gocept.alphaflow.xmlimport.interfaces
 
 
 def configure_attributes(node, obj, schema):
@@ -34,7 +34,7 @@ def import_child_elements(node, context, node_names=None, ignore=(),
             or node.nodeName in ignore):
             continue
         element_importer = zope.component.getAdapter(context,
-            Products.AlphaFlow.xmlimport.interfaces.IDOMImporter,
+            gocept.alphaflow.xmlimport.interfaces.IDOMImporter,
             name=node.nodeName)
         for element in element_importer(node, default):
             element_id = getattr(element, "id", None)
@@ -51,5 +51,5 @@ def import_child_elements(node, context, node_names=None, ignore=(),
 def add_child_elements(node, context, name):
     for child in import_child_elements(node, context):
         if not getattr(child, "id", None):
-            child.id = Products.AlphaFlow.utils.generateUniqueId(name)
+            child.id = gocept.alphaflow.utils.generateUniqueId(name)
         context._setObject(child.getId(), child)
